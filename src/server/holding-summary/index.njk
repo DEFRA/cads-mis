@@ -1,0 +1,126 @@
+{% extends 'layouts/page.njk' %}
+
+{% block content %}
+  {{ appHeading({
+    text: heading,
+    caption: "Summary of a single holding, including on/off movements, species and mapped holdings."
+  }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <div class="govuk-body" data-testid="app-page-body">
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-one-quarter">
+            <div class="govuk-form-group">
+              <label class="govuk-label" for="filter-holding-no">Holding No.</label>
+              <input class="govuk-input" id="filter-holding-no" value="13/168/0128">
+            </div>
+          </div>
+          <div class="govuk-grid-column-one-quarter">
+            <div class="govuk-form-group">
+              <label class="govuk-label" for="filter-holder-name">CPH holder name</label>
+              <input class="govuk-input" id="filter-holder-name" value="Thrift Farm Holdings Ltd">
+            </div>
+          </div>
+          <div class="govuk-grid-column-one-quarter">
+            <div class="govuk-form-group">
+              <label class="govuk-label" for="filter-herd-mark">Herd mark</label>
+              <input class="govuk-input" id="filter-herd-mark" value="245531">
+            </div>
+          </div>
+          <div class="govuk-grid-column-one-quarter">
+            <div class="govuk-form-group">
+              <button class="govuk-button govuk-button--secondary" data-module="govuk-button"> Go</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- Holding details table -->
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <div class="govuk-body" data-testid="app-page-body">
+        <div class="govuk-grid-row">
+          <section class="govuk-!-margin-bottom-3" aria-label="Holding details">
+            <table class="govuk-table govuk-table--small-text-until-tablet">
+              <thead class="govuk-table__head">
+              <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">Holding No.</th>
+                <th scope="col" class="govuk-table__header">Holding type</th>
+                <th scope="col" class="govuk-table__header">OS map reference</th>
+                <th scope="col" class="govuk-table__header">CPH holder name</th>
+                <th scope="col" class="govuk-table__header">CPH holder address</th>
+                <th scope="col" class="govuk-table__header">Local authority</th>
+                <th scope="col" class="govuk-table__header">Telephone</th>
+                <th scope="col" class="govuk-table__header">Species</th>
+              </tr>
+              </thead>
+              <tbody class="govuk-table__body">
+              <tr class="govuk-table__row">
+                <td class="govuk-table__cell">13/168/0128</td>
+                <td class="govuk-table__cell">Not known</td>
+                <td class="govuk-table__cell">TL9105 0130</td>
+                <td class="govuk-table__cell">Thrift Farm Holdings Ltd</td>
+                <td class="govuk-table__cell">Thrift Farm House Northley Hill Mayland, Essex CM3 4DP</td>
+                <td class="govuk-table__cell">Essex County Council</td>
+                <td class="govuk-table__cell">01234 567890</td>
+                <td class="govuk-table__cell">Sheep, cattle, goats</td>
+              </tr>
+              </tbody>
+            </table>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+      <div class="govuk-summary-card dashboard-map-card">
+        <div class="govuk-summary-card__title-wrapper">
+          <h2 class="govuk-summary-card__title">Holdings</h2>
+        </div>
+        <div class="govuk-summary-card__content dashboard-card-body">
+          <div id="holding-map"></div>
+
+          <div class="dashboard-map-legend" aria-label="Map legend">
+            <span class="govuk-body-s">Holding:</span>
+            <span class="dashboard-legend-entry">
+                  <span class="dashboard-legend-swatch dashboard-legend-in"></span>
+                  <span class="govuk-body-s">In</span>
+                </span>
+            <span class="dashboard-legend-entry">
+                  <span class="dashboard-legend-swatch dashboard-legend-out"></span>
+                  <span class="govuk-body-s">Out</span>
+                </span>
+            <span class="dashboard-legend-entry">
+                  <span class="dashboard-legend-swatch dashboard-legend-both"></span>
+                  <span class="govuk-body-s">Both</span>
+                </span>
+            <span class="dashboard-legend-entry">
+                  <span class="dashboard-legend-swatch dashboard-legend-none"></span>
+                  <span class="govuk-body-s">Unmapped holdings: 151</span>
+                </span>
+          </div>
+
+          <p class="govuk-body-s">
+            Contains OS data © Crown copyright and database right
+            <span id="os-year"></span>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}
+
+{% block bodyEnd %}
+  {{ super() }}
+  {# External libraries #}
+  <script src="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@latest/os-api-branding.js"></script>
+  <script src="https://unpkg.com/maplibre-gl@5.7.1/dist/maplibre-gl.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+{% endblock %}

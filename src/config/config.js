@@ -44,7 +44,7 @@ export const config = convict({
   serviceName: {
     doc: 'Applications Service Name',
     format: String,
-    default: 'cads-mis'
+    default: 'CADS Management Information Portal'
   },
   root: {
     doc: 'Project root',
