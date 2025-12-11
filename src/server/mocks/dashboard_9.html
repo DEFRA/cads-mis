@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html class="govuk-template" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CADS - MI – Unregistered herds/flocks</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+
+  <!-- GOV.UK Frontend CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/govuk-frontend@5.13.0/dist/govuk/govuk-frontend.min.css"
+        rel="stylesheet">
+
+  <!-- D3.js -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <link href="/assets/css/dashboard_9.css" rel="stylesheet">
+  <style>
+
+  </style>
+</head>
+
+<body class="govuk-template__body">
+<script>
+  document.body.className += ' js-enabled';
+</script>
+
+<header class="govuk-header" role="banner">
+  <div class="govuk-header__container govuk-width-container">
+    <div class="dashboard-header">
+      <div class="dashboard-service-name">
+        <a class="govuk-header__link govuk-header__link--homepage" href="index.njk">
+            <span class="govuk-header__logotype">
+              <span class="govuk-header__logotype-text">
+                CADS - MI
+              </span>
+            </span>
+        </a>
+      </div>
+      <div class="dashboard-page-title">
+        Unregistered herds/flocks
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="govuk-width-container">
+
+  <main class="govuk-main-wrapper govuk-!-padding-top-3 govuk-!-padding-bottom-3">
+
+    <!-- Filters in a single row -->
+    <section aria-label="Filters" class="govuk-!-margin-bottom-3">
+      <div class="govuk-grid-row dashboard-filter-row">
+        <div class="govuk-grid-column-one-quarter">
+          <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2"
+                  type="button">
+            Reset filters
+          </button>
+        </div>
+
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="filter-country">Country</label>
+            <select class="govuk-select" id="filter-country">
+              <option>All</option>
+              <option>England</option>
+              <option>Scotland</option>
+              <option>Wales</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="filter-holding-type">Holding type</label>
+            <select class="govuk-select" id="filter-holding-type">
+              <option>All</option>
+              <option>Agricultural holding</option>
+              <option>Market</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="filter-last-active">Holding last active date</label>
+            <input class="govuk-input" id="filter-last-active" value="01/01/2022 – 31/12/2025">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Summary and charts row -->
+    <section aria-label="Unregistered summary and charts" class="govuk-!-margin-bottom-4">
+      <div class="govuk-grid-row">
+
+        <!-- Left: summary + bar chart -->
+        <div class="govuk-grid-column-two-thirds">
+          <div class="govuk-summary-card govuk-!-margin-bottom-3">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">Unregistered herd/flock summary</h2>
+            </div>
+            <div class="govuk-summary-card__content dashboard-card-body">
+
+              <div class="dashboard-summary-metrics">
+                <div class="dashboard-summary-metric">
+                  <p class="govuk-body-s govuk-!-margin-bottom-0">Related holdings</p>
+                  <p class="govuk-heading-m govuk-!-margin-bottom-0">6,154</p>
+                </div>
+                <div class="dashboard-summary-metric">
+                  <p class="govuk-body-s govuk-!-margin-bottom-0">Unregistered herds/flocks</p>
+                  <p class="govuk-heading-m govuk-!-margin-bottom-0">0</p>
+                </div>
+                <div class="dashboard-summary-metric">
+                  <p class="govuk-body-s govuk-!-margin-bottom-0">Archived herds/flocks</p>
+                  <p class="govuk-heading-m govuk-!-margin-bottom-0">7,100</p>
+                </div>
+              </div>
+
+              <h3 class="govuk-heading-s govuk-!-margin-top-3">
+                Related holdings by last active date
+              </h3>
+              <svg aria-label="Column chart showing related holdings by last active date" class="chart-svg"
+                   id="chart-related-holdings"></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: pie chart -->
+        <div class="govuk-grid-column-one-third">
+          <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">
+                Unregistered herds/flocks by status and country
+              </h2>
+            </div>
+            <div class="govuk-summary-card__content dashboard-card-body">
+              <svg aria-label="Pie chart showing herds/flocks by status and country" class="chart-svg"
+                   id="chart-status-country"></svg>
+
+              <div class="dashboard-legend">
+                <div class="dashboard-legend-item">
+                  <span class="dashboard-legend-swatch" style="background:#1d70b8;"></span>
+                  <span class="govuk-body-s">Archived (England)</span>
+                </div>
+                <div class="dashboard-legend-item">
+                  <span class="dashboard-legend-swatch" style="background:#d4351c;"></span>
+                  <span class="govuk-body-s">Archived (Scotland)</span>
+                </div>
+                <div class="dashboard-legend-item">
+                  <span class="dashboard-legend-swatch" style="background:#ffdd00;"></span>
+                  <span class="govuk-body-s">Archived (Wales)</span>
+                </div>
+                <div class="dashboard-legend-item">
+                  <span class="dashboard-legend-swatch" style="background:#6f777b;"></span>
+                  <span class="govuk-body-s">Other / unknown</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Details table -->
+    <section aria-label="Unregistered herd/flock details">
+      <div class="govuk-summary-card">
+        <div class="govuk-summary-card__title-wrapper">
+          <h2 class="govuk-summary-card__title">Unregistered herd/flock details</h2>
+        </div>
+        <div class="govuk-summary-card__content">
+
+          <table class="govuk-table govuk-table--small-text-until-tablet">
+            <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header" scope="col">Species</th>
+              <th class="govuk-table__header" scope="col">Herd/flock status</th>
+              <th class="govuk-table__header" scope="col">Herd/flock effective to</th>
+              <th class="govuk-table__header" scope="col">No. of moves</th>
+              <th class="govuk-table__header" scope="col">No. of animals</th>
+              <th class="govuk-table__header" scope="col">Related holding no.</th>
+              <th class="govuk-table__header" scope="col">Holding type</th>
+              <th class="govuk-table__header" scope="col">CPH holder name</th>
+              <th class="govuk-table__header" scope="col">CPH holder address</th>
+            </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+
+            <!-- Sample rows; replace with real data -->
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">Sheep</td>
+              <td class="govuk-table__cell">Archived</td>
+              <td class="govuk-table__cell">21/09/2022</td>
+              <td class="govuk-table__cell">6</td>
+              <td class="govuk-table__cell">27</td>
+              <td class="govuk-table__cell">62/191/0201</td>
+              <td class="govuk-table__cell">Agricultural holding</td>
+              <td class="govuk-table__cell">MSS Leanne Davenport</td>
+              <td class="govuk-table__cell">Tate Bank Farm, Cumbria</td>
+            </tr>
+
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">Sheep</td>
+              <td class="govuk-table__cell">Archived</td>
+              <td class="govuk-table__cell">25/09/2022</td>
+              <td class="govuk-table__cell">3</td>
+              <td class="govuk-table__cell">18</td>
+              <td class="govuk-table__cell">66/719/0190</td>
+              <td class="govuk-table__cell">Agricultural holding</td>
+              <td class="govuk-table__cell">Mrs Janice Irving</td>
+              <td class="govuk-table__cell">Ardenlee, Penrith</td>
+            </tr>
+
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">Sheep</td>
+              <td class="govuk-table__cell">Archived</td>
+              <td class="govuk-table__cell">28/09/2022</td>
+              <td class="govuk-table__cell">1</td>
+              <td class="govuk-table__cell">6</td>
+              <td class="govuk-table__cell">64/293/0104</td>
+              <td class="govuk-table__cell">Agricultural holding</td>
+              <td class="govuk-table__cell">Mr Tony Gibson</td>
+              <td class="govuk-table__cell">14 Mount Pleasant, Durham</td>
+            </tr>
+
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">Sheep</td>
+              <td class="govuk-table__cell">Archived</td>
+              <td class="govuk-table__cell">28/11/2022</td>
+              <td class="govuk-table__cell">4</td>
+              <td class="govuk-table__cell">32</td>
+              <td class="govuk-table__cell">63/410/0188</td>
+              <td class="govuk-table__cell">Agricultural holding</td>
+              <td class="govuk-table__cell">Mr Leslie Manning</td>
+              <td class="govuk-table__cell">Ridge Farm, North Yorkshire</td>
+            </tr>
+
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="govuk-footer" role="contentinfo">
+  <div class="govuk-width-container">
+    <div class="govuk-footer__meta">
+      <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+        <p class="govuk-footer__licence-description">
+          Central Animal Data Service – prototype dashboard
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+
+    // Column chart: related holdings by last active date
+    function renderColumnChart(selector, data, config) {
+      const svg = d3.select(selector);
+      const node = svg.node();
+      if (!node) return;
+
+      const width = node.clientWidth || 400;
+      const height = node.clientHeight || 260;
+      svg.attr('viewBox', `0 0 ${width} ${height}`);
+
+      const margin = {top: 10, right: 20, bottom: 40, left: 50};
+      const innerWidth = width - margin.left - margin.right;
+      const innerHeight = height - margin.top - margin.bottom;
+
+      const g = svg.append('g')
+        .attr('transform', `translate(${margin.left},${margin.top})`);
+
+      const x = d3.scaleBand()
+        .domain(data.map(d => d[config.categoryKey]))
+        .range([0, innerWidth])
+        .padding(0.4);
+
+      const y = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d[config.valueKey])]).nice()
+        .range([innerHeight, 0]);
+
+      g.append('g')
+        .attr('transform', `translate(0,${innerHeight})`)
+        .call(d3.axisBottom(x));
+
+      g.append('g')
+        .call(d3.axisLeft(y).ticks(5));
+
+      g.selectAll('rect')
+        .data(data)
+        .enter()
+        .append('rect')
+        .attr('x', d => x(d[config.categoryKey]))
+        .attr('y', d => y(d[config.valueKey]))
+        .attr('width', x.bandwidth())
+        .attr('height', d => innerHeight - y(d[config.valueKey]))
+        .attr('fill', '#1d70b8');
+    }
+
+    const relatedHoldingsData = [
+      {year: '2021', count: 161},
+      {year: '2022', count: 457},
+      {year: '2023', count: 1232},
+      {year: '2024', count: 1704},
+      {year: '2025', count: 4560}
+    ];
+
+    renderColumnChart('#chart-related-holdings', relatedHoldingsData, {
+      categoryKey: 'year',
+      valueKey: 'count'
+    });
+
+    // Pie chart: status by country
+    function renderPieChart(selector, data) {
+      const svg = d3.select(selector);
+      const node = svg.node();
+      if (!node) return;
+
+      const width = node.clientWidth || 360;
+      const height = node.clientHeight || 260;
+      const radius = Math.min(width, height) / 2 - 10;
+
+      svg.attr('viewBox', `0 0 ${width} ${height}`);
+
+      const g = svg.append('g')
+        .attr('transform', `translate(${width / 2},${height / 2})`);
+
+      const colour = d3.scaleOrdinal()
+        .domain(data.map(d => d.label))
+        .range(['#1d70b8', '#d4351c', '#ffdd00', '#6f777b']);
+
+      const pie = d3.pie()
+        .sort(null)
+        .value(d => d.value);
+
+      const arc = d3.arc()
+        .innerRadius(0)
+        .outerRadius(radius);
+
+      g.selectAll('path')
+        .data(pie(data))
+        .enter()
+        .append('path')
+        .attr('d', arc)
+        .attr('fill', d => colour(d.data.label))
+        .attr('stroke', '#ffffff')
+        .attr('stroke-width', 1);
+
+      const total = d3.sum(data, d => d.value);
+      g.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('dy', '0.35em')
+        .attr('class', 'govuk-body-s')
+        .text(total.toLocaleString());
+    }
+
+    const statusCountryData = [
+      {label: 'Archived (England)', value: 5100},
+      {label: 'Archived (Scotland)', value: 900},
+      {label: 'Archived (Wales)', value: 800},
+      {label: 'Other / unknown', value: 300}
+    ];
+
+    renderPieChart('#chart-status-country', statusCountryData);
+  });
+</script>
+
+</body>
+</html>

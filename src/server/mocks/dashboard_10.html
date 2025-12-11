@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html class="govuk-template" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CADS - MI – Scrapie flock scheme audit</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+
+  <link href="https://cdn.jsdelivr.net/npm/govuk-frontend@5.13.0/dist/govuk/govuk-frontend.min.css"
+        rel="stylesheet">
+
+  <link href="/assets/css/dashboard_10.css" rel="stylesheet">
+
+
+</head>
+
+<body class="govuk-template__body">
+<script>document.body.className += ' js-enabled';</script>
+
+<header class="govuk-header" role="banner">
+  <div class="govuk-header__container govuk-width-container">
+    <div class="dashboard-header">
+      <div class="dashboard-service-name">
+        <a class="govuk-header__link govuk-header__link--homepage" href="index.njk">
+            <span class="govuk-header__logotype">
+              <span class="govuk-header__logotype-text">
+                CADS - MI
+              </span>
+            </span>
+        </a>
+      </div>
+      <div class="dashboard-page-title">Compulsory Scrapie Flock Scheme audit</div>
+    </div>
+  </div>
+</header>
+
+<div class="govuk-width-container">
+  <main class="govuk-main-wrapper govuk-!-padding-top-3 govuk-!-padding-bottom-3">
+
+    <!-- FILTERS -->
+    <section aria-label="Filters" class="govuk-!-margin-bottom-3">
+      <!-- Row 1: reset + three fields -->
+      <div class="govuk-grid-row dashboard-filter-row">
+        <div class="govuk-grid-column-one-quarter">
+          <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2"
+                  type="button">
+            Reset filters
+          </button>
+        </div>
+
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="filter-holding">Holding no.</label>
+            <select class="govuk-select" id="filter-holding">
+              <option>08/070/0012</option>
+              <option>08/070/0058</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="filter-departure-from">Departure date (from)</label>
+            <input class="govuk-input" id="filter-departure-from" value="01/01/2016">
+          </div>
+        </div>
+
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="filter-departure-to">Departure date (to)</label>
+            <input class="govuk-input" id="filter-departure-to" value="04/11/2023">
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: arrival date range -->
+      <div class="govuk-grid-row dashboard-filter-row govuk-!-margin-top-2">
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="filter-arrival-from">Arrival date (from)</label>
+            <input class="govuk-input" id="filter-arrival-from" value="01/01/2016">
+          </div>
+        </div>
+
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="filter-arrival-to">Arrival date (to)</label>
+            <input class="govuk-input" id="filter-arrival-to" value="04/11/2023">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Top details: holding info + off-move summary -->
+    <section aria-label="Holding information" class="govuk-!-margin-bottom-3">
+      <div class="govuk-grid-row">
+
+        <div class="govuk-grid-column-two-thirds">
+          <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">Holding information</h2>
+            </div>
+            <div class="govuk-summary-card__content dashboard-card-body">
+              <table class="govuk-table govuk-table--small-text-until-tablet">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header">Holding no.</th>
+                  <th class="govuk-table__header">Holding type</th>
+                  <th class="govuk-table__header">CPH holder name</th>
+                  <th class="govuk-table__header">CPH holder address</th>
+                  <th class="govuk-table__header">Telephone</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">08/070/0012</td>
+                  <td class="govuk-table__cell">Agricultural holding</td>
+                  <td class="govuk-table__cell">Mrs Alison Hewitson</td>
+                  <td class="govuk-table__cell">High Scarr Farm, Cockermouth, Cumbria CA13 9HS</td>
+                  <td class="govuk-table__cell">01900825250</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="govuk-grid-column-one-third">
+          <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">Off move summary</h2>
+            </div>
+            <div class="govuk-summary-card__content dashboard-card-body">
+              <table class="govuk-table govuk-table--small-text-until-tablet">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header">Holding type (dest)</th>
+                  <th class="govuk-table__header">Off moves</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">Agricultural holding</td>
+                  <td class="govuk-table__cell">70</td>
+                </tr>
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">Store market</td>
+                  <td class="govuk-table__cell">2</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Movement history + animals in movement -->
+    <section aria-label="Movement history and animals">
+      <div class="govuk-grid-row">
+
+        <!-- Movement history -->
+        <div class="govuk-grid-column-two-thirds">
+          <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">Holding movement history</h2>
+            </div>
+            <div class="govuk-summary-card__content dashboard-card-body">
+              <p class="govuk-body-s govuk-!-margin-bottom-1">
+                View: Most recent movements
+              </p>
+              <table class="govuk-table govuk-table--small-text-until-tablet">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header">Movement type</th>
+                  <th class="govuk-table__header">Species</th>
+                  <th class="govuk-table__header">Reported</th>
+                  <th class="govuk-table__header">Read</th>
+                  <th class="govuk-table__header">Direction</th>
+                  <th class="govuk-table__header">Departure date</th>
+                  <th class="govuk-table__header">Holding no. (dest)</th>
+                  <th class="govuk-table__header">Holding type (dest)</th>
+                  <th class="govuk-table__header">CPH holder name (dest)</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">Individual</td>
+                  <td class="govuk-table__cell">Sheep</td>
+                  <td class="govuk-table__cell">12</td>
+                  <td class="govuk-table__cell">21</td>
+                  <td class="govuk-table__cell">OFF</td>
+                  <td class="govuk-table__cell">08/01/2016</td>
+                  <td class="govuk-table__cell">08/060/0050</td>
+                  <td class="govuk-table__cell">Store market</td>
+                  <td class="govuk-table__cell">NY120205500</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Animals in movement -->
+        <div class="govuk-grid-column-one-third">
+          <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">Animals in movement</h2>
+            </div>
+            <div class="govuk-summary-card__content dashboard-card-body">
+              <table class="govuk-table govuk-table--small-text-until-tablet">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header">Movement</th>
+                  <th class="govuk-table__header">Animal ID</th>
+                  <th class="govuk-table__header">Species</th>
+                  <th class="govuk-table__header">Count</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">119563</td>
+                  <td class="govuk-table__cell">UK 0 10585 21981</td>
+                  <td class="govuk-table__cell">Sheep</td>
+                  <td class="govuk-table__cell">1</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="govuk-footer" role="contentinfo">
+  <div class="govuk-width-container">
+    <div class="govuk-footer__meta">
+      <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+        <p class="govuk-footer__licence-description">
+          Central Animal Data Service – prototype dashboard
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

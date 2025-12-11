@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html class="govuk-template" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CADS - MI – Movement summary</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+
+  <link href="https://cdn.jsdelivr.net/npm/govuk-frontend@5.13.0/dist/govuk/govuk-frontend.min.css"
+        rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@latest/os-api-branding.css"
+        rel="stylesheet"/>
+  <link href="https://unpkg.com/maplibre-gl@5.7.1/dist/maplibre-gl.css"
+        rel="stylesheet"/>
+
+  <link href="/assets/css/dashboard_4.css" rel="stylesheet">
+
+
+</head>
+
+<body class="govuk-template__body">
+<script>document.body.className += ' js-enabled';</script>
+
+<header class="govuk-header" role="banner">
+  <div class="govuk-header__container govuk-width-container">
+    <div class="dashboard-header">
+      <div class="dashboard-service-name">
+        <a class="govuk-header__link govuk-header__link--homepage" href="index.njk">
+            <span class="govuk-header__logotype">
+              <span class="govuk-header__logotype-text">
+                CADS - MI
+              </span>
+            </span>
+        </a>
+      </div>
+      <nav aria-label="Dashboard navigation" class="dashboard-tabs">
+        <a aria-current="page" href="#">Movement summary</a>
+        <a href="#">Movement detail</a>
+        <a href="#">Trace summary</a>
+        <a href="#">Source trace</a>
+        <a href="#">Spread trace</a>
+        <a href="#">Data extract</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="govuk-width-container">
+
+  <main class="govuk-main-wrapper govuk-!-padding-top-3 govuk-!-padding-bottom-3">
+
+    <!-- FILTERS: top row matches your standard pattern -->
+    <section aria-label="Filters" class="govuk-!-margin-bottom-3">
+
+      <!-- Row 1: reset + three fields, all one-quarter -->
+      <div class="govuk-grid-row dashboard-filter-row">
+        <div class="govuk-grid-column-one-quarter">
+          <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2"
+                  type="button">
+            Reset filters
+          </button>
+        </div>
+
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="filter-holding-no">Holding No. (CPH)</label>
+            <input class="govuk-input" id="filter-holding-no" value="06/111/0339">
+          </div>
+        </div>
+
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="filter-trace-window">Trace window</label>
+            <input class="govuk-input" id="filter-trace-window"
+                   value="01/01/2020 – 31/12/2020">
+          </div>
+        </div>
+
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="filter-species">Species</label>
+            <select class="govuk-select" id="filter-species">
+              <option>Sheep</option>
+              <option>Cattle</option>
+              <option>Pigs</option>
+              <option>Goats</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: extra filters underneath, half-width each -->
+      <div class="govuk-grid-row dashboard-filter-row govuk-!-margin-top-2">
+        <div class="govuk-grid-column-one-half">
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="filter-holder-name">CPH holder name</label>
+            <input class="govuk-input" id="filter-holder-name"
+                   value="C and D Auction Marts Ltd">
+          </div>
+        </div>
+
+        <div class="govuk-grid-column-one-half">
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="filter-holding-type">Holding type</label>
+            <select class="govuk-select" id="filter-holding-type">
+              <option>Market</option>
+              <option>Agricultural holding</option>
+              <option>Slaughterhouse</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN ROW: on / off / map (unchanged layout) -->
+    <section aria-label="Movement summary and map">
+      <div class="govuk-grid-row">
+
+        <!-- On move summary -->
+        <div class="govuk-grid-column-one-third">
+          <div class="govuk-summary-card govuk-!-margin-bottom-3">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">On move summary</h2>
+            </div>
+            <div class="govuk-summary-card__content dashboard-card-body">
+
+              <div class="dashboard-summary-metrics">
+                <div class="dashboard-summary-metric">
+                  <p class="govuk-body-s govuk-!-margin-bottom-0">No. of moves</p>
+                  <p class="govuk-heading-m govuk-!-margin-bottom-0">147</p>
+                </div>
+                <div class="dashboard-summary-metric">
+                  <p class="govuk-body-s govuk-!-margin-bottom-0">No. of animals</p>
+                  <p class="govuk-heading-m govuk-!-margin-bottom-0">7,601</p>
+                </div>
+              </div>
+
+              <h3 class="govuk-heading-s govuk-!-margin-top-2">Species</h3>
+              <table class="govuk-table govuk-table--small-text-until-tablet govuk-!-margin-bottom-2">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header" scope="col">Species</th>
+                  <th class="govuk-table__header" scope="col">Direct</th>
+                  <th class="govuk-table__header" scope="col">Imported</th>
+                  <th class="govuk-table__header" scope="col">Unknown</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">Sheep</td>
+                  <td class="govuk-table__cell">147</td>
+                  <td class="govuk-table__cell">0</td>
+                  <td class="govuk-table__cell">0</td>
+                </tr>
+                </tbody>
+              </table>
+
+              <h3 class="govuk-heading-s">Moves by country</h3>
+              <table class="govuk-table govuk-table--small-text-until-tablet govuk-!-margin-bottom-2">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header" scope="col">From / to</th>
+                  <th class="govuk-table__header" scope="col">Moves</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">EN to EN</td>
+                  <td class="govuk-table__cell">147</td>
+                </tr>
+                </tbody>
+              </table>
+
+              <h3 class="govuk-heading-s">Departure holdings</h3>
+              <table class="govuk-table govuk-table--small-text-until-tablet">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header" scope="col">Holding type</th>
+                  <th class="govuk-table__header" scope="col">Holdings</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">Agricultural holding</td>
+                  <td class="govuk-table__cell">132</td>
+                </tr>
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">Market</td>
+                  <td class="govuk-table__cell">15</td>
+                </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Off move summary -->
+        <div class="govuk-grid-column-one-third">
+          <div class="govuk-summary-card govuk-!-margin-bottom-3">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">Off move summary</h2>
+            </div>
+            <div class="govuk-summary-card__content dashboard-card-body">
+
+              <div class="dashboard-summary-metrics">
+                <div class="dashboard-summary-metric">
+                  <p class="govuk-body-s govuk-!-margin-bottom-0">No. of moves</p>
+                  <p class="govuk-heading-m govuk-!-margin-bottom-0">71</p>
+                </div>
+                <div class="dashboard-summary-metric">
+                  <p class="govuk-body-s govuk-!-margin-bottom-0">No. of animals</p>
+                  <p class="govuk-heading-m govuk-!-margin-bottom-0">7,477</p>
+                </div>
+              </div>
+
+              <h3 class="govuk-heading-s govuk-!-margin-top-2">Species</h3>
+              <table class="govuk-table govuk-table--small-text-until-tablet govuk-!-margin-bottom-2">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header" scope="col">Species</th>
+                  <th class="govuk-table__header" scope="col">Direct</th>
+                  <th class="govuk-table__header" scope="col">Exported</th>
+                  <th class="govuk-table__header" scope="col">Unknown</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">Sheep</td>
+                  <td class="govuk-table__cell">71</td>
+                  <td class="govuk-table__cell">0</td>
+                  <td class="govuk-table__cell">0</td>
+                </tr>
+                </tbody>
+              </table>
+
+              <h3 class="govuk-heading-s">Moves by country</h3>
+              <table class="govuk-table govuk-table--small-text-until-tablet govuk-!-margin-bottom-2">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header" scope="col">From / to</th>
+                  <th class="govuk-table__header" scope="col">Moves</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">EN to EN</td>
+                  <td class="govuk-table__cell">71</td>
+                </tr>
+                </tbody>
+              </table>
+
+              <h3 class="govuk-heading-s">Destination holdings</h3>
+              <table class="govuk-table govuk-table--small-text-until-tablet">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header" scope="col">Holding type</th>
+                  <th class="govuk-table__header" scope="col">Holdings</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">Agricultural holding</td>
+                  <td class="govuk-table__cell">63</td>
+                </tr>
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">Slaughterhouse</td>
+                  <td class="govuk-table__cell">8</td>
+                </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Map -->
+        <div class="govuk-grid-column-one-third">
+          <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">Holdings by direction of move</h2>
+            </div>
+            <div class="govuk-summary-card__content dashboard-card-body">
+
+              <div id="holding-direction-map"></div>
+
+              <div aria-label="Map legend" class="dashboard-map-legend">
+                <div class="dashboard-legend-item">
+                  <span class="dashboard-legend-swatch dashboard-legend-on"></span>
+                  <span class="govuk-body-s">On only</span>
+                </div>
+                <div class="dashboard-legend-item">
+                  <span class="dashboard-legend-swatch dashboard-legend-off"></span>
+                  <span class="govuk-body-s">Off only</span>
+                </div>
+                <div class="dashboard-legend-item">
+                  <span class="dashboard-legend-swatch dashboard-legend-both"></span>
+                  <span class="govuk-body-s">Both</span>
+                </div>
+                <div class="dashboard-legend-item">
+                  <span class="dashboard-legend-swatch dashboard-legend-none"></span>
+                  <span class="govuk-body-s">Unmapped holdings: 9</span>
+                </div>
+              </div>
+
+              <p class="govuk-body-s">
+                Contains OS data © Crown copyright and database right
+                <span id="os-year"></span>.
+              </p>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="govuk-footer" role="contentinfo">
+  <div class="govuk-width-container">
+    <div class="govuk-footer__meta">
+      <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+        <p class="govuk-footer__licence-description">
+          Central Animal Data Service – prototype dashboard
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@latest/os-api-branding.js"></script>
+<script src="https://unpkg.com/maplibre-gl@5.7.1/dist/maplibre-gl.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('os-year').textContent = new Date().getFullYear();
+
+    const apiKey = '97RSCqCjaAT68LDVbfDZs0qhVKLblVJ8';
+
+    const style = {
+      "version": 8,
+      "sources": {
+        "os-outdoor": {
+          "type": "raster",
+          "tiles": [
+            "https://api.os.uk/maps/raster/v1/zxy/Outdoor_3857/{z}/{x}/{y}.png?key=" + apiKey
+          ],
+          "tileSize": 256
+        }
+      },
+      "layers": [
+        {
+          "id": "os-outdoor-layer",
+          "type": "raster",
+          "source": "os-outdoor"
+        }
+      ]
+    };
+
+    const map = new maplibregl.Map({
+      container: 'holding-direction-map',
+      style: style,
+      center: [-2.5, 54.3],
+      zoom: 5.5,
+      minZoom: 5,
+      maxZoom: 18,
+      maxBounds: [
+        [-10.76418, 49.528423],
+        [1.9134116, 61.331151]
+      ],
+      attributionControl: false
+    });
+
+    map.dragRotate.disable();
+    map.touchZoomRotate.disableRotation();
+
+    map.addControl(new maplibregl.NavigationControl({
+      showCompass: false
+    }));
+
+    const holdings = [
+      {name: 'Index holding (this holding)', lon: -2.95, lat: 54.9, type: 'both'},
+      {name: 'On-only source holding', lon: -1.5, lat: 53.8, type: 'on'},
+      {name: 'On-only source holding', lon: -3.1, lat: 56.1, type: 'on'},
+      {name: 'Off-only destination holding', lon: -1.2, lat: 52.6, type: 'off'},
+      {name: 'Off-only destination holding', lon: -2.0, lat: 55.2, type: 'off'},
+      {name: 'Both on/off holding', lon: -3.6, lat: 51.7, type: 'both'}
+    ];
+
+    function colourForDirection(type) {
+      if (type === 'on') return '#1d70b8';
+      if (type === 'off') return '#f47738';
+      if (type === 'both') return '#28a197';
+      return '#b1b4b6';
+    }
+
+    holdings.forEach(h => {
+      new maplibregl.Marker({color: colourForDirection(h.type)})
+        .setLngLat([h.lon, h.lat])
+        .setPopup(new maplibregl.Popup({offset: 8})
+          .setHTML(`<strong>${h.name}</strong>`))
+        .addTo(map);
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html class="govuk-template" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CADS - MI – Zonal movements summary</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+
+  <link href="https://cdn.jsdelivr.net/npm/govuk-frontend@5.13.0/dist/govuk/govuk-frontend.min.css"
+        rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@latest/os-api-branding.css"
+        rel="stylesheet">
+  <link href="https://unpkg.com/maplibre-gl@5.7.1/dist/maplibre-gl.css"
+        rel="stylesheet">
+
+  <link href="/assets/css/dashboard_6.css" rel="stylesheet">
+
+</head>
+
+<body class="govuk-template__body">
+<script>document.body.className += ' js-enabled';</script>
+
+<header class="govuk-header" role="banner">
+  <div class="govuk-header__container govuk-width-container">
+    <div class="dashboard-header">
+      <div class="dashboard-service-name">
+        <a class="govuk-header__link govuk-header__link--homepage" href="index.njk">
+            <span class="govuk-header__logotype">
+              <span class="govuk-header__logotype-text">
+                CADS - MI
+              </span>
+            </span>
+        </a>
+      </div>
+      <nav aria-label="Zonal movement navigation" class="dashboard-tabs">
+        <a aria-current="page" href="#">Zonal movements summary</a>
+        <a href="#">Zonal movements detail</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="govuk-width-container">
+
+  <main class="govuk-main-wrapper govuk-!-padding-top-3 govuk-!-padding-bottom-3">
+
+    <!-- FILTERS -->
+    <section aria-label="Filters" class="govuk-!-margin-bottom-3">
+
+      <!-- Row 1: reset + three fields -->
+      <div class="govuk-grid-row dashboard-filter-row">
+        <div class="govuk-grid-column-one-quarter">
+          <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2"
+                  type="button">
+            Reset filters
+          </button>
+        </div>
+
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="filter-holding-interest">Holding of interest</label>
+            <select class="govuk-select" id="filter-holding-interest">
+              <option>01/126/0128</option>
+              <option>06/111/0339</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="filter-trace-from">Trace window (from)</label>
+            <input class="govuk-input" id="filter-trace-from" value="01/05/2018">
+          </div>
+        </div>
+
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="filter-trace-to">Trace window (to)</label>
+            <input class="govuk-input" id="filter-trace-to" value="04/11/2023">
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: species -->
+      <div class="govuk-grid-row dashboard-filter-row govuk-!-margin-top-2">
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="filter-species">Species</label>
+            <select class="govuk-select" id="filter-species">
+              <option>All</option>
+              <option>Sheep</option>
+              <option>Cattle</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- MOVEMENT SUMMARY ROW -->
+    <section aria-label="Movement summary" class="zonal-summary-row">
+      <div class="dashboard-summary-cards">
+
+        <div class="govuk-summary-card">
+          <div class="govuk-summary-card__title-wrapper">
+            <h2 class="govuk-summary-card__title">Into zone</h2>
+          </div>
+          <div class="govuk-summary-card__content dashboard-card-body">
+            <p class="govuk-body-s govuk-!-margin-bottom-0">No. of moves</p>
+            <p class="govuk-heading-m govuk-!-margin-bottom-2">89</p>
+            <p class="govuk-body-s govuk-!-margin-bottom-0">No. of animals</p>
+            <p class="govuk-heading-m govuk-!-margin-bottom-2">3,677</p>
+            <p class="govuk-body-s govuk-!-margin-bottom-0">No. of holdings</p>
+            <p class="govuk-heading-m govuk-!-margin-bottom-0">48</p>
+          </div>
+        </div>
+
+        <div class="govuk-summary-card">
+          <div class="govuk-summary-card__title-wrapper">
+            <h2 class="govuk-summary-card__title">Out of zone</h2>
+          </div>
+          <div class="govuk-summary-card__content dashboard-card-body">
+            <p class="govuk-body-s govuk-!-margin-bottom-0">No. of moves</p>
+            <p class="govuk-heading-m govuk-!-margin-bottom-2">45</p>
+            <p class="govuk-body-s govuk-!-margin-bottom-0">No. of animals</p>
+            <p class="govuk-heading-m govuk-!-margin-bottom-2">2,220</p>
+            <p class="govuk-body-s govuk-!-margin-bottom-0">No. of holdings</p>
+            <p class="govuk-heading-m govuk-!-margin-bottom-0">18</p>
+          </div>
+        </div>
+
+        <div class="govuk-summary-card">
+          <div class="govuk-summary-card__title-wrapper">
+            <h2 class="govuk-summary-card__title">Within zone</h2>
+          </div>
+          <div class="govuk-summary-card__content dashboard-card-body">
+            <p class="govuk-body-s govuk-!-margin-bottom-0">No. of moves</p>
+            <p class="govuk-heading-m govuk-!-margin-bottom-2">8</p>
+            <p class="govuk-body-s govuk-!-margin-bottom-0">No. of animals</p>
+            <p class="govuk-heading-m govuk-!-margin-bottom-2">145</p>
+            <p class="govuk-body-s govuk-!-margin-bottom-0">No. of holdings</p>
+            <p class="govuk-heading-m govuk-!-margin-bottom-0">12</p>
+          </div>
+        </div>
+
+        <div class="govuk-summary-card">
+          <div class="govuk-summary-card__title-wrapper">
+            <h2 class="govuk-summary-card__title">Import</h2>
+          </div>
+          <div class="govuk-summary-card__content dashboard-card-body">
+            <p class="govuk-body-s govuk-!-margin-bottom-0">No. of moves</p>
+            <p class="govuk-heading-m govuk-!-margin-bottom-2">0</p>
+            <p class="govuk-body-s govuk-!-margin-bottom-0">No. of animals</p>
+            <p class="govuk-heading-m govuk-!-margin-bottom-2">0</p>
+            <p class="govuk-body-s govuk-!-margin-bottom-0">No. of holdings</p>
+            <p class="govuk-heading-m govuk-!-margin-bottom-0">0</p>
+          </div>
+        </div>
+
+        <div class="govuk-summary-card">
+          <div class="govuk-summary-card__title-wrapper">
+            <h2 class="govuk-summary-card__title">Export</h2>
+          </div>
+          <div class="govuk-summary-card__content dashboard-card-body">
+            <p class="govuk-body-s govuk-!-margin-bottom-0">No. of moves</p>
+            <p class="govuk-heading-m govuk-!-margin-bottom-2">0</p>
+            <p class="govuk-body-s govuk-!-margin-bottom-0">No. of animals</p>
+            <p class="govuk-heading-m govuk-!-margin-bottom-2">0</p>
+            <p class="govuk-body-s govuk-!-margin-bottom-0">No. of holdings</p>
+            <p class="govuk-heading-m govuk-!-margin-bottom-0">0</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- HOLDING LIST + MAP -->
+    <section aria-label="Holding summary and map">
+      <div class="govuk-grid-row">
+
+        <!-- Left: holding summaries -->
+        <div class="govuk-grid-column-two-thirds">
+
+          <div class="govuk-summary-card govuk-!-margin-bottom-3">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">Holding summary (moves reported)</h2>
+            </div>
+            <div class="govuk-summary-card__content dashboard-card-body holding-list">
+              <table class="govuk-table govuk-table--small-text-until-tablet">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header" scope="col">Holding no.</th>
+                  <th class="govuk-table__header" scope="col">Holding type</th>
+                  <th class="govuk-table__header" scope="col">In zone?</th>
+                  <th class="govuk-table__header" scope="col">Distance (km)</th>
+                  <th class="govuk-table__header" scope="col">On moves</th>
+                  <th class="govuk-table__header" scope="col">Off moves</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">01/127/040</td>
+                  <td class="govuk-table__cell">Agricultural holding</td>
+                  <td class="govuk-table__cell">Yes</td>
+                  <td class="govuk-table__cell">1.09</td>
+                  <td class="govuk-table__cell">2</td>
+                  <td class="govuk-table__cell">1</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">Holding summary (no moves reported)</h2>
+            </div>
+            <div class="govuk-summary-card__content dashboard-card-body holding-list">
+              <table class="govuk-table govuk-table--small-text-until-tablet">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header" scope="col">Holding no.</th>
+                  <th class="govuk-table__header" scope="col">Holding type</th>
+                  <th class="govuk-table__header" scope="col">In zone?</th>
+                  <th class="govuk-table__header" scope="col">Distance (km)</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">01/127/070</td>
+                  <td class="govuk-table__cell">Agricultural holding</td>
+                  <td class="govuk-table__cell">No</td>
+                  <td class="govuk-table__cell">3.66</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: map -->
+        <div class="govuk-grid-column-one-third">
+          <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">Holding list map</h2>
+            </div>
+            <div class="govuk-summary-card__content dashboard-card-body">
+
+              <div id="zonal-map"></div>
+
+              <div aria-label="Map legend" class="dashboard-map-legend">
+                <div class="dashboard-legend-item">
+                  <span class="dashboard-legend-swatch legend-index"></span>
+                  <span class="govuk-body-s">Holding of interest</span>
+                </div>
+                <div class="dashboard-legend-item">
+                  <span class="dashboard-legend-swatch legend-in-zone"></span>
+                  <span class="govuk-body-s">In zone</span>
+                </div>
+                <div class="dashboard-legend-item">
+                  <span class="dashboard-legend-swatch legend-out-zone"></span>
+                  <span class="govuk-body-s">Outside zone</span>
+                </div>
+                <div class="dashboard-legend-item">
+                  <span class="dashboard-legend-swatch legend-unmapped"></span>
+                  <span class="govuk-body-s">Unmapped holdings: 2</span>
+                </div>
+              </div>
+
+              <p class="govuk-body-s">
+                Contains OS data © Crown copyright and database right
+                <span id="os-year-zonal"></span>.
+              </p>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="govuk-footer" role="contentinfo">
+  <div class="govuk-width-container">
+    <div class="govuk-footer__meta">
+      <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+        <p class="govuk-footer__licence-description">
+          Central Animal Data Service – prototype dashboard
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@latest/os-api-branding.js"></script>
+<script src="https://unpkg.com/maplibre-gl@5.7.1/dist/maplibre-gl.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const yearSpan = document.getElementById('os-year-zonal');
+    if (yearSpan) {
+      yearSpan.textContent = new Date().getFullYear();
+    }
+
+    const apiKey = '97RSCqCjaAT68LDVbfDZs0qhVKLblVJ8';
+
+    const style = {
+      version: 8,
+      sources: {
+        'os-outdoor': {
+          type: 'raster',
+          tiles: [
+            'https://api.os.uk/maps/raster/v1/zxy/Outdoor_3857/{z}/{x}/{y}.png?key=' + apiKey
+          ],
+          tileSize: 256
+        }
+      },
+      layers: [
+        {
+          id: 'os-outdoor-layer',
+          type: 'raster',
+          source: 'os-outdoor'
+        }
+      ]
+    };
+
+    const map = new maplibregl.Map({
+      container: 'zonal-map',
+      style: style,
+      center: [-2.5, 54.3],
+      zoom: 5.7,
+      minZoom: 5,
+      maxZoom: 18,
+      maxBounds: [
+        [-10.76418, 49.528423],
+        [1.91341, 61.331151]
+      ],
+      attributionControl: false
+    });
+
+    map.dragRotate.disable();
+    map.touchZoomRotate.disableRotation();
+    map.addControl(new maplibregl.NavigationControl({showCompass: false}));
+
+    const holdings = [
+      {name: 'Holding of interest', lon: -1.6, lat: 54.9, type: 'index'},
+      {name: 'Inside zone', lon: -1.3, lat: 54.7, type: 'inside'},
+      {name: 'Inside zone', lon: -1.8, lat: 54.6, type: 'inside'},
+      {name: 'Outside zone', lon: -3.0, lat: 55.5, type: 'outside'},
+      {name: 'Outside zone', lon: -2.7, lat: 53.4, type: 'outside'}
+    ];
+
+    function colourForZone(type) {
+      if (type === 'index') return '#1d70b8';
+      if (type === 'inside') return '#28a197';
+      if (type === 'outside') return '#f47738';
+      return '#b1b4b6';
+    }
+
+    holdings.forEach(function (h) {
+      new maplibregl.Marker({color: colourForZone(h.type)})
+        .setLngLat([h.lon, h.lat])
+        .setPopup(new maplibregl.Popup({offset: 8})
+          .setHTML('<strong>' + h.name + '</strong>'))
+        .addTo(map);
+    });
+  });
+</script>
+
+</body>
+</html>

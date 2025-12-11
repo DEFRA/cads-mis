@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html class="govuk-template" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CADS - MI – Movements dashboard</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+
+  <!-- GOV.UK Frontend CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/govuk-frontend@5.13.0/dist/govuk/govuk-frontend.min.css"
+        rel="stylesheet">
+
+  <link href="/assets/css/dashboard_3.css" rel="stylesheet">
+
+
+</head>
+
+<body class="govuk-template__body">
+<script>
+  document.body.className += ' js-enabled';
+</script>
+
+<header class="govuk-header" role="banner">
+  <div class="govuk-header__container govuk-width-container">
+    <div class="dashboard-header">
+      <div class="dashboard-service-name">
+        <a class="govuk-header__link govuk-header__link--homepage" href="index.njk">
+            <span class="govuk-header__logotype">
+              <span class="govuk-header__logotype-text">
+                CADS - MI
+              </span>
+            </span>
+        </a>
+      </div>
+      <div class="dashboard-page-title">
+        Movements
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="govuk-width-container">
+
+  <main class="govuk-main-wrapper govuk-!-padding-top-3 govuk-!-padding-bottom-3">
+
+    <!-- Filter bar -->
+    <section aria-label="Movement filters" class="dashboard-filter-bar">
+      <div class="dashboard-filter-links">
+        <a class="govuk-link" href="#">Edit filters</a>
+        <a class="govuk-link" href="#">Selected filters</a>
+      </div>
+      <div aria-hidden="true"></div>
+    </section>
+
+    <p class="govuk-heading-m govuk-!-text-align-centre govuk-!-margin-bottom-4">
+      No filters selected
+    </p>
+
+    <!-- Main content row -->
+    <section aria-label="Movement summary and details">
+      <div class="govuk-grid-row">
+
+        <!-- Left column: Movement summary in cards -->
+        <div class="govuk-grid-column-one-quarter">
+
+          <!-- Movement summary card -->
+          <div class="govuk-summary-card govuk-!-margin-bottom-3">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">Movement summary</h2>
+            </div>
+            <div class="govuk-summary-card__content">
+              <table class="govuk-table govuk-table--small-text-until-tablet govuk-!-margin-bottom-0">
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header" scope="row">No. of moves</th>
+                  <td class="govuk-table__cell">10,543,825</td>
+                </tr>
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header" scope="row">No. of animals</th>
+                  <td class="govuk-table__cell">198,165,280</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Within country movements card -->
+          <div class="govuk-summary-card govuk-!-margin-bottom-3">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">Within country movements</h2>
+            </div>
+            <div class="govuk-summary-card__content">
+              <table class="govuk-table govuk-table--small-text-until-tablet govuk-!-margin-bottom-0">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header" scope="col">Dept / dest country</th>
+                  <th class="govuk-table__header" scope="col">No. of moves</th>
+                  <th class="govuk-table__header" scope="col">Count</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">England to England</td>
+                  <td class="govuk-table__cell">7,255,000</td>
+                  <td class="govuk-table__cell">125,321,250</td>
+                </tr>
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">Scotland to Scotland</td>
+                  <td class="govuk-table__cell">1,520,000</td>
+                  <td class="govuk-table__cell">26,529,750</td>
+                </tr>
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">Wales to Wales</td>
+                  <td class="govuk-table__cell">1,032,346</td>
+                  <td class="govuk-table__cell">21,314,280</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Cross border movements card -->
+          <div class="govuk-summary-card govuk-!-margin-bottom-3">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">Cross border movements</h2>
+            </div>
+            <div class="govuk-summary-card__content">
+              <table class="govuk-table govuk-table--small-text-until-tablet govuk-!-margin-bottom-0">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header" scope="col">Dept / dest country</th>
+                  <th class="govuk-table__header" scope="col">No. of moves</th>
+                  <th class="govuk-table__header" scope="col">Count</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">England to Scotland</td>
+                  <td class="govuk-table__cell">215,000</td>
+                  <td class="govuk-table__cell">3,882,000</td>
+                </tr>
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">Scotland to England</td>
+                  <td class="govuk-table__cell">83,371</td>
+                  <td class="govuk-table__cell">2,471,845</td>
+                </tr>
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">Other cross border</td>
+                  <td class="govuk-table__cell">89,331</td>
+                  <td class="govuk-table__cell">2,431,866</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Dept/dest country unknown card -->
+          <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">Dept / dest country unknown</h2>
+            </div>
+            <div class="govuk-summary-card__content">
+              <table class="govuk-table govuk-table--small-text-until-tablet govuk-!-margin-bottom-0">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header" scope="col">Dept / dest country</th>
+                  <th class="govuk-table__header" scope="col">No. of moves</th>
+                  <th class="govuk-table__header" scope="col">Count</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">Unknown</td>
+                  <td class="govuk-table__cell">471,259</td>
+                  <td class="govuk-table__cell">5,007,204</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right column: Movement details table -->
+        <div class="govuk-grid-column-three-quarters">
+          <div class="govuk-summary-card movement-details-card">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">Movement details</h2>
+            </div>
+            <div class="govuk-summary-card__content movement-details-table">
+
+              <table class="govuk-table govuk-table--small-text-until-tablet">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header" scope="col">Species</th>
+                  <th class="govuk-table__header" scope="col">Reported</th>
+                  <th class="govuk-table__header" scope="col">Departure date</th>
+                  <th class="govuk-table__header" scope="col">Holding no. (dept)</th>
+                  <th class="govuk-table__header" scope="col">Holding type (dept)</th>
+                  <th class="govuk-table__header" scope="col">Local authority (dept)</th>
+                  <th class="govuk-table__header" scope="col">Country (dept)</th>
+                  <th class="govuk-table__header" scope="col">CPH holder (dept)</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+
+                <!-- Sample rows – replace with real data -->
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">Sheep</td>
+                  <td class="govuk-table__cell">28</td>
+                  <td class="govuk-table__cell">13/04/2021</td>
+                  <td class="govuk-table__cell">53/467/0020</td>
+                  <td class="govuk-table__cell">Agricultural holding</td>
+                  <td class="govuk-table__cell">Cambridgeshire County Council</td>
+                  <td class="govuk-table__cell">England</td>
+                  <td class="govuk-table__cell">512006260010</td>
+                </tr>
+
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">Sheep</td>
+                  <td class="govuk-table__cell">18</td>
+                  <td class="govuk-table__cell">23/03/2021</td>
+                  <td class="govuk-table__cell">47/220/0015</td>
+                  <td class="govuk-table__cell">Agricultural holding</td>
+                  <td class="govuk-table__cell">Leeds City Council</td>
+                  <td class="govuk-table__cell">England</td>
+                  <td class="govuk-table__cell">512006296700</td>
+                </tr>
+
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">Sheep</td>
+                  <td class="govuk-table__cell">36</td>
+                  <td class="govuk-table__cell">05/02/2021</td>
+                  <td class="govuk-table__cell">68/402/0076</td>
+                  <td class="govuk-table__cell">Store market</td>
+                  <td class="govuk-table__cell">Leicestershire County Council</td>
+                  <td class="govuk-table__cell">England</td>
+                  <td class="govuk-table__cell">512007091507</td>
+                </tr>
+
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">Sheep</td>
+                  <td class="govuk-table__cell">20</td>
+                  <td class="govuk-table__cell">08/01/2021</td>
+                  <td class="govuk-table__cell">51/399/0045</td>
+                  <td class="govuk-table__cell">Agricultural holding</td>
+                  <td class="govuk-table__cell">Lincolnshire County Council</td>
+                  <td class="govuk-table__cell">England</td>
+                  <td class="govuk-table__cell">512007057197</td>
+                </tr>
+
+                <!-- Add further rows as needed -->
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="govuk-footer" role="contentinfo">
+  <div class="govuk-width-container">
+    <div class="govuk-footer__meta">
+      <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+        <p class="govuk-footer__licence-description">
+          Central Animal Data Service – prototype dashboard
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

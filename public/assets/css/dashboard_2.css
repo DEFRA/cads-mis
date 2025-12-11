@@ -1,0 +1,99 @@
+body.govuk-template__body {
+  margin: 0;
+}
+
+.govuk-width-container {
+  max-width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.dashboard-service-name {
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 22px;
+}
+
+.dashboard-tabs {
+  display: flex;
+  gap: 15px;
+}
+
+.dashboard-tabs a {
+  padding: 6px 12px;
+  border: 1px solid #1d70b8;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  text-decoration: none;
+  font-weight: 600;
+  background: #1d70b8;
+  color: #ffffff;
+}
+
+.dashboard-tabs a.dashboard-tab-inactive {
+  background: #f3f2f1;
+  color: #1d70b8;
+}
+
+.dashboard-top-band {
+  background: #f3f2f1;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+}
+
+.dashboard-top-band .govuk-heading-s {
+  margin-bottom: 4px;
+}
+
+.dashboard-card-body {
+  padding-top: 10px;
+}
+
+.dashboard-map-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#animal-map {
+  width: 100%;
+  height: 420px;
+  border: 1px solid #b1b4b6;
+}
+
+.dashboard-map-legend {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.dashboard-legend-entry {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dashboard-legend-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  border: 1px solid #0b0c0c;
+  background: #1d70b8;
+}
+
+.chart-svg {
+  width: 100%;
+  height: 220px;
+}

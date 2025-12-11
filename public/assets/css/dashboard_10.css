@@ -1,0 +1,37 @@
+body.govuk-template__body {
+  margin: 0;
+}
+
+.govuk-width-container {
+  max-width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.dashboard-service-name {
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 22px;
+}
+
+.dashboard-page-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.dashboard-filter-row .govuk-form-group {
+  margin-bottom: 0;
+}
+
+.dashboard-card-body {
+  padding-top: 10px;
+}

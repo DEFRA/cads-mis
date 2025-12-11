@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html class="govuk-template" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CADS - MI – Cohort tracing</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+
+  <link href="https://cdn.jsdelivr.net/npm/govuk-frontend@5.13.0/dist/govuk/govuk-frontend.min.css"
+        rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@latest/os-api-branding.css"
+        rel="stylesheet"/>
+  <link href="https://unpkg.com/maplibre-gl@5.7.1/dist/maplibre-gl.css"
+        rel="stylesheet"/>
+
+  <link href="/assets/css/dashboard_7.css" rel="stylesheet">
+
+
+</head>
+
+<body class="govuk-template__body">
+<script>document.body.className += ' js-enabled';</script>
+
+<header class="govuk-header" role="banner">
+  <div class="govuk-header__container govuk-width-container">
+    <div class="dashboard-header">
+      <div class="dashboard-service-name">
+        <a class="govuk-header__link govuk-header__link--homepage" href="index.njk">
+            <span class="govuk-header__logotype">
+              <span class="govuk-header__logotype-text">
+                CADS - MI
+              </span>
+            </span>
+        </a>
+      </div>
+      <div class="dashboard-page-title">Cohort tracing</div>
+    </div>
+  </div>
+</header>
+
+<div class="govuk-width-container">
+  <main class="govuk-main-wrapper govuk-!-padding-top-3 govuk-!-padding-bottom-3">
+
+    <!-- FILTERS -->
+    <section aria-label="Filters" class="govuk-!-margin-bottom-3">
+      <!-- Row 1: reset + three fields -->
+      <div class="govuk-grid-row dashboard-filter-row">
+        <div class="govuk-grid-column-one-quarter">
+          <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2"
+                  type="button">
+            Reset filters
+          </button>
+        </div>
+
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="filter-animal-id">Cohort animal ID</label>
+            <input class="govuk-input" id="filter-animal-id" value="UK 0 26380 0959">
+          </div>
+        </div>
+
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="filter-cohort-from">Cohort trace window (from)</label>
+            <input class="govuk-input" id="filter-cohort-from" value="01/01/2023">
+          </div>
+        </div>
+
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="filter-cohort-to">Cohort trace window (to)</label>
+            <input class="govuk-input" id="filter-cohort-to" value="29/01/2023">
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: species + apply -->
+      <div class="govuk-grid-row dashboard-filter-row govuk-!-margin-top-2">
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="filter-cohort-species">Cohort species</label>
+            <select class="govuk-select" id="filter-cohort-species">
+              <option>All species</option>
+              <option>Sheep</option>
+              <option>Cattle</option>
+              <option>Goats</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="govuk-grid-column-one-quarter govuk-grid-column-one-quarter--from-desktop">
+          <button class="govuk-button govuk-!-margin-bottom-2 govuk-!-margin-top-4"
+                  type="button">
+            Apply all filters
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cohort holdings (full width) -->
+    <section aria-label="Cohort holdings" class="govuk-!-margin-bottom-3">
+      <div class="govuk-summary-card">
+        <div class="govuk-summary-card__title-wrapper">
+          <h2 class="govuk-summary-card__title">Cohort holdings</h2>
+        </div>
+        <div class="govuk-summary-card__content dashboard-card-body">
+          <table class="govuk-table govuk-table--small-text-until-tablet">
+            <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header" scope="col">CPH holding no.</th>
+              <th class="govuk-table__header" scope="col">CPH holder name</th>
+              <th class="govuk-table__header" scope="col">CPH holder address</th>
+              <th class="govuk-table__header" scope="col">Local authority</th>
+              <th class="govuk-table__header" scope="col">Country</th>
+            </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">01/27/0030</td>
+              <td class="govuk-table__cell">G HUNTER &amp; SON</td>
+              <td class="govuk-table__cell">Manor Farm, Ridgmont, Bedfordshire MK17 9BG</td>
+              <td class="govuk-table__cell">Central Bedfordshire Council</td>
+              <td class="govuk-table__cell">England</td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">01/27/0031</td>
+              <td class="govuk-table__cell">THAME FARMERS AUCTION MART LTD</td>
+              <td class="govuk-table__cell">The Cattle Market, Thame, Oxfordshire OX9 3FR</td>
+              <td class="govuk-table__cell">Oxfordshire County Council</td>
+              <td class="govuk-table__cell">England</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Summary + animals + last known holding -->
+    <section aria-label="Cohort detail">
+      <div class="govuk-grid-row">
+
+        <!-- Summary column -->
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">Summary</h2>
+            </div>
+            <div class="govuk-summary-card__content dashboard-card-body">
+
+              <ul class="govuk-list govuk-list--bullet">
+                <li>Dead: 3065</li>
+                <li>Live: 4839</li>
+                <li>Unknown: 254</li>
+                <li>Animal counts: 8158</li>
+              </ul>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Animals in cohort -->
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-summary-card govuk-!-margin-bottom-3">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">Animals in cohort</h2>
+            </div>
+            <div class="govuk-summary-card__content dashboard-card-body">
+              <table class="govuk-table govuk-table--small-text-until-tablet">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header" scope="col">Animal ID</th>
+                  <th class="govuk-table__header" scope="col">Cohort holding</th>
+                  <th class="govuk-table__header" scope="col">Animal status</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">UK 0 26380 0955</td>
+                  <td class="govuk-table__cell">01/27/0030</td>
+                  <td class="govuk-table__cell">Live</td>
+                </tr>
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">UK 0 26380 0956</td>
+                  <td class="govuk-table__cell">01/27/0030</td>
+                  <td class="govuk-table__cell">Live</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Last known holding -->
+        <div class="govuk-grid-column-one-half">
+          <div class="govuk-summary-card govuk-!-margin-bottom-3">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">Last known holding</h2>
+            </div>
+            <div class="govuk-summary-card__content dashboard-card-body">
+              <table class="govuk-table govuk-table--small-text-until-tablet">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header" scope="col">Animal ID</th>
+                  <th class="govuk-table__header" scope="col">Holding no.</th>
+                  <th class="govuk-table__header" scope="col">CPH holder name</th>
+                  <th class="govuk-table__header" scope="col">CPH holder address</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">UK 0 26380 0955</td>
+                  <td class="govuk-table__cell">01/27/0031</td>
+                  <td class="govuk-table__cell">THAME FARMERS AUCTION MART LTD</td>
+                  <td class="govuk-table__cell">The Cattle Market, Thame, Oxfordshire OX9 3FR</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="govuk-footer" role="contentinfo">
+  <div class="govuk-width-container">
+    <div class="govuk-footer__meta">
+      <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+        <p class="govuk-footer__licence-description">
+          Central Animal Data Service – prototype dashboard
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

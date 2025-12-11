@@ -1,0 +1,95 @@
+body.govuk-template__body {
+  margin: 0;
+}
+
+.govuk-width-container {
+  max-width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.dashboard-service-name {
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 22px;
+}
+
+.dashboard-page-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.dashboard-filter-row .govuk-form-group {
+  margin-bottom: 0;
+}
+
+.dashboard-card-body {
+  padding-top: 10px;
+}
+
+.dashboard-summary-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
+.dashboard-summary-metric {
+  min-width: 100px;
+}
+
+#journey-map {
+  width: 100%;
+  height: 380px;
+  border: 1px solid #b1b4b6;
+}
+
+.dashboard-map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 10px;
+}
+
+.dashboard-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dashboard-legend-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  border: 1px solid #0b0c0c;
+}
+
+.legend-loaded {
+  background: #1d70b8;
+}
+
+.legend-unloaded {
+  background: #f47738;
+}
+
+.legend-both {
+  background: #28a197;
+}
+
+.legend-unmapped {
+  background: #b1b4b6;
+}
+
+.animals-table-wrapper {
+  max-height: 380px;
+  overflow-y: auto;
+}

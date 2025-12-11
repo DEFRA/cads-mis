@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html class="govuk-template" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CADS - MI – Animal summary dashboard</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+
+  <!-- GOV.UK Frontend CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/govuk-frontend@5.13.0/dist/govuk/govuk-frontend.min.css"
+        rel="stylesheet">
+
+  <!-- OS branding + MapLibre GL -->
+  <link href="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@latest/os-api-branding.css"
+        rel="stylesheet"/>
+  <link href="https://unpkg.com/maplibre-gl@5.7.1/dist/maplibre-gl.css"
+        rel="stylesheet"/>
+  <link href="/assets/css/dashboard_2.css" rel="stylesheet">
+  <!-- D3.js -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <style>
+
+  </style>
+</head>
+
+<body class="govuk-template__body">
+<script>
+  document.body.className += ' js-enabled';
+</script>
+
+<header class="govuk-header" role="banner">
+  <div class="govuk-header__container govuk-width-container">
+    <div class="dashboard-header">
+      <div class="dashboard-service-name">
+        <a class="govuk-header__link govuk-header__link--homepage" href="index.njk">
+            <span class="govuk-header__logotype">
+              <span class="govuk-header__logotype-text">
+                CADS - MI
+              </span>
+            </span>
+        </a>
+      </div>
+      <nav aria-label="Dashboard navigation" class="dashboard-tabs">
+        <a aria-current="page" href="#">Animal Summary</a>
+        <a class="dashboard-tab-inactive" href="#">Movement History</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="govuk-width-container">
+
+  <main class="govuk-main-wrapper govuk-!-padding-top-3 govuk-!-padding-bottom-3">
+
+    <!-- Top band: animal ID / information -->
+    <section aria-label="Animal details" class="dashboard-top-band">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-quarter">
+          <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Animal ID</h2>
+          <p class="govuk-body">UK 123456 789012</p>
+        </div>
+        <div class="govuk-grid-column-one-quarter">
+          <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Animal information</h2>
+          <p class="govuk-body govuk-!-margin-bottom-0">
+            Dead<br>
+            Sheep
+          </p>
+        </div>
+        <div class="govuk-grid-column-one-quarter">
+          <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Tagged at</h2>
+          <p class="govuk-body govuk-!-margin-bottom-0">
+            GB 1810 0058<br>
+            C and D Auction Marts Ltd
+          </p>
+        </div>
+        <div class="govuk-grid-column-one-quarter">
+          <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Holding type</h2>
+          <p class="govuk-body govuk-!-margin-bottom-0">
+            Agricultural holding
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main row: left column (cards) / right column (map) -->
+    <section aria-label="Animal summary and movements">
+      <div class="govuk-grid-row">
+
+        <!-- LEFT COLUMN: last holding + movement summary -->
+        <div class="govuk-grid-column-one-third">
+
+          <!-- Last known holding -->
+          <div class="govuk-summary-card govuk-!-margin-bottom-3">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">Last known holding</h2>
+            </div>
+            <div class="govuk-summary-card__content dashboard-card-body">
+              <table class="govuk-table govuk-table--small-text-until-tablet">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header" scope="col">Movement date</th>
+                  <th class="govuk-table__header" scope="col">Holding no.</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">06/04/2018</td>
+                  <td class="govuk-table__cell">06/001/0085</td>
+                </tr>
+                </tbody>
+              </table>
+
+              <table class="govuk-table govuk-table--small-text-until-tablet">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header" scope="col">Holding type</th>
+                  <th class="govuk-table__header" scope="col">CPH holder name</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">Agricultural holding</td>
+                  <td class="govuk-table__cell">P K Turnbull</td>
+                </tr>
+                </tbody>
+              </table>
+
+              <table class="govuk-table govuk-table--small-text-until-tablet">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header" scope="col">CPH holder address</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">
+                    Hill View, Walton, Carlisle, Cumbria, CA5 7NH
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+
+              <table class="govuk-table govuk-table--small-text-until-tablet">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th class="govuk-table__header" scope="col">Local authority</th>
+                  <th class="govuk-table__header" scope="col">Telephone</th>
+                  <th class="govuk-table__header" scope="col">Residency (days)</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">Cumbria County Council</td>
+                  <td class="govuk-table__cell">01697 897257</td>
+                  <td class="govuk-table__cell">53</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Animal movement summary + bar chart -->
+          <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">Animal movement summary</h2>
+            </div>
+            <div class="govuk-summary-card__content dashboard-card-body">
+              <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">No. of moves</dt>
+                  <dd class="govuk-summary-list__value">12</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">No. of unique holdings</dt>
+                  <dd class="govuk-summary-list__value">5</dd>
+                </div>
+              </dl>
+
+              <h3 class="govuk-heading-s govuk-!-margin-top-3">No. of moves by year</h3>
+              <svg aria-label="Bar chart showing number of moves by year" class="chart-svg"
+                   id="chart-moves-year"></svg>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: animal movements map -->
+        <div class="govuk-grid-column-two-thirds">
+          <div class="govuk-summary-card dashboard-map-card">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">
+                Animal movements
+                <span class="govuk-body-s"> | Unmapped holdings: 9</span>
+              </h2>
+            </div>
+            <div class="govuk-summary-card__content dashboard-card-body">
+              <div id="animal-map"></div>
+
+              <div aria-label="Map legend" class="dashboard-map-legend">
+                <span class="dashboard-legend-entry">
+                  <span class="dashboard-legend-swatch"></span>
+                  <span class="govuk-body-s">Movement holding</span>
+                </span>
+              </div>
+
+              <p class="govuk-body-s">
+                Contains OS data © Crown copyright and database right
+                <span id="os-year"></span>.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="govuk-footer" role="contentinfo">
+  <div class="govuk-width-container">
+    <div class="govuk-footer__meta">
+      <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+        <p class="govuk-footer__licence-description">
+          Central Animal Data Service – prototype dashboard
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- OS branding + MapLibre JS -->
+<script src="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@latest/os-api-branding.js"></script>
+<script src="https://unpkg.com/maplibre-gl@5.7.1/dist/maplibre-gl.js"></script>
+
+<script src="/assets/js/dashboard_2.js"></script>
+
+
+</body>
+</html>
