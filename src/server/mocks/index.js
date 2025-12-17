@@ -1,6 +1,3 @@
-import path from 'path'
-import fs from 'fs/promises'
-
 /**
  * Sets up the routes used in the home page.
  * These routes are registered in src/server/router.js.
@@ -25,11 +22,16 @@ export const mocks = {
           path: '/mocks/{filename}',
           handler: async (request, h) => {
             const filename = request.params.filename
+            return h.view(`mocks/${filename}`, {
+              pageTitle: 'Mocks',
+              heading: 'Mocks'
+            })
+            /* const filename = request.params.filename
             const html = await fs.readFile(
               path.join(process.cwd(), 'src', 'server', 'mocks', filename),
               'utf8'
             )
-            return h.response(html).type('text/html')
+            return h.response(html).type('text/html')*/
           }
         }
       ])
