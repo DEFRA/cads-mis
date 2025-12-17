@@ -65,7 +65,7 @@ export async function createServer() {
     router // Register all the controllers/routes defined in src/server/router.js
   ])
 
-  // Serve everything in /public under /assets
+  /* // Serve everything in /public under /assets
   server.route({
     method: 'GET',
     path: '/assets/{param*}',
@@ -76,7 +76,7 @@ export async function createServer() {
         index: false
       }
     }
-  })
+  })*/
   server.ext('onPreResponse', catchAll)
 
   return server
