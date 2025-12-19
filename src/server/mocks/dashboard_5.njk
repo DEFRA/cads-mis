@@ -1,44 +1,28 @@
-<!DOCTYPE html>
-<html class="govuk-template" lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>CADS - MI – Journey by haulier</title>
-  <meta content="width=device-width, initial-scale=1" name="viewport">
+{% extends 'layouts/page.njk' %}
 
-  <!-- GOV.UK Frontend CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/govuk-frontend@5.13.0/dist/govuk/govuk-frontend.min.css"
-        rel="stylesheet">
+{% block content %}
+  {{ appHeading({
+    text: 'Journey',
+    caption: "Haulier"
+  }) }}
 
-  <!-- OS branding + MapLibre GL -->
-  <link href="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@latest/os-api-branding.css"
-        rel="stylesheet">
-  <link href="https://unpkg.com/maplibre-gl@5.7.1/dist/maplibre-gl.css"
-        rel="stylesheet">
 
-  <link href="/public/assets/css/dashboard_5.css" rel="stylesheet"/>
-</head>
+
 
 <body class="govuk-template__body">
 <script>document.body.className += ' js-enabled';</script>
+<!-- GOV.UK Frontend CSS -->
+<link href="https://cdn.jsdelivr.net/npm/govuk-frontend@5.13.0/dist/govuk/govuk-frontend.min.css"
+      rel="stylesheet">
 
-<header class="govuk-header" role="banner">
-  <div class="govuk-header__container govuk-width-container">
-    <div class="dashboard-header">
-      <div class="dashboard-service-name">
-        <a class="govuk-header__link govuk-header__link--homepage" href="index.njk">
-            <span class="govuk-header__logotype">
-              <span class="govuk-header__logotype-text">
-                CADS - MI
-              </span>
-            </span>
-        </a>
-      </div>
-      <div class="dashboard-page-title">
-        Journey by haulier
-      </div>
-    </div>
-  </div>
-</header>
+<!-- OS branding + MapLibre GL -->
+<link href="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@latest/os-api-branding.css"
+      rel="stylesheet">
+<link href="https://unpkg.com/maplibre-gl@5.7.1/dist/maplibre-gl.css"
+      rel="stylesheet">
+
+<link href="/public/assets/css/dashboard_5.css" rel="stylesheet"/>
+
 
 <div class="govuk-width-container">
 
@@ -320,4 +304,4 @@
 </script>
 
 </body>
-</html>
+{% endblock %}
