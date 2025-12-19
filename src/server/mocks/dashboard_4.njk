@@ -1,26 +1,27 @@
-<!DOCTYPE html>
-<html class="govuk-template" lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>CADS - MI – Movement summary</title>
-  <meta content="width=device-width, initial-scale=1" name="viewport">
+{% extends 'layouts/page.njk' %}
 
-  <link href="https://cdn.jsdelivr.net/npm/govuk-frontend@5.13.0/dist/govuk/govuk-frontend.min.css"
-        rel="stylesheet">
-
-  <link href="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@latest/os-api-branding.css"
-        rel="stylesheet"/>
-  <link href="https://unpkg.com/maplibre-gl@5.7.1/dist/maplibre-gl.css"
-        rel="stylesheet"/>
-
-  <link href="/public/assets/css/dashboard_4.css" rel="stylesheet"/>
+{% block content %}
+  {{ appHeading({
+    text: 'Movement Summary',
+    caption: "Movement Summary"
+  }) }}
 
 
-</head>
+
+
+
 
 <body class="govuk-template__body">
 <script>document.body.className += ' js-enabled';</script>
+<link href="https://cdn.jsdelivr.net/npm/govuk-frontend@5.13.0/dist/govuk/govuk-frontend.min.css"
+      rel="stylesheet">
 
+<link href="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@latest/os-api-branding.css"
+      rel="stylesheet"/>
+<link href="https://unpkg.com/maplibre-gl@5.7.1/dist/maplibre-gl.css"
+      rel="stylesheet"/>
+
+<link href="/public/assets/css/dashboard_4.css" rel="stylesheet"/>
 <header class="govuk-header" role="banner">
   <div class="govuk-header__container govuk-width-container">
     <div class="dashboard-header">
@@ -407,4 +408,4 @@
 </script>
 
 </body>
-</html>
+{% endblock %}
