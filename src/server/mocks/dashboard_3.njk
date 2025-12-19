@@ -1,42 +1,26 @@
-<!DOCTYPE html>
-<html class="govuk-template" lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>CADS - MI – Movements dashboard</title>
-  <meta content="width=device-width, initial-scale=1" name="viewport">
+{% extends 'layouts/page.njk' %}
+
+{% block content %}
+  {{ appHeading({
+    text: 'Movements',
+    caption: "All Holdings"
+  }) }}
 
   <!-- GOV.UK Frontend CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/govuk-frontend@5.13.0/dist/govuk/govuk-frontend.min.css"
-        rel="stylesheet">
-
-  <link href="/public/assets/css/dashboard_3.css" rel="stylesheet"/>
 
 
-</head>
+
 
 <body class="govuk-template__body">
 <script>
   document.body.className += ' js-enabled';
 </script>
+<link href="https://cdn.jsdelivr.net/npm/govuk-frontend@5.13.0/dist/govuk/govuk-frontend.min.css"
+      rel="stylesheet">
 
-<header class="govuk-header" role="banner">
-  <div class="govuk-header__container govuk-width-container">
-    <div class="dashboard-header">
-      <div class="dashboard-service-name">
-        <a class="govuk-header__link govuk-header__link--homepage" href="index.njk">
-            <span class="govuk-header__logotype">
-              <span class="govuk-header__logotype-text">
-                CADS - MI
-              </span>
-            </span>
-        </a>
-      </div>
-      <div class="dashboard-page-title">
-        Movements
-      </div>
-    </div>
-  </div>
-</header>
+<link href="/public/assets/css/dashboard_3.css" rel="stylesheet"/>
+
+
 
 <div class="govuk-width-container">
 
@@ -275,4 +259,4 @@
 </footer>
 
 </body>
-</html>
+{% endblock %}
