@@ -1,42 +1,27 @@
-<!DOCTYPE html>
-<html class="govuk-template" lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>CADS - MI – Cohort tracing</title>
-  <meta content="width=device-width, initial-scale=1" name="viewport">
+{% extends 'layouts/page.njk' %}
 
-  <link href="https://cdn.jsdelivr.net/npm/govuk-frontend@5.13.0/dist/govuk/govuk-frontend.min.css"
-        rel="stylesheet">
-
-  <link href="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@latest/os-api-branding.css"
-        rel="stylesheet"/>
-  <link href="https://unpkg.com/maplibre-gl@5.7.1/dist/maplibre-gl.css"
-        rel="stylesheet"/>
-
-  <link href="/public/assets/css/dashboard_7.css" rel="stylesheet"/>
+{% block content %}
+  {{ appHeading({
+    text: 'Cohort Tracing'
+  }) }}
 
 
-</head>
+
+
+
 
 <body class="govuk-template__body">
 <script>document.body.className += ' js-enabled';</script>
+<link href="https://cdn.jsdelivr.net/npm/govuk-frontend@5.13.0/dist/govuk/govuk-frontend.min.css"
+      rel="stylesheet">
 
-<header class="govuk-header" role="banner">
-  <div class="govuk-header__container govuk-width-container">
-    <div class="dashboard-header">
-      <div class="dashboard-service-name">
-        <a class="govuk-header__link govuk-header__link--homepage" href="index.njk">
-            <span class="govuk-header__logotype">
-              <span class="govuk-header__logotype-text">
-                CADS - MI
-              </span>
-            </span>
-        </a>
-      </div>
-      <div class="dashboard-page-title">Cohort tracing</div>
-    </div>
-  </div>
-</header>
+<link href="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@latest/os-api-branding.css"
+      rel="stylesheet"/>
+<link href="https://unpkg.com/maplibre-gl@5.7.1/dist/maplibre-gl.css"
+      rel="stylesheet"/>
+
+<link href="/public/assets/css/dashboard_7.css" rel="stylesheet"/>
+
 
 <div class="govuk-width-container">
   <main class="govuk-main-wrapper govuk-!-padding-top-3 govuk-!-padding-bottom-3">
@@ -225,17 +210,6 @@
   </main>
 </div>
 
-<footer class="govuk-footer" role="contentinfo">
-  <div class="govuk-width-container">
-    <div class="govuk-footer__meta">
-      <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
-        <p class="govuk-footer__licence-description">
-          Central Animal Data Service – prototype dashboard
-        </p>
-      </div>
-    </div>
-  </div>
-</footer>
 
 </body>
-</html>
+{% endblock %}
