@@ -47,7 +47,7 @@ const contentSecurityPolicy = {
     frameAncestors: ['none'],
     formAction: ['self'],
     manifestSrc: ['self'],
-    workerSrc: ['self', '6f4b3df2-fcb7-47e0-9b66-d2f1227db31b'],
+    workerSrc: ['self', 'blob:'],
     generateNonces: false
   }
 }
