@@ -31,6 +31,7 @@ const contentSecurityPolicy = {
       'https://unpkg.com',
       'https://fonts.googleapis.com'
     ],
+    workerSrc: ['self', 'blob:'],
     scriptSrc: [
       'self',
       /* 'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw=',
@@ -41,7 +42,7 @@ const contentSecurityPolicy = {
       'https://unpkg.com',
       'https://api.os.uk'
     ],
-    workerSrc: ['self', 'blob:'],
+
     imgSrc: ['self', 'data:'],
     frameSrc: ['self', 'data:'],
     objectSrc: ['none'],
