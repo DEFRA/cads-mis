@@ -41,13 +41,13 @@ const contentSecurityPolicy = {
       'https://unpkg.com',
       'https://api.os.uk'
     ],
+    workerSrc: ['self', 'blob:'],
     imgSrc: ['self', 'data:'],
     frameSrc: ['self', 'data:'],
     objectSrc: ['none'],
     frameAncestors: ['none'],
     formAction: ['self'],
     manifestSrc: ['self'],
-    workerSrc: ['self', 'blob:'],
     generateNonces: false
   }
 }
