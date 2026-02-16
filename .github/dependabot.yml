@@ -11,10 +11,7 @@ updates:
       build:
         patterns:
           - '@babel/*'
-          - 'autoprefixer'
-          - 'babel-plugin-module-resolver'
-          - 'babel-loader'
-          - 'babel-plugin-transform-import-meta'
+          - 'babel-*'
           - 'tsx'
           - 'webpack'
           - 'webpack-*'
@@ -26,6 +23,11 @@ updates:
           - 'stylelint'
           - 'stylelint-*'
 
+      typescript-eslint:
+        patterns:
+          - '@typescript-eslint/*'
+          - 'typescript-eslint'
+
       logging:
         patterns:
           - '*-pino'
@@ -36,8 +38,8 @@ updates:
       tools:
         patterns:
           - 'husky'
-          - 'vitest'
-          - 'vitest-*'
+          - 'eslint-*'
+          - 'eslint'
           - 'nodemon'
           - 'npm-run-all'
           - 'lodash'
@@ -45,18 +47,26 @@ updates:
           - 'sass-*'
           - 'postcss-*'
 
+      vitest:
+        patterns:
+          - 'vitest'
+          - 'vitest-*'
+          - '@vitest/*'
+
       types:
         patterns:
           - '@types/*'
 
-    ignore:
-      - dependency-name: 'eslint-*'
-      - dependency-name: 'eslint'
+    # Allow releases to settle into a stable state before updating
+    cooldown:
+      default-days: 5
+      semver-major-days: 20
+      semver-minor-days: 7
+      semver-patch-days: 3
 
-    # Schedule run every Monday, local time
     schedule:
-      interval: weekly
-      time: '10:30'
+      interval: "cron"
+      cronjob: "0 9 1 * *"
       timezone: 'Europe/London'
 
     versioning-strategy: increase
@@ -69,8 +79,7 @@ updates:
   - package-ecosystem: github-actions
     directory: /
 
-    # Schedule run every Monday, local time
     schedule:
-      interval: weekly
-      time: '10:30'
+      interval: "cron"
+      cronjob: "0 9 1 * *"
       timezone: 'Europe/London'
