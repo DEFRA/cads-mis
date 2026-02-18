@@ -47,7 +47,7 @@ jobs:
         run: npm run security-audit
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@v5.3.1 #  (or check latest version on https://github.com/marketplace/actions/official-sonarqube-scan)
+        uses: SonarSource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9 #  (or check latest version on https://github.com/marketplace/actions/official-sonarqube-scan)
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
