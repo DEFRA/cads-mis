@@ -22,8 +22,7 @@ jobs:
         with:
           fetch-depth: 0 # Depth 0 is required for branch-based versioning
 
-      - name: Test code and Create Test Coverage Reports
-        uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -32,16 +31,15 @@ jobs:
           npm run build:frontend
           npm run format:check
           npm run lint
-          npm test
+
+      - name: Security audit
+        run: npm run security-audit
 
       - name: Run Tests
         run: |
           mkdir -p coverage
           chmod -R a+rw ./coverage
           docker compose -f compose.yaml -f compose.test.yaml run --rm "cads-mis"
-
-      # - name: Security audit
-      #   run: npm run security-audit
 
       - name: Publish Hot Fix
         uses: DEFRA/cdp-build-action/build-hotfix@main
@@ -50,7 +48,7 @@ jobs:
           push-build-stages: true
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9 #  (or check latest version on https://github.com/marketplace/actions/official-sonarqube-scan)
+        uses: SonarSource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
