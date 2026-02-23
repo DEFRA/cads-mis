@@ -24,6 +24,7 @@
     "lint:js": "eslint .",
     "lint:js:fix": "eslint . --fix",
     "lint:scss": "stylelint \"src/**/*.scss\" --cache --cache-location .cache/stylelint --cache-strategy content --color --ignore-path .gitignore",
+    "security-audit": "npm audit --audit-level=high",
     "pretest": "npm run build:frontend",
     "test": "vitest run --coverage",
     "test:watch": "vitest watch",
