@@ -39,12 +39,7 @@ export default (_env, argv) => {
     output: createOutput(isProd, dirname),
     resolve: createResolve(govukFrontendPath),
     module: {
-      rules: createModuleRules(
-        isProd,
-        dirname,
-        govukFrontendPath,
-        ruleTypeAssetResource
-      )
+      rules: createModuleRules(isProd, dirname, ruleTypeAssetResource)
     },
     optimization: createOptimization(isProd),
     plugins: createPlugins(dirname, govukFrontendPath),
@@ -53,7 +48,7 @@ export default (_env, argv) => {
   }
 }
 
-function createOutput(isProd, dirname) {
+function createOutput(isProd, baseDir) {
   return {
     clean: true,
     filename: isProd
@@ -62,19 +57,14 @@ function createOutput(isProd, dirname) {
     chunkFilename: isProd
       ? 'javascripts/[name].[chunkhash:7].min.js'
       : 'javascripts/[name].js',
-    path: path.join(dirname, '.public'),
+    path: path.join(baseDir, '.public'),
     publicPath: '/public/',
     libraryTarget: 'module',
     module: true
   }
 }
 
-function createModuleRules(
-  isProd,
-  dirname,
-  govukFrontendPath,
-  ruleTypeAssetResource
-) {
+function createModuleRules(isProd, baseDir, assetResourceRuleType) {
   return [
     {
       test: /\.(js|mjs|scss)$/,
@@ -88,14 +78,14 @@ function createModuleRules(
       options: {
         browserslistEnv: 'javascripts',
         cacheDirectory: true,
-        extends: path.join(dirname, 'babel.config.cjs'),
+        extends: path.join(baseDir, 'babel.config.cjs'),
         presets: [['@babel/preset-env']]
       },
       sideEffects: false
     },
     {
       test: /\.scss$/,
-      type: ruleTypeAssetResource,
+      type: assetResourceRuleType,
       generator: {
         binary: false,
         filename: isProd
@@ -109,9 +99,9 @@ function createModuleRules(
           options: {
             sassOptions: {
               loadPaths: [
-                path.join(dirname, 'src/client/stylesheets'),
-                path.join(dirname, 'src/server/common/components'),
-                path.join(dirname, 'src/server/common/templates/partials')
+                path.join(baseDir, 'src/client/stylesheets'),
+                path.join(baseDir, 'src/server/common/components'),
+                path.join(baseDir, 'src/server/common/templates/partials')
               ],
               quietDeps: true,
               sourceMapIncludeSources: true,
@@ -124,12 +114,12 @@ function createModuleRules(
     },
     {
       test: /\.(png|svg|jpe?g|gif|ico)$/,
-      type: ruleTypeAssetResource,
+      type: assetResourceRuleType,
       generator: { filename: 'assets/images/[name][ext]' }
     },
     {
       test: /\.(woff|woff2|eot|ttf|otf)$/,
-      type: ruleTypeAssetResource,
+      type: assetResourceRuleType,
       generator: { filename: 'assets/fonts/[name][ext]' }
     }
   ]
@@ -154,27 +144,27 @@ function createOptimization(isProd) {
   }
 }
 
-function createPlugins(dirname, govukFrontendPath) {
+function createPlugins(baseDir, govukPath) {
   return [
     new WebpackAssetsManifest(),
     new CopyPlugin({
       patterns: [
         {
-          from: path.join(govukFrontendPath, 'dist/govuk/assets'),
+          from: path.join(govukPath, 'dist/govuk/assets'),
           to: 'assets',
           globOptions: {
             ignore: [
-              path.join(govukFrontendPath, 'dist/govuk/assets/rebrand'),
-              path.join(govukFrontendPath, 'dist/govuk/assets/images')
+              path.join(govukPath, 'dist/govuk/assets/rebrand'),
+              path.join(govukPath, 'dist/govuk/assets/images')
             ]
           }
         },
         {
-          from: path.join(govukFrontendPath, 'dist/govuk/assets/rebrand'),
+          from: path.join(govukPath, 'dist/govuk/assets/rebrand'),
           to: 'assets'
         },
         {
-          from: path.join(dirname, 'public/assets'),
+          from: path.join(baseDir, 'public/assets'),
           to: 'assets'
         }
       ]
@@ -190,10 +180,10 @@ function createStats() {
   }
 }
 
-function createResolve(govukFrontendPath) {
+function createResolve(govukPath) {
   return {
     alias: {
-      '/public/assets': path.join(govukFrontendPath, 'dist/govuk/assets')
+      '/public/assets': path.join(govukPath, 'dist/govuk/assets')
     }
   }
 }
