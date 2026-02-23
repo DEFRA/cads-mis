@@ -14,7 +14,7 @@ const govukFrontendPath = path.dirname(
 
 const ruleTypeAssetResource = 'asset/resource'
 
-export default (env, argv) => {
+export default (_env, argv) => {
   const isProd = argv.mode === 'production'
 
   return {
@@ -36,157 +36,164 @@ export default (env, argv) => {
       aggregateTimeout: 200,
       poll: 1000
     },
-    output: {
-      clean: true,
-      filename: isProd
-        ? 'javascripts/[name].[contenthash:7].min.js'
-        : 'javascripts/[name].js',
-
-      chunkFilename: isProd
-        ? 'javascripts/[name].[chunkhash:7].min.js'
-        : 'javascripts/[name].js',
-
-      path: path.join(dirname, '.public'),
-      publicPath: '/public/',
-      libraryTarget: 'module',
-      module: true
-    },
-    resolve: {
-      alias: {
-        '/public/assets': path.join(govukFrontendPath, 'dist/govuk/assets')
-      }
-    },
+    output: createOutput(isProd, dirname),
+    resolve: createResolve(govukFrontendPath),
     module: {
-      rules: [
-        {
-          test: /\.(js|mjs|scss)$/,
-          loader: 'source-map-loader',
-          enforce: 'pre'
-        },
-        {
-          test: /\.js$/,
-          loader: 'babel-loader',
-          exclude: /node_modules/,
-          options: {
-            browserslistEnv: 'javascripts',
-            cacheDirectory: true,
-            extends: path.join(dirname, 'babel.config.cjs'),
-            presets: [['@babel/preset-env']]
-          },
+      rules: createModuleRules(
+        isProd,
+        dirname,
+        govukFrontendPath,
+        ruleTypeAssetResource
+      )
+    },
+    optimization: createOptimization(isProd),
+    plugins: createPlugins(dirname, govukFrontendPath),
+    stats: createStats(),
+    target: 'browserslist:javascripts'
+  }
+}
 
-          // Flag loaded modules as side effect free
-          sideEffects: false
-        },
+function createOutput(isProd, dirname) {
+  return {
+    clean: true,
+    filename: isProd
+      ? 'javascripts/[name].[contenthash:7].min.js'
+      : 'javascripts/[name].js',
+    chunkFilename: isProd
+      ? 'javascripts/[name].[chunkhash:7].min.js'
+      : 'javascripts/[name].js',
+    path: path.join(dirname, '.public'),
+    publicPath: '/public/',
+    libraryTarget: 'module',
+    module: true
+  }
+}
+
+function createModuleRules(
+  isProd,
+  dirname,
+  govukFrontendPath,
+  ruleTypeAssetResource
+) {
+  return [
+    {
+      test: /\.(js|mjs|scss)$/,
+      loader: 'source-map-loader',
+      enforce: 'pre'
+    },
+    {
+      test: /\.js$/,
+      loader: 'babel-loader',
+      exclude: /node_modules/,
+      options: {
+        browserslistEnv: 'javascripts',
+        cacheDirectory: true,
+        extends: path.join(dirname, 'babel.config.cjs'),
+        presets: [['@babel/preset-env']]
+      },
+      sideEffects: false
+    },
+    {
+      test: /\.scss$/,
+      type: ruleTypeAssetResource,
+      generator: {
+        binary: false,
+        filename: isProd
+          ? 'stylesheets/[name].[contenthash:7].min.css'
+          : 'stylesheets/[name].css'
+      },
+      use: [
+        'postcss-loader',
         {
-          test: /\.scss$/,
-          type: ruleTypeAssetResource,
-          generator: {
-            binary: false,
-            filename: isProd
-              ? 'stylesheets/[name].[contenthash:7].min.css'
-              : 'stylesheets/[name].css'
-          },
-          use: [
-            'postcss-loader',
-            {
-              loader: 'sass-loader',
-              options: {
-                sassOptions: {
-                  loadPaths: [
-                    path.join(dirname, 'src/client/stylesheets'),
-                    path.join(dirname, 'src/server/common/components'),
-                    path.join(dirname, 'src/server/common/templates/partials')
-                  ],
-                  quietDeps: true,
-                  sourceMapIncludeSources: true,
-                  style: 'expanded'
-                },
-                warnRuleAsWarning: true
-              }
-            }
-          ]
-        },
-        {
-          test: /\.(png|svg|jpe?g|gif)$/,
-          type: ruleTypeAssetResource,
-          generator: {
-            filename: 'assets/images/[name][ext]'
-          }
-        },
-        {
-          test: /\.(ico)$/,
-          type: ruleTypeAssetResource,
-          generator: {
-            filename: 'assets/images/[name][ext]'
-          }
-        },
-        {
-          test: /\.(woff|woff2|eot|ttf|otf)$/,
-          type: ruleTypeAssetResource,
-          generator: {
-            filename: 'assets/fonts/[name][ext]'
+          loader: 'sass-loader',
+          options: {
+            sassOptions: {
+              loadPaths: [
+                path.join(dirname, 'src/client/stylesheets'),
+                path.join(dirname, 'src/server/common/components'),
+                path.join(dirname, 'src/server/common/templates/partials')
+              ],
+              quietDeps: true,
+              sourceMapIncludeSources: true,
+              style: 'expanded'
+            },
+            warnRuleAsWarning: true
           }
         }
       ]
     },
-    optimization: {
-      minimize: isProd,
-      minimizer: [
-        new TerserPlugin({
-          terserOptions: {
-            // Use webpack default compress options
-            // https://webpack.js.org/configuration/optimization/#optimizationminimizer
-            compress: { passes: 2 },
-
-            // Allow Terser to remove @preserve comments
-            format: { comments: false },
-
-            // Include sources content from dependency source maps
-            sourceMap: {
-              includeSources: true
-            },
-
-            // Compatibility workarounds
-            safari10: true
-          }
-        })
-      ],
-
-      // Skip bundling unused modules
-      providedExports: true,
-      sideEffects: true,
-      usedExports: true
+    {
+      test: /\.(png|svg|jpe?g|gif|ico)$/,
+      type: ruleTypeAssetResource,
+      generator: { filename: 'assets/images/[name][ext]' }
     },
-    plugins: [
-      new WebpackAssetsManifest(),
-      new CopyPlugin({
-        patterns: [
-          {
-            from: path.join(govukFrontendPath, 'dist/govuk/assets'),
-            to: 'assets',
-            globOptions: {
-              ignore: [
-                path.join(govukFrontendPath, 'dist/govuk/assets/rebrand'),
-                path.join(govukFrontendPath, 'dist/govuk/assets/images')
-              ]
-            }
-          },
-          {
-            from: path.join(govukFrontendPath, 'dist/govuk/assets/rebrand'),
-            to: 'assets'
-          },
-          {
-            from: path.join(dirname, 'public/assets'),
-            to: 'assets'
-          }
-        ]
+    {
+      test: /\.(woff|woff2|eot|ttf|otf)$/,
+      type: ruleTypeAssetResource,
+      generator: { filename: 'assets/fonts/[name][ext]' }
+    }
+  ]
+}
+
+function createOptimization(isProd) {
+  return {
+    minimize: isProd,
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          compress: { passes: 2 },
+          format: { comments: false },
+          sourceMap: { includeSources: true },
+          safari10: true
+        }
       })
     ],
-    stats: {
-      errorDetails: true,
-      loggingDebug: ['sass-loader'],
-      preset: 'minimal'
-    },
-    target: 'browserslist:javascripts'
+    providedExports: true,
+    sideEffects: true,
+    usedExports: true
+  }
+}
+
+function createPlugins(dirname, govukFrontendPath) {
+  return [
+    new WebpackAssetsManifest(),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.join(govukFrontendPath, 'dist/govuk/assets'),
+          to: 'assets',
+          globOptions: {
+            ignore: [
+              path.join(govukFrontendPath, 'dist/govuk/assets/rebrand'),
+              path.join(govukFrontendPath, 'dist/govuk/assets/images')
+            ]
+          }
+        },
+        {
+          from: path.join(govukFrontendPath, 'dist/govuk/assets/rebrand'),
+          to: 'assets'
+        },
+        {
+          from: path.join(dirname, 'public/assets'),
+          to: 'assets'
+        }
+      ]
+    })
+  ]
+}
+
+function createStats() {
+  return {
+    errorDetails: true,
+    loggingDebug: ['sass-loader'],
+    preset: 'minimal'
+  }
+}
+
+function createResolve(govukFrontendPath) {
+  return {
+    alias: {
+      '/public/assets': path.join(govukFrontendPath, 'dist/govuk/assets')
+    }
   }
 }
