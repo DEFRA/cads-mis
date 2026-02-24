@@ -1,0 +1,68 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "⬆️ Up Frontend",
+      "detail": "Start up the local docker dev environment",
+      "type": "shell",
+      "command": "docker compose up --build",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
+      "label": "⬇️ Down Frontend",
+      "detail": "Stop and drop the containers",
+      "type": "shell",
+      "command": "docker compose down; echo \"All done! 🎉\"",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
+      "label": "🔍 Lint Frontend",
+      "detail": "Run linting on the frontend",
+      "type": "shell",
+      "command": "npm run lint; echo \"All done! 🎉\"",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
+      "label": "🧹 Lint Fix",
+      "detail": "Automatically fix linting issues in the codebase",
+      "type": "shell",
+      "command": "npm run lint:fix; echo \"Code cleaned! ✨\"",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    }
+  ]
+}
