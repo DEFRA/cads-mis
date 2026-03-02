@@ -9,22 +9,48 @@ import { config } from '../../../../config/config.js'
 const mockLoggerInfo = vi.fn()
 const mockLoggerError = vi.fn()
 
-vi.mock('ioredis', () => ({
-  ...vi.importActual('ioredis'),
-  Cluster: vi.fn().mockReturnValue({ on: () => ({}) }),
-  Redis: vi.fn().mockReturnValue({ on: () => ({}) })
-}))
-vi.mock('@hapi/catbox-redis')
-vi.mock('@hapi/catbox-memory')
 vi.mock('../logging/logger.js', () => ({
   createLogger: () => ({
-    info: (...args) => mockLoggerInfo(...args),
-    error: (...args) => mockLoggerError(...args)
+    info: mockLoggerInfo,
+    error: mockLoggerError
   })
+}))
+
+vi.mock('ioredis', () => {
+  class MockRedis {
+    constructor() {
+      this.on = vi.fn()
+    }
+  }
+
+  class MockCluster {
+    constructor() {
+      this.on = vi.fn()
+    }
+  }
+
+  return {
+    default: MockRedis,
+    Redis: MockRedis,
+    Cluster: MockCluster
+  }
+})
+
+vi.mock('@hapi/catbox-redis', () => ({
+  Engine: vi.fn()
+}))
+
+vi.mock('@hapi/catbox-memory', () => ({
+  Engine: vi.fn()
 }))
 
 describe('#getCacheEngine', () => {
   describe('When Redis cache engine has been requested', () => {
+    afterEach(() => {
+      config.set('isProduction', false)
+      vi.clearAllMocks()
+    })
+
     beforeEach(() => {
       getCacheEngine('redis')
     })
@@ -39,6 +65,11 @@ describe('#getCacheEngine', () => {
   })
 
   describe('When In memory cache engine has been requested', () => {
+    afterEach(() => {
+      config.set('isProduction', false)
+      vi.clearAllMocks()
+    })
+
     beforeEach(() => {
       getCacheEngine()
     })
@@ -55,6 +86,11 @@ describe('#getCacheEngine', () => {
   })
 
   describe('When In memory cache engine has been requested in Production', () => {
+    afterEach(() => {
+      config.set('isProduction', false)
+      vi.clearAllMocks()
+    })
+
     beforeEach(() => {
       config.set('isProduction', true)
       getCacheEngine()
