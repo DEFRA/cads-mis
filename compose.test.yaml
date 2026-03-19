@@ -10,7 +10,14 @@ services:
         required: false
     environment:
       PORT: 3000
+      REDIS_HOST: cads-redis
     volumes:
       - ./src/:/home/node/src
       - ./test/:/home/node/test
       - ./package.json:/home/node/package.json
+    networks:
+      - cads-tools
+
+networks:
+  cads-tools:
+    external: true

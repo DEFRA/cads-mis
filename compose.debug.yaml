@@ -1,3 +1,11 @@
 services:
   cads-mis:
     command: npm run start:debug
+    environment:
+      REDIS_HOST: cads-redis
+    networks:
+      - cads-tools
+
+networks:
+  cads-tools:
+    external: true
