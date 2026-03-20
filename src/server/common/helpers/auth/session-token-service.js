@@ -62,7 +62,9 @@ export function getAccessToken(request) {
  */
 export function isTokenExpired(request, bufferMs = 60_000) {
   const tokens = getAuthTokens(request)
-  if (!tokens) return true
+  if (!tokens) {
+    return true
+  }
   return Date.now() >= tokens.expiresAt - bufferMs
 }
 
@@ -91,7 +93,9 @@ export function destroySession(request) {
  */
 export async function refreshAuthTokens(request) {
   const tokens = getAuthTokens(request)
-  if (!tokens?.refreshToken) return false
+  if (!tokens?.refreshToken) {
+    return false
+  }
 
   const tenantId = config.get('azureAd.tenantId')
 
@@ -110,7 +114,9 @@ export async function refreshAuthTokens(request) {
     }
   )
 
-  if (!response.ok) return false
+  if (!response.ok) {
+    return false
+  }
 
   const newTokens = await response.json()
   setAuthTokens(request, {
