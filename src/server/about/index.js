@@ -12,6 +12,9 @@ export const about = {
         {
           method: 'GET',
           path: '/about',
+          config: {
+            auth: false
+          },
           ...aboutController
         }
       ])
