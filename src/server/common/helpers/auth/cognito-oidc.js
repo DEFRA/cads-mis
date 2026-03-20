@@ -11,7 +11,7 @@ export const basicAuth = {
         'default',
         'basic',
         /** @type {{ validate: BasicOptions.Validate }} */ ({
-          validate(request, username, password) {
+          validate(_request, username, password) {
             const credentials = dummyUsers[username]
 
             // No matching user found
