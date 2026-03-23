@@ -32,7 +32,7 @@ jobs:
           npm run build:frontend
           npm run format:check
           npm run lint
-        
+
       - name: Security audit
         run: npm run security-audit
 
@@ -47,6 +47,12 @@ jobs:
           mkdir -p coverage
           chmod -R a+rw ./coverage
           docker compose -f compose.yaml -f compose.test.yaml run --rm "cads-mis"
+
+      - name: Fix LCOV paths
+        run: |
+          if [ -f coverage/lcov.info ]; then
+            sed -i 's|SF:/home/node/|SF:|g' coverage/lcov.info
+          fi
 
       - name: SonarCloud Scan
         if: github.actor != 'dependabot[bot]'
