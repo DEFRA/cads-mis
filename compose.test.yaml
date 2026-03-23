@@ -12,5 +12,5 @@ services:
       PORT: 3000
     volumes:
       - ./src/:/home/node/src
-      - ./test/:/home/node/test
+      - ./tests/:/home/node/tests
       - ./package.json:/home/node/package.json

@@ -32,7 +32,7 @@ jobs:
           npm run build:frontend
           npm run format:check
           npm run lint
-        
+
       - name: Security audit
         run: npm run security-audit
 
@@ -43,10 +43,7 @@ jobs:
           exit $?
 
       - name: Run Tests
-        run: |
-          mkdir -p coverage
-          chmod -R a+rw ./coverage
-          docker compose -f compose.yaml -f compose.test.yaml run --rm "cads-mis"
+        run: npm test
 
       - name: SonarCloud Scan
         if: github.actor != 'dependabot[bot]'
