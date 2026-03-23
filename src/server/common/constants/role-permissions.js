@@ -1,5 +1,5 @@
 import { roleTypes } from './roles.js'
-import { resourceScopes } from './resourceScopes.js'
+import { resourceScopes } from './resource-scopes.js'
 import { uiPermissions } from './permissions.js'
 
 const rolePermissions = {
