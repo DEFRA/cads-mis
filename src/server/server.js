@@ -54,12 +54,8 @@ export async function createServer() {
       strictHeader: false
     }
   })
-
-  await server.register(basicAuth)
-
-  await server.auth.default('default')
-
   await server.register([
+    basicAuth,
     requestLogger,
     requestTracing,
     secureContext,

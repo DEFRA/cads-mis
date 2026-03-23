@@ -29,6 +29,7 @@ export const basicAuth = {
           challenge: true
         })
       )
+      server.auth.default('default')
     }
   }
 }
