@@ -23,6 +23,12 @@ export function catchAll(request, h) {
   }
 
   const statusCode = response.output.statusCode
+
+  // Keep auth challenge headers intact so the browser can trigger a Basic auth prompt.
+  if (statusCode === statusCodes.unauthorized) {
+    return response
+  }
+
   const errorMessage = statusCodeMessage(statusCode)
 
   if (statusCode >= statusCodes.internalServerError) {
