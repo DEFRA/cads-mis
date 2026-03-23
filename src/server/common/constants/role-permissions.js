@@ -1,6 +1,6 @@
 import { roleTypes } from './roles.js'
 import { resourceScopes } from './resourceScopes.js'
-import { uiPermissions } from './uiPermissions.js'
+import { uiPermissions } from './permissions.js'
 
 const rolePermissions = {
   [roleTypes.mipViewer]: [
