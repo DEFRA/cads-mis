@@ -166,6 +166,10 @@ function createPlugins(baseDir, govukPath) {
         {
           from: path.join(baseDir, 'public/assets'),
           to: 'assets'
+        },
+        {
+          from: path.join(dirname, 'public/assets'),
+          to: 'assets'
         }
       ]
     })
