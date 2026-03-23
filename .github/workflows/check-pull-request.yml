@@ -45,11 +45,13 @@ jobs:
       - name: Run Tests
         run: |
           mkdir -p coverage
-          chmod -R a+rw ./coverage
-          docker compose -f compose.yaml -f compose.test.yaml run --rm "cads-mis"
+          docker compose -f compose.yaml -f compose.test.yaml run --name cads-mis-test-run "cads-mis"
 
-      - name: Fix LCOV paths
+      - name: Extract coverage report
+        if: always()
         run: |
+          docker cp cads-mis-test-run:/home/node/coverage/. ./coverage/ 2>/dev/null || true
+          docker rm cads-mis-test-run 2>/dev/null || true
           if [ -f coverage/lcov.info ]; then
             sed -i 's|SF:/home/node/|SF:|g' coverage/lcov.info
           fi
