@@ -186,6 +186,27 @@ A local environment with:
 docker compose up --build -d
 ```
 
+## Auth configuration: Resources, roles and permissions
+
+### OAuth resources
+
+**CADS CDS: Azure AD**
+
+- `reports.read`
+
+### Roles
+
+**CADS MIS: Roles**
+
+- `mip-viewer`
+
+### UI permissions
+
+**CADS MIS: Permissions**
+
+- `ui.report.view`
+- `ui.report.export`
+
 ### Dependabot
 
 We have added an example dependabot configuration file to the repository. You can enable it by renaming
