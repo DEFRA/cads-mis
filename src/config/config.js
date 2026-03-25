@@ -29,6 +29,12 @@ export const config = convict({
     default: '0.0.0.0',
     env: 'HOST'
   },
+  cadsBackendUrl: {
+    doc: 'CADS Backend API base URL',
+    format: String,
+    default: 'http://localhost:5555',
+    env: 'CADS_BACKEND_URL'
+  },
   port: {
     doc: 'The port to bind.',
     format: 'port',
