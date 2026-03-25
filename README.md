@@ -177,16 +177,14 @@ docker run -p 3000:3000 cads-mis
 
 ### Docker Compose
 
-A local environment with:
+Redis, the CADS CDS backend and the mock OIDC service is provided by the **cads-tools** shared infrastructure.
 
-- Localstack for AWS services (S3, SQS)
-- Redis
-- MongoDB
-- This service.
-- A commented out backend example.
+- You do not need to run this service within docker
 
-```bash
-docker compose up --build -d
+During local development, you should run this service using:
+
+```
+npm run dev
 ```
 
 ## Auth configuration: Resources, roles and permissions

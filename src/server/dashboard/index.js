@@ -12,6 +12,9 @@ export const dashboard = {
         {
           method: 'GET',
           path: '/dashboard',
+          config: {
+            auth: false
+          },
           ...dashboardController
         }
       ])
