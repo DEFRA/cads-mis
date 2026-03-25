@@ -1,0 +1,16 @@
+services:
+  cads-mis:
+    build:
+      target: development
+    image: cads-mis-development
+    container_name: cads-mis-test
+    command: npm run test
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      PORT: 3000
+    volumes:
+      - ./src/:/home/node/src
+      - ./test/:/home/node/test
+      - ./package.json:/home/node/package.json

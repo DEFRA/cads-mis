@@ -1,4 +1,4 @@
-ARG PARENT_VERSION=2.8.5-node22.16.0
+ARG PARENT_VERSION=latest-22
 ARG PORT=3000
 ARG PORT_DEBUG=9229
 
@@ -35,14 +35,16 @@ ENV TZ="Europe/London"
 # Add curl to template.
 # CDP PLATFORM HEALTHCHECK REQUIREMENT
 USER root
-RUN apk add --no-cache curl
+RUN apk update \
+    && apk add curl \
+    && apk cache clean
 USER node
 
 COPY --from=production_build /home/node/package*.json ./
 COPY --from=production_build /home/node/src ./src/
 COPY --from=production_build /home/node/.public/ ./.public/
 
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev && npm cache clean --force
 
 ARG PORT
 ENV PORT=${PORT}
