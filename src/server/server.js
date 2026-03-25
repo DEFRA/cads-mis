@@ -14,7 +14,6 @@ import { sessionCache } from './common/helpers/session-cache/session-cache.js'
 import { getCacheEngine } from './common/helpers/session-cache/cache-engine.js'
 import { secureContext } from '@defra/hapi-secure-context'
 import { contentSecurityPolicy } from './common/helpers/content-security-policy.js'
-import { basicAuth } from './common/helpers/auth/cognito-oidc.js'
 
 export async function createServer() {
   setupProxy()
@@ -55,7 +54,6 @@ export async function createServer() {
     }
   })
   await server.register([
-    basicAuth,
     requestLogger,
     requestTracing,
     secureContext,

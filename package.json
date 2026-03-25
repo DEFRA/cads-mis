@@ -11,9 +11,6 @@
     "build:frontend": "webpack --mode production",
     "dev": "concurrently \"npm:frontend:watch\" \"npm:server:watch\"",
     "dev:debug": "concurrently \"npm:frontend:watch\" \"npm:server:debug\"",
-    "docker:debug": "docker compose -f compose.yaml -f compose.debug.yaml -p \"cads-mis\" build --no-cache && docker compose -f compose.yaml -f compose.debug.yaml -p \"cads-mis\" up",
-    "docker:dev": "npm run dev",
-    "docker:up": "docker compose up",
     "format": "prettier --write \"src/**/*.js\" \"**/*.{js,cjs,md,json,config.js,test.js}\"",
     "format:check": "prettier --check \"src/**/*.js\" \"**/*.{js,cjs,md,json,config.js,test.js}\"",
     "frontend:watch": "webpack --watch --mode development",
@@ -27,12 +24,9 @@
     "server:debug": "nodemon --inspect-brk=0.0.0.0 --ext js,json --legacy-watch ./src",
     "server:watch": "nodemon --inspect=0.0.0.0 --ext js,json --legacy-watch ./src",
     "setup:husky": "node -e \"try { (await import('husky')).default() } catch (e) { if (e.code !== 'ERR_MODULE_NOT_FOUND') throw e }\" --input-type module",
-    "prestart": "npm run build:frontend",
     "start": "node --use-strict .",
     "start:debug": "nodemon --watch src --exec \"node --experimental-vm-modules --inspect=0.0.0.0 src/index.js\"",
-    "pretest": "npm run build:frontend",
     "test": "vitest run --coverage",
-    "test:lint": "standard",
     "test:watch": "vitest watch"
   },
   "dependencies": {
