@@ -35,10 +35,7 @@ jobs:
         run: npm run security-audit
 
       - name: Run Tests
-        run: |
-          mkdir -p coverage
-          chmod -R a+rw ./coverage
-          docker compose -f compose.yaml -f compose.test.yaml run --rm "cads-mis"
+        run: npm test
 
       - name: Build and Publish
         uses: DEFRA/cdp-build-action/build@main

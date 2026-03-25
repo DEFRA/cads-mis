@@ -4,7 +4,9 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=DEFRA_cads-mis&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=DEFRA_cads-mis)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=DEFRA_cads-mis&metric=coverage)](https://sonarcloud.io/summary/new_code?id=DEFRA_cads-mis)
 
-Core delivery platform Node.js Frontend Template.
+CADS MIS — Node.js frontend service for the CADS platform.
+
+This service now runs as part of the unified CADS local platform, alongside the backend and shared infrastructure provided by the **cads-tools** repository.
 
 - [Requirements](#requirements)
   - [Node.js](#nodejs)
@@ -43,42 +45,43 @@ nvm use
 
 ## Server-side Caching
 
-We use Catbox for server-side caching. By default the service will use CatboxRedis when deployed and CatboxMemory for
-local development.
-You can override the default behaviour by setting the `SESSION_CACHE_ENGINE` environment variable to either `redis` or
-`memory`.
+The service uses Catbox for server-side caching.
 
-Please note: CatboxMemory (`memory`) is _not_ suitable for production use! The cache will not be shared between each
-instance of the service and it will not persist between restarts.
+- In production → CatboxRedis
+- In local development → CatboxMemory (default)
+
+You can override this using:
+
+```
+SESSION_CACHE_ENGINE=redis
+SESSION_CACHE_ENGINE=memory
+```
+
+Note: memory is not suitable for production.
 
 ## Redis
 
-Redis is an in-memory key-value store. Every instance of a service has access to the same Redis key-value store similar
-to how services might have a database (or MongoDB). All frontend services are given access to a namespaced prefixed that
-matches the service name. e.g. `my-service` will have access to everything in Redis that is prefixed with `my-service`.
+Redis is provided by the **cads-tools** shared infrastructure.
 
-If your service does not require a session cache to be shared between instances or if you don't require Redis, you can
-disable setting `SESSION_CACHE_ENGINE=false` or changing the default value in `src/config/index.js`.
+During local development:
+
+- Redis runs in Docker (via cads-tools)
+- It is exposed on localhost:6379
+- The UI connects to it automatically when SESSION_CACHE_ENGINE=redis
+
+You do **not** need to run Redis inside this repo.
 
 ## Proxy
 
-We are using forward-proxy which is set up by default. To make use of this: `import { fetch } from 'undici'` then
-because of the `setGlobalDispatcher(new ProxyAgent(proxyUrl))` calls will use the ProxyAgent Dispatcher
+The service uses a forward proxy by default.
+HTTP clients using `undici` automatically pick up the proxy dispatcher.
+If you use a custom HTTP client, you may need to pass the dispatcher manually:
 
-If you are not using Wreck, Axios or Undici or a similar http that uses `Request`. Then you may have to provide the
-proxy dispatcher:
-
-To add the dispatcher to your own client:
-
-```javascript
+```
 import { ProxyAgent } from 'undici'
 
-return await fetch(url, {
-  dispatcher: new ProxyAgent({
-    uri: proxyUrl,
-    keepAliveTimeout: 10,
-    keepAliveMaxTimeout: 10
-  })
+await fetch(url, {
+  dispatcher: new ProxyAgent(proxyUrl)
 })
 ```
 
