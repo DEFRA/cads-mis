@@ -1,5 +1,6 @@
-// import { fetchReportsList } from './fetchReportsList.js'
+import { fetchReportsList } from './fetchReportsList.js'
 
+/*
 function reportItem(id, key, title, description) {
   return {
     reportId: id,
@@ -74,12 +75,13 @@ function getMockReportData() {
     )
   ]
 }
+ */
 
 export const dashboardController = {
   async handler(_request, h) {
     //TODO
-    // var reports = await fetchReportsList('') //session.idToken)
-    const reports = getMockReportData()
+    const reports = await fetchReportsList('') //session.idToken)
+    //const reports = getMockReportData()
 
     return h.view('dashboard/index', {
       pageTitle: 'Dashboard',
