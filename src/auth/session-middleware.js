@@ -65,7 +65,8 @@ export function registerSessionMiddleware(server) {
         const refreshedToken = await oidcClient.refresh(tokenSet.refresh_token)
 
         // Preserve refresh token if provider does not rotate
-        refreshedToken.refresh_token = refreshedToken.refresh_token ?? tokenSet.refresh_token
+        refreshedToken.refresh_token =
+          refreshedToken.refresh_token ?? tokenSet.refresh_token
 
         tokenSet = refreshedToken
         user = refreshedToken.claims()
