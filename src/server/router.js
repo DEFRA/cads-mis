@@ -4,7 +4,7 @@ import { home } from './home/index.js'
 import { about } from './about/index.js'
 import { health } from './health/index.js'
 
-import { serveStaticFiles } from './common/helpers/serve-static-files.js'
+import { getStaticFilesToServe } from './common/helpers/serve-static-files.js'
 import { mocks } from './mocks/index.js'
 import { dashboard } from './dashboard/index.js'
 import { holdingSummary } from './holding-summary/index.js'
@@ -22,7 +22,7 @@ export const router = {
       await server.register([home, about, mocks, dashboard, holdingSummary])
 
       // Static assets
-      await server.register([serveStaticFiles])
+      await server.register([getStaticFilesToServe()])
     }
   }
 }

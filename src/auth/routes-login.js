@@ -1,0 +1,126 @@
+import { getAuthConfig } from './config/auth-config.js'
+import { generators } from 'openid-client'
+import { getOidcClient } from './oidc-client.js'
+import { dropSession, getSession, setSession } from './session-store.js'
+import { roleTypes } from './constants/roles.js'
+import { rolePermissions } from './constants/role-permissions.js'
+import crypto from 'crypto'
+
+/**
+ * @satisfies {import('@hapi/hapi').ServerRoute[]}
+ */
+export const loginRoutes = [
+  {
+    method: ['GET'],
+    path: '/auth/login',
+    options: {
+      auth: {
+        mode: 'try',
+        strategy: 'session'
+      }
+    },
+    handler: async (request, h) => {
+      const authConfig = getAuthConfig()
+      const oidcClient = await getOidcClient()
+
+      // Generate state + nonce for security
+      const state = generators.state()
+      const nonce = generators.nonce()
+
+      // Store handshake data in Redis
+      const tempSessionId = `oidc:${state}`
+
+      await setSession(tempSessionId, {
+        oidcState: state,
+        oidcNonce: nonce,
+        redirectTo: request.app.redirectTo || authConfig.defaultRedirect
+      })
+
+      // Set cookie containing only the temp sessionId
+      request.cookieAuth.set({ sessionId: tempSessionId })
+
+      // Build the authorisation URL
+      const url = oidcClient.authorizationUrl({
+        scope: authConfig.scope,
+        state,
+        nonce
+      })
+
+      return h.redirect(url)
+    }
+  },
+  {
+    method: ['GET'],
+    path: '/auth/callback',
+    options: {
+      auth: {
+        mode: 'try',
+        strategy: 'session'
+      }
+    },
+    handler: async (request, h) => {
+      const authConfig = getAuthConfig()
+      const oidcClient = await getOidcClient()
+
+      // Extract params from the callback URL
+      const callbackParams = oidcClient.callbackParams(request.raw.req)
+      const cookie = request.auth.credentials
+      if (!cookie?.sessionId) {
+        throw new Error('Missing session cookie')
+      }
+
+      const handshake = await getSession(cookie.sessionId)
+      if (!handshake?.oidcState || !handshake?.oidcNonce) {
+        throw new Error('Missing OIDC state/nonce')
+      }
+
+      const { oidcState, oidcNonce, redirectTo } = handshake
+
+      // Exchange the code for tokens
+      const tokenSet = await oidcClient.callback(
+        authConfig.redirectUri,
+        callbackParams,
+        {
+          state: oidcState,
+          nonce: oidcNonce
+        }
+      )
+
+      // Extract user claims from ID token
+      const claims = tokenSet.claims()
+
+      // Use the subject (sub) as the session ID
+      const sessionId = crypto.randomUUID()
+
+      // TODO: We can fetch roles and permissions from the CDS API and add to the session e.g.
+      // const roles = await apiClient.get(`/users/${claims.sub}/roles`)
+      const roles = [roleTypes.mipViewer]
+
+      // TODO: Hard-coded role & permissions to come from CDS API
+      // const permissions = await apiClient.get(`/users/${claims.sub}/permissions`)
+      const permissions = roles.flatMap((r) => rolePermissions[r] || [])
+
+      // Store session in Redis
+      await setSession(sessionId, {
+        sessionId,
+        userSub: claims.sub,
+        tokenSet,
+        user: {
+          ...claims,
+          roles,
+          permissions
+        }
+      })
+
+      // Set the session cookie
+      request.cookieAuth.set({ sessionId })
+
+      // Delete the temporary handshake session
+      await dropSession(cookie.sessionId)
+
+      // Redirect user back to the app
+      const redirectUrl = redirectTo || authConfig.defaultRedirect
+      return h.redirect(redirectUrl)
+    }
+  }
+]

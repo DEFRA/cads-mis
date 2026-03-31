@@ -4,13 +4,14 @@ import {
   StorageResolution
 } from 'aws-embedded-metrics'
 
-import { config } from '../../../config/config.js'
+import { getConfig } from '../../../config/config.js'
 import { createLogger } from './logging/logger.js'
 
 /**
  * Aws embedded metrics wrapper
  */
 export async function metricsCounter(metricName, value = 1) {
+  const config = getConfig()
   const isMetricsEnabled = config.get('isMetricsEnabled')
 
   if (!isMetricsEnabled) {
