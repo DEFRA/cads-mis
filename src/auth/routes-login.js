@@ -21,7 +21,7 @@ export const loginRoutes = [
     },
     handler: async (request, h) => {
       const authConfig = getAuthConfig()
-      const oidcClient = await getOidcClient()
+      // const oidcClient = await getOidcClient()
 
       // Generate state + nonce for security
       const state = generators.state()
@@ -40,13 +40,23 @@ export const loginRoutes = [
       request.cookieAuth.set({ sessionId: tempSessionId })
 
       // Build the authorisation URL
-      const url = oidcClient.authorizationUrl({
+      /*const url = oidcClient.authorizationUrl({
         scope: authConfig.scope,
         state,
         nonce
       })
+      return h.redirect(url)*/
 
-      return h.redirect(url)
+      const url = new URL(authConfig.externalAuthorizeEndpoint)
+
+      url.searchParams.set('client_id', authConfig.clientId)
+      url.searchParams.set('response_type', 'code')
+      url.searchParams.set('redirect_uri', authConfig.redirectUri)
+      url.searchParams.set('scope', authConfig.scope)
+      url.searchParams.set('state', state)
+      url.searchParams.set('nonce', nonce)
+
+      return h.redirect(url.toString())
     }
   },
   {

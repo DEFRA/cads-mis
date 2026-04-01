@@ -11,6 +11,8 @@
     "build:frontend": "webpack --mode production",
     "dev": "concurrently \"npm:frontend:watch\" \"npm:server:watch\"",
     "dev:debug": "concurrently \"npm:frontend:watch\" \"npm:server:debug\"",
+    "docker:dev": "npm run dev",
+    "docker:up": "docker compose up",
     "format": "prettier --write \"src/**/*.js\" \"**/*.{js,cjs,md,json,config.js,test.js}\"",
     "format:check": "prettier --check \"src/**/*.js\" \"**/*.{js,cjs,md,json,config.js,test.js}\"",
     "frontend:watch": "webpack --watch --mode development",

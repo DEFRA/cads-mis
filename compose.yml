@@ -10,7 +10,9 @@ services:
       - '3000:3000'
     depends_on: []
     env_file:
-      - 'compose/aws.env'
+      - .env
+      - .env.docker
+      - compose/aws.env
     environment:
       PORT: 3000
       NODE_ENV: development

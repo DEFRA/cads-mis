@@ -13,18 +13,19 @@ export function getAuthConfig() {
   const cadsCdsScopes = buildCadsCdsScopes(cadsCdsClientId, useSimpleScopes)
 
   return {
-    oidcWellKnownUrl: config.get('oidc.wellKnownUrl'),
     clientId: config.get('oidc.clientId'),
     clientSecret: config.get('oidc.clientSecret'),
     redirectUri: config.get('oidc.redirectUri'),
     postLogoutRedirectUri: config.get('oidc.postLogoutRedirectUri'),
+    defaultRedirect: config.get('oidc.postLoginDefaultRedirectUri'),
+    oidcWellKnownUrl: config.get('oidc.wellKnownUrl'),
+    externalAuthorizeEndpoint: config.get('oidc.externalAuthorizeEndpoint'),
     scope: [
       'openid',
       'profile',
       'email',
       'offline_access',
       ...cadsCdsScopes
-    ].join(' '),
-    defaultRedirect: config.get('oidc.postLoginDefaultRedirectUri')
+    ].join(' ')
   }
 }

@@ -230,12 +230,6 @@ function buildSchema() {
       }
     },
     oidc: {
-      wellKnownUrl: {
-        doc: 'OIDC well-known configuration URL',
-        format: String,
-        default: '',
-        env: 'OIDC_WELL_KNOWN_URL'
-      },
       clientId: {
         doc: 'OIDC client ID',
         format: String,
@@ -255,17 +249,29 @@ function buildSchema() {
         default: '',
         env: 'OIDC_REDIRECT_URI'
       },
+      postLogoutRedirectUri: {
+        doc: 'OIDC post logout redirect URI',
+        format: String,
+        default: '',
+        env: 'OIDC_POST_LOGOUT_REDIRECT_URI'
+      },
       postLoginDefaultRedirectUri: {
         doc: 'OIDC post login default redirect URI',
         format: String,
         default: '',
         env: 'OIDC_POST_LOGIN_REDIRECT_URI'
       },
-      postLogoutRedirectUri: {
-        doc: 'OIDC post logout redirect URI',
+      wellKnownUrl: {
+        doc: 'OIDC well-known configuration URL',
         format: String,
         default: '',
-        env: 'OIDC_POST_LOGOUT_REDIRECT_URI'
+        env: 'OIDC_WELL_KNOWN_URL'
+      },
+      externalAuthorizeEndpoint: {
+        doc: 'OIDC external endpoint for connect/authorize',
+        format: String,
+        default: '',
+        env: 'OIDC_AUTHORIZATION_ENDPOINT'
       }
     },
     azure: {
