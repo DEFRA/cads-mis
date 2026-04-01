@@ -1,9 +1,9 @@
-/**
- * A GDS styled example about page controller.
- * Provided as an example, remove or modify as required.
- */
+import { fetchReportsList } from './fetchReportsList.js'
+
 export const dashboardController = {
-  handler(_request, h) {
+  async handler(_request, h) {
+    const reports = await fetchReportsList('') //session.idToken)
+
     return h.view('dashboard/index', {
       pageTitle: 'Dashboard',
       heading: 'Dashboard',
@@ -15,7 +15,10 @@ export const dashboardController = {
         {
           text: 'Dashboard'
         }
-      ]
+      ],
+      viewModel: {
+        reports
+      }
     })
   }
 }
