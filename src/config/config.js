@@ -287,6 +287,12 @@ function buildSchema() {
         default: false,
         env: 'USE_SIMPLE_SCOPES'
       }
+    },
+    cadsBackendUrl: {
+      doc: 'CADS Backend API base URL',
+      format: String,
+      default: 'http://localhost:5555',
+      env: 'CADS_BACKEND_URL'
     }
   }
 }

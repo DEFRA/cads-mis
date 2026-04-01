@@ -9,3 +9,8 @@ export function getRequestTracing() {
     options: { tracingHeader: config.get('tracing.header') }
   }
 }
+
+export function getTracingHeaderName() {
+  const config = getConfig()
+  return config.get('tracing.header')
+}
