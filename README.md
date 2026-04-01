@@ -95,6 +95,42 @@ Install application dependencies:
 npm install
 ```
 
+### Environment variables
+
+During local development, you will need to create an `.env` file in the root of your project. Variables found in this file will be loaded in first for local development. You can see the template required with the `.env.example` file which is included in source control.
+
+```
+# Environment configuration
+NODE_ENV=development
+APP_BASE_URL=http://localhost:3000
+
+# OIDC authentication
+OIDC_WELL_KNOWN_URL=http://localhost:5557/.well-known/openid-configuration
+OIDC_CLIENT_ID=local-cads-mis
+OIDC_CLIENT_SECRET=local-mock-secret
+OIDC_REDIRECT_URI=http://localhost:3000/auth/callback
+OIDC_POST_LOGOUT_REDIRECT_URI=http://localhost:3000/auth/signed-out
+OIDC_POST_LOGIN_REDIRECT_URI=/dashboard
+
+## Resource: CADS CDS
+AZURE_CLIENT_CADS_CDS_ID=local-cads-cds
+USE_SIMPLE_SCOPES=true
+
+# Session configuration
+SESSION_CACHE_ENGINE=redis
+SESSION_COOKIE_PASSWORD=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+# Redis configuration
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_USERNAME=default
+REDIS_PASSWORD=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+REDIS_KEY_PREFIX=local-cads-mis
+USE_SINGLE_INSTANCE_CACHE=true
+```
+
+**Note.** The Redis password must be complex and a minimum of 32 chars.
+
 ### Development
 
 To run the application in `development` mode run:
