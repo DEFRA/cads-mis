@@ -279,6 +279,12 @@ function buildSchema() {
         default: '',
         env: 'OIDC_AUTHORIZATION_ENDPOINT'
       },
+      externalEndSessionEndpoint: {
+        doc: 'OIDC external endpoint for connect/endsession',
+        format: String,
+        default: '',
+        env: 'OIDC_END_SESSION_ENDPOINT'
+      },
       enableDebugEndpoints: {
         doc: 'Register debug endpoints for auth.',
         format: Boolean,

@@ -13,7 +13,7 @@ export const debugAuthRoutes = [
         strategy: 'session'
       }
     },
-    handler: (request, h) => {
+    handler: (_request, h) => {
       return h.redirect('/auth/login')
     }
   },

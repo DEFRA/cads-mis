@@ -4,7 +4,7 @@ import { getOidcClient } from './oidc-client.js'
 import { dropSession, getSession, setSession } from './session-store.js'
 import { roleTypes } from './constants/roles.js'
 import { rolePermissions } from './constants/role-permissions.js'
-import crypto from 'crypto'
+import crypto from 'node:crypto'
 
 /**
  * @satisfies {import('@hapi/hapi').ServerRoute[]}
@@ -21,7 +21,6 @@ export const loginRoutes = [
     },
     handler: async (request, h) => {
       const authConfig = getAuthConfig()
-      // const oidcClient = await getOidcClient()
 
       if (request.cookieAuth?.clear) {
         request.cookieAuth.clear()
@@ -44,14 +43,6 @@ export const loginRoutes = [
 
       // Set cookie containing only the temp sessionId
       request.cookieAuth.set({ sessionId: tempSessionId })
-
-      // Build the authorisation URL
-      /*const url = oidcClient.authorizationUrl({
-        scope: authConfig.scope,
-        state,
-        nonce
-      })
-      return h.redirect(url)*/
 
       const url = new URL(authConfig.externalAuthorizeEndpoint)
 

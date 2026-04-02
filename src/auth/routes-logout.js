@@ -1,6 +1,6 @@
 import { getAuthConfig } from './config/auth-config.js'
-import { getOidcClient } from './oidc-client.js'
 import { dropSession } from './session-store.js'
+import crypto from 'node:crypto'
 
 /**
  * @satisfies {import('@hapi/hapi').ServerRoute[]}
@@ -29,14 +29,20 @@ export const logoutRoutes = [
       }
 
       const authConfig = getAuthConfig()
-      const oidcClient = await getOidcClient()
+      const idToken = request.auth.credentials?.tokenSet?.id_token
+      const url = new URL(authConfig.externalEndSessionEndpoint)
 
-      // Build provider logout URL
-      const endSessionUrl = oidcClient.endSessionUrl({
-        post_logout_redirect_uri: authConfig.postLogoutRedirectUri
-      })
+      if (idToken) {
+        url.searchParams.set('id_token_hint', idToken)
+      }
 
-      return h.redirect(endSessionUrl)
+      url.searchParams.set(
+        'post_logout_redirect_uri',
+        authConfig.postLogoutRedirectUri
+      )
+      url.searchParams.set('state', crypto.randomUUID())
+
+      return h.redirect(url.toString())
     }
   },
   {
@@ -45,7 +51,7 @@ export const logoutRoutes = [
     options: {
       auth: false
     },
-    handler: async (request, h) => {
+    handler: async (_request, h) => {
       return h.redirect('/')
     }
   }

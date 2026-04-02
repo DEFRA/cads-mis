@@ -37,7 +37,6 @@ export function registerSessionMiddleware(server) {
 
     // Ensure cookieAuth exists
     if (!request.cookieAuth) {
-      console.log('session-middleware: no cookieAuth, skipping')
       return h.continue
     }
 
@@ -61,6 +60,7 @@ export function registerSessionMiddleware(server) {
     }
 
     let { tokenSet, user } = currentSession
+    let permissions = []
     const oidcClient = getOidcClient()
 
     tokenSet = new TokenSet(tokenSet)
@@ -82,8 +82,8 @@ export function registerSessionMiddleware(server) {
         const roles = [user.roles?.[0] || roleTypes.mipViewer]
 
         // TODO: Hard-coded role & permissions to come from CDS API
-        // const permissions = await apiClient.get(`/users/${user.sub}/permissions`)
-        const permissions = roles.flatMap((r) => rolePermissions[r] || [])
+        // permissions = await apiClient.get(`/users/${user.sub}/permissions`)
+        permissions = roles.flatMap((r) => rolePermissions[r] || [])
 
         // Save updated session
         await setSession(sessionId, {
@@ -106,7 +106,7 @@ export function registerSessionMiddleware(server) {
 
     // Extract roles + permissions from session
     const roles = user?.roles || []
-    const permissions = user?.permissions || []
+    permissions = user?.permissions || []
 
     // Attach credentials to request
     request.auth.credentials = {

@@ -14,7 +14,7 @@ export function getSessionAuthStrategy() {
         name: 'sid',
         password,
         isSecure,
-        isSameSite: 'Lax', // 'Lax' | 'None'
+        isSameSite: 'Lax',
         path: '/'
       },
       redirectTo: false,
