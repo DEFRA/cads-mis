@@ -133,6 +133,7 @@ REDIS_USERNAME=default
 REDIS_PASSWORD=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 REDIS_KEY_PREFIX=local-cads-mis
 USE_SINGLE_INSTANCE_CACHE=true
+REDIS_TLS=false
 ```
 
 **Note.** The Redis password must be complex and a minimum of 32 chars.
@@ -249,6 +250,34 @@ npm run dev
 
 - `ui.report.view`
 - `ui.report.export`
+
+## Azure AD Configuration
+
+### DEV
+
+**CADS MIS**
+
+- Name: O365-CADS-MIP-DEV
+- ClientId: 019d99b5-8063-40b8-b45f-3121193ff864
+- Secret: XYZ
+- Expiry: 20/03/2027
+- Redirect URL: https://cads-mis.dev.cdp-int.defra.cloud/auth/callback
+- Logout URL: https://cads-mis.dev.cdp-int.defra.cloud/auth/sign-out
+- Implicit grant: access tokens and ID tokens
+- Roles: mip-viewer
+- Refresh: offline access
+- API permissions to `O365-CADS-MIP-DEV` (`019d99b5-8063-40b8-b45f-3121193ff864`) as an authorised client app to `O365-CADS-CDS-DEV` (`e5acc07b-a696-4998-9bb6-93573ec237b3`)
+  - With scope: `api://e5acc07b-a696-4998-9bb6-93573ec237b3/reports.read"`
+
+**CADS CDS**
+
+- Name: O365-CADS-CDS-DEV
+- ClientId: e5acc07b-a696-4998-9bb6-93573ec237b3
+- Scope: reports.read
+
+**AAD**
+
+- Well-known: https://6f504113-6b64-43f2-ade9-242e05780007/.well-known/openid-configuration
 
 ### Dependabot
 
