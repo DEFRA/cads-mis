@@ -278,6 +278,12 @@ function buildSchema() {
         format: String,
         default: '',
         env: 'OIDC_AUTHORIZATION_ENDPOINT'
+      },
+      enableDebugEndpoints: {
+        doc: 'Register debug endpoints for auth.',
+        format: Boolean,
+        default: false,
+        env: 'OIDC_ENABLE_DEBUG_ENDPOINTS'
       }
     },
     azure: {

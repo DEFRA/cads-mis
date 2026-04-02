@@ -10,16 +10,23 @@ export const logoutRoutes = [
     method: ['GET'],
     path: '/auth/logout',
     options: {
-      auth: false
+      auth: {
+        mode: 'try',
+        strategy: 'session'
+      }
     },
     handler: async (request, h) => {
-      const cookie = request.cookieAuth.get()
+      const cookie = request.auth.artifacts
 
       if (cookie?.sessionId) {
         await dropSession(cookie.sessionId)
       }
 
-      request.cookieAuth.clear()
+      if (request.cookieAuth?.clear) {
+        request.cookieAuth.clear()
+      } else {
+        h.unstate('sid')
+      }
 
       const authConfig = getAuthConfig()
       const oidcClient = await getOidcClient()

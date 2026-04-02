@@ -25,6 +25,7 @@ export function getSessionAuthStrategy() {
 
         const data = await getSession(session.sessionId)
         if (!data) {
+          request.cookieAuth.clear()
           return { isValid: false }
         }
 

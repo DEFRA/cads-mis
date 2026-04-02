@@ -107,6 +107,7 @@ APP_BASE_URL=http://localhost:3000
 # OIDC authentication
 OIDC_CLIENT_ID=local-cads-mis
 OIDC_CLIENT_SECRET=local-mock-secret
+OIDC_ENABLE_DEBUG_ENDPOINTS=true
 
 OIDC_REDIRECT_URI=http://localhost:3000/auth/callback
 OIDC_POST_LOGOUT_REDIRECT_URI=http://localhost:3000/auth/signed-out

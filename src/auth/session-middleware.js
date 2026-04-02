@@ -1,4 +1,5 @@
 import { getOidcClient } from './oidc-client.js'
+import { TokenSet } from 'openid-client'
 import { getSession, setSession, dropSession } from './session-store.js'
 
 import { roleTypes } from './constants/roles.js'
@@ -22,7 +23,10 @@ export function registerSessionMiddleware(server) {
     }
 
     // Skip OIDC handshake routes
-    if (request.path.startsWith('/auth/')) {
+    if (
+      request.path.startsWith('/auth/login') ||
+      request.path.startsWith('/auth/callback')
+    ) {
       return h.continue
     }
 
@@ -32,13 +36,13 @@ export function registerSessionMiddleware(server) {
     }
 
     // Ensure cookieAuth exists
-    if (!request.cookieAuth || typeof request.cookieAuth.get !== 'function') {
-      console.log('session-middleware: no cookieAuth.get, skipping')
+    if (!request.cookieAuth) {
+      console.log('session-middleware: no cookieAuth, skipping')
       return h.continue
     }
 
     // Read cookie-based session
-    const cookie = request.cookieAuth.get()
+    const cookie = request.auth.artifacts
 
     // No session cookie => unauthenticated request
     if (!cookie?.sessionId) {
@@ -48,7 +52,7 @@ export function registerSessionMiddleware(server) {
     const sessionId = cookie.sessionId
 
     // Load the session from Redis
-    const currentSession = getSession(sessionId)
+    const currentSession = await getSession(sessionId)
 
     // Session missing, so clear cookie and continue unauthenticated (downstream will handle)
     if (!currentSession) {
@@ -58,6 +62,8 @@ export function registerSessionMiddleware(server) {
 
     let { tokenSet, user } = currentSession
     const oidcClient = getOidcClient()
+
+    tokenSet = new TokenSet(tokenSet)
 
     // Refresh token if expired
     if (tokenSet.expired()) {
@@ -80,7 +86,7 @@ export function registerSessionMiddleware(server) {
         const permissions = roles.flatMap((r) => rolePermissions[r] || [])
 
         // Save updated session
-        setSession(sessionId, {
+        await setSession(sessionId, {
           sessionId,
           userSub: currentSession.userSub,
           tokenSet,
@@ -99,8 +105,8 @@ export function registerSessionMiddleware(server) {
     }
 
     // Extract roles + permissions from session
-    const roles = user.roles || []
-    const permissions = user.permissions || []
+    const roles = user?.roles || []
+    const permissions = user?.permissions || []
 
     // Attach credentials to request
     request.auth.credentials = {

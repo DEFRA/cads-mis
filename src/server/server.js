@@ -19,6 +19,7 @@ import { contentSecurityPolicy } from './common/helpers/content-security-policy.
 import { registerSessionMiddleware } from '../auth/session-middleware.js'
 import { loginRoutes } from '../auth/routes-login.js'
 import { logoutRoutes } from '../auth/routes-logout.js'
+import { debugAuthRoutes } from '../auth/debug/debug-routes.js'
 import { getSessionAuthStrategy } from '../auth/plugins/session-strategy.js'
 
 export async function createServer() {
@@ -98,6 +99,11 @@ export async function createServer() {
 
   // Register auth routes (login, callback, logout)
   server.route([...loginRoutes, ...logoutRoutes])
+
+  // Debug auth routes
+  if (config.get('oidc.enableDebugEndpoints')) {
+    server.route([...debugAuthRoutes])
+  }
 
   // Register session middleware (Redis session + token refresh)
   registerSessionMiddleware(server)

@@ -23,6 +23,12 @@ export const loginRoutes = [
       const authConfig = getAuthConfig()
       // const oidcClient = await getOidcClient()
 
+      if (request.cookieAuth?.clear) {
+        request.cookieAuth.clear()
+      } else {
+        h.unstate('sid')
+      }
+
       // Generate state + nonce for security
       const state = generators.state()
       const nonce = generators.nonce()
@@ -71,6 +77,15 @@ export const loginRoutes = [
     handler: async (request, h) => {
       const authConfig = getAuthConfig()
       const oidcClient = await getOidcClient()
+
+      if (request.query.error) {
+        if (request.cookieAuth?.clear) {
+          request.cookieAuth.clear()
+        } else {
+          h.unstate('sid')
+        }
+        return h.redirect('/?error=' + encodeURIComponent(request.query.error))
+      }
 
       // Extract params from the callback URL
       const callbackParams = oidcClient.callbackParams(request.raw.req)

@@ -20,6 +20,7 @@ export function getAuthConfig() {
     defaultRedirect: config.get('oidc.postLoginDefaultRedirectUri'),
     oidcWellKnownUrl: config.get('oidc.wellKnownUrl'),
     externalAuthorizeEndpoint: config.get('oidc.externalAuthorizeEndpoint'),
+    enableDebugEndpoints: config.get('oidc.enableDebugEndpoints'),
     scope: [
       'openid',
       'profile',
