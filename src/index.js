@@ -12,11 +12,3 @@ process.on('unhandledRejection', (error) => {
   logger.error(error)
   process.exitCode = 1
 })
-
-process.on('unhandledRejection', (err) => {
-  console.error('Unhandled Rejection:', err)
-})
-
-process.on('uncaughtException', (err) => {
-  console.error('Uncaught Exception:', err)
-})

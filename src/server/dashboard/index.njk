@@ -28,11 +28,13 @@
       <div class="govuk-body" data-testid="app-page-body">
         <main class="govuk-main-wrapper ">
             <div class="govuk-grid-row">
-          {% for item in viewModel.reports %}
+              {% for item in viewModel.reports %}
                 {{reportItem(item)}}
-          {% else %}
-            <p class="govuk-body">No reports found.</p>
-          {% endfor %}
+              {% else %}
+                <div class="govuk-summary-card__content">
+                  <p class="govuk-body-s">No reports found.</p>
+                </div>
+              {% endfor %}
             </div>
         </main>
       </div>

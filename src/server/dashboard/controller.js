@@ -1,8 +1,9 @@
-import { fetchReportsList } from './fetchReportsList.js'
+// import { fetchReportsList } from './fetchReportsList.js'
 
 export const dashboardController = {
   async handler(_request, h) {
-    const reports = await fetchReportsList('') //session.idToken)
+    // const reports = await fetchReportsList('') //session.idToken)
+    const reports = []
 
     return h.view('dashboard/index', {
       pageTitle: 'Dashboard',

@@ -1,4 +1,4 @@
-import { fetchJsonFromBackend } from '#helpers/fetch-json.js'
+import { fetchJsonFromBackend } from '#helpers/fetch-json-from-backend.js'
 
 /**
  * Fetches available reports for logged in user
