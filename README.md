@@ -92,7 +92,7 @@ await fetch(url, {
 Install application dependencies:
 
 ```bash
-npm install
+npm ci
 ```
 
 ### Environment variables
@@ -136,6 +136,9 @@ REDIS_PASSWORD=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 REDIS_KEY_PREFIX=local-cads-mis
 USE_SINGLE_INSTANCE_CACHE=true
 REDIS_TLS=false
+
+# CADS CDS: Backend
+CADS_BACKEND_URL=http://localhost:5555
 ```
 
 **Note.** The Redis password must be complex and a minimum of 32 chars.

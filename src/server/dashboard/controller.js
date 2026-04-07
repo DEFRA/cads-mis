@@ -1,9 +1,8 @@
-// import { fetchReportsList } from './fetchReportsList.js'
+import { getReports } from '../common/clients/requests/mibff/get-user-reports.js'
 
 export const dashboardController = {
-  async handler(_request, h) {
-    // const reports = await fetchReportsList('') //session.idToken)
-    const reports = []
+  async handler(request, h) {
+    const reports = await getReports(request)
 
     return h.view('dashboard/index', {
       pageTitle: 'Dashboard',

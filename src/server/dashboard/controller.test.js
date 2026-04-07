@@ -2,11 +2,13 @@ import { createServer } from '../server.js'
 import { statusCodes } from '../common/constants/status-codes.js'
 import { JSDOM } from 'jsdom'
 
-vi.mock(import('../common/helpers/fetch-json.js'), () => ({
-  fetchJsonFromBackend: vi.fn()
+vi.mock(import('../common/clients/requests/mibff/get-user-reports.js'), () => ({
+  getUserReports: vi.fn()
 }))
 
-const { fetchJsonFromBackend } = await import('../common/helpers/fetch-json.js')
+const { getUserReports } = await import(
+  '../common/clients/requests/mibff/get-user-reports.js'
+)
 
 describe.skip('#dashboardController', () => {
   let server
@@ -37,7 +39,7 @@ describe.skip('#dashboardController', () => {
     let response = null
 
     beforeAll(async () => {
-      fetchJsonFromBackend.mockResolvedValue(mockResponse)
+      getUserReports.mockResolvedValue(mockResponse)
       response = await server.inject({
         method: 'GET',
         url: '/dashboard'
@@ -73,7 +75,7 @@ describe.skip('#dashboardController', () => {
     let response = null
 
     beforeAll(async () => {
-      fetchJsonFromBackend.mockResolvedValue(emptyMockResponse)
+      getUserReports.mockResolvedValue(emptyMockResponse)
       response = await server.inject({
         method: 'GET',
         url: '/dashboard'
