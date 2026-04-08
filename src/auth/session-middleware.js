@@ -31,7 +31,7 @@ export function registerSessionMiddleware(server) {
     }
 
     // Skip routes that explicitly disable auth
-    if (request.route.settings.auth === false) {
+    if (!request.route.settings.auth) {
       return h.continue
     }
 

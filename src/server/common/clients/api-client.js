@@ -49,7 +49,7 @@ async function callApi(request, path, options) {
   }
 
   const headers = withTraceId(getTracingHeaderName(), {
-    ...(options.headers || {}),
+    ...options.headers,
     'Content-Type': 'application/json',
     ...(token ? { Authorization: `Bearer ${token}` } : {})
   })
