@@ -2,7 +2,7 @@ name: 'cads-mis'
 services:
   cads-mis:
     container_name: "cads-mis"
-    image: cads-mis:dev
+    image: cads-mis
     build:
       context: .
       target: development
