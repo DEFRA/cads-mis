@@ -1,0 +1,6 @@
+services:
+  cads-mis:
+    env_file:
+      - compose/frontend.env
+      - .env.docker
+      - compose/aws.env
