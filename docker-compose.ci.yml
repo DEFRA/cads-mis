@@ -12,7 +12,6 @@ services:
     env_file:
       - compose/frontend.env
       - .env.docker
-      - compose/aws.env
     environment:
       PORT: 3000
       NODE_ENV: development
