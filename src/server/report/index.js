@@ -1,3 +1,5 @@
+import { reportController } from './controller.js'
+
 export const reports = {
   plugin: {
     name: 'reports',
@@ -6,13 +8,7 @@ export const reports = {
         {
           method: 'GET',
           path: '/report/{filename}',
-          handler: async (request, h) => {
-            let filename = request.params.filename
-            return h.view(`report/mocks/${filename}`, {
-              pageTitle: 'Report',
-              heading: 'Report'
-            })
-          }
+          ...reportController
         }
       ])
     }
