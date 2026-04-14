@@ -73,12 +73,12 @@ export async function sessionMiddleware(request, h) {
       user = refreshedToken.claims()
 
       // MG: We can fetch roles and permissions from the CDS API and add to the session e.g.
-      // const roles = await apiClient.get(`/users/${user.sub}/roles`)
-      const roles = [user.roles?.[0] || roleTypes.mipViewer]
+      // const refreshedRoles = await apiClient.get(`/users/${user.sub}/roles`)
+      const refreshedRoles = [user.roles?.[0] || roleTypes.mipViewer]
 
       // MG: Hard-coded role & permissions to come from CDS API
       // permissions = await apiClient.get(`/users/${user.sub}/permissions`)
-      permissions = roles.flatMap((r) => rolePermissions[r] || [])
+      permissions = refreshedRoles.flatMap((r) => rolePermissions[r] || [])
 
       // Save updated session
       await setSession(sessionId, {
@@ -87,12 +87,12 @@ export async function sessionMiddleware(request, h) {
         tokenSet,
         user: {
           ...user,
-          roles,
+          refreshedRoles,
           permissions
         }
       })
     } catch (err) {
-      // Refresh failed => drop session and clear cookie
+      request.logger?.error('Token refresh failed', err)
       await dropSession(sessionId)
       request.cookieAuth.clear()
       return h.continue
