@@ -92,8 +92,56 @@ await fetch(url, {
 Install application dependencies:
 
 ```bash
-npm install
+npm ci
 ```
+
+### Environment variables
+
+During local development, you will need to create an `.env` file in the root of your project. Variables found in this file will be loaded in first for local development. You can see the template required with the `.env.example` file which is included in source control.
+
+```
+# Environment configuration
+NODE_ENV=development
+APP_BASE_URL=http://localhost:3000
+
+# OIDC authentication
+OIDC_CLIENT_ID=local-cads-mis
+OIDC_CLIENT_SECRET=local-mock-secret
+OIDC_ENABLE_DEBUG_ENDPOINTS=true
+
+OIDC_REDIRECT_URI=http://localhost:3000/auth/callback
+OIDC_POST_LOGOUT_REDIRECT_URI=http://localhost:3000/auth/signed-out
+OIDC_POST_LOGIN_REDIRECT_URI=/dashboard
+
+## Internal endpoints (server OIDC mock)
+OIDC_WELL_KNOWN_URL=http://localhost:5557/.well-known/openid-configuration
+
+## External endpoint (browser OIDC mock)
+OIDC_AUTHORIZATION_ENDPOINT=http://localhost:5557/connect/authorize
+OIDC_END_SESSION_ENDPOINT=http://localhost:5557/connect/endsession
+
+## Resource: CADS CDS
+AZURE_CLIENT_CADS_CDS_ID=local-cads-cds
+USE_SIMPLE_SCOPES=true
+
+# Session configuration
+SESSION_CACHE_ENGINE=redis
+SESSION_COOKIE_PASSWORD=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+# Redis configuration
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_USERNAME=default
+REDIS_PASSWORD=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+REDIS_KEY_PREFIX=local-cads-mis
+USE_SINGLE_INSTANCE_CACHE=true
+REDIS_TLS=false
+
+# CADS CDS: Backend
+CADS_BACKEND_URL=http://localhost:5555
+```
+
+**Note.** The Redis password must be complex and a minimum of 32 chars.
 
 ### Development
 
@@ -207,6 +255,34 @@ npm run dev
 
 - `ui.report.view`
 - `ui.report.export`
+
+## Azure AD Configuration
+
+### DEV
+
+**CADS MIS**
+
+- Name: O365-CADS-MIP-DEV
+- ClientId: 019d99b5-8063-40b8-b45f-3121193ff864
+- Secret: XYZ
+- Expiry: 20/03/2027
+- Redirect URL: https://cads-mis.dev.cdp-int.defra.cloud/auth/callback
+- Logout URL: https://cads-mis.dev.cdp-int.defra.cloud/auth/sign-out
+- Implicit grant: access tokens and ID tokens
+- Roles: mip-viewer
+- Refresh: offline access
+- API permissions to `O365-CADS-MIP-DEV` (`019d99b5-8063-40b8-b45f-3121193ff864`) as an authorised client app to `O365-CADS-CDS-DEV` (`e5acc07b-a696-4998-9bb6-93573ec237b3`)
+  - With scope: `api://e5acc07b-a696-4998-9bb6-93573ec237b3/reports.read"`
+
+**CADS CDS**
+
+- Name: O365-CADS-CDS-DEV
+- ClientId: e5acc07b-a696-4998-9bb6-93573ec237b3
+- Scope: reports.read
+
+**AAD**
+
+- Well-known: https://6f504113-6b64-43f2-ade9-242e05780007/.well-known/openid-configuration
 
 ### Dependabot
 

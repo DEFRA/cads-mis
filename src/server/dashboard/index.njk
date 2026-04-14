@@ -1,8 +1,8 @@
 {% extends 'layouts/page.njk' %}
 
 {% macro reportItem(report) %}
-<div class="govuk-grid-column-one-half">
-  <a href="../mocks/{{report.reportKey}}" class="portal-card-link">
+<div class="govuk-grid-column-one-half portal-card">
+  <a href="../report/{{report.reportKey}}" class="portal-card-link">
     <div class="govuk-summary-card">
       <div class="govuk-summary-card__title-wrapper">
         <h2 class="govuk-summary-card__title">{{report.title}}</h2>
@@ -24,15 +24,17 @@
   }) }}
 
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column">
       <div class="govuk-body" data-testid="app-page-body">
         <main class="govuk-main-wrapper ">
             <div class="govuk-grid-row">
-          {% for item in viewModel.reports %}
+              {% for item in viewModel.reports %}
                 {{reportItem(item)}}
-          {% else %}
-            <p class="govuk-body">No reports found.</p>
-          {% endfor %}
+              {% else %}
+                <div class="govuk-summary-card__content">
+                  <p class="govuk-body-s">No reports found.</p>
+                </div>
+              {% endfor %}
             </div>
         </main>
       </div>

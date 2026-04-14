@@ -1,9 +1,9 @@
 import { constants } from 'node:http2'
 import { vi, beforeEach, afterEach, describe, test, expect } from 'vitest'
 import '../../../mocks/server/setup-server-mocks.js'
+import { createServer } from '@/server/server.js'
 
 const { HTTP_STATUS_OK } = constants
-const { createServer } = await import('../../../../src/server/server.js')
 
 let server
 

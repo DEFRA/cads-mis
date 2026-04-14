@@ -1,0 +1,25 @@
+name: 'cads-mis'
+services:
+  cads-mis:
+    container_name: "cads-mis"
+    image: cads-mis
+    build:
+      context: .
+      target: development
+    ports:
+      - '3000:3000'
+    depends_on: []
+    env_file:
+      - compose/frontend.env
+      - .env.docker
+    environment:
+      PORT: 3000
+      NODE_ENV: development
+      REDIS_HOST: cads-redis
+      USE_SINGLE_INSTANCE_CACHE: true
+    networks:
+      - cads-tools
+
+networks:
+  cads-tools:
+    external: true

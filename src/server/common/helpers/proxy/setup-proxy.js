@@ -2,7 +2,7 @@ import { ProxyAgent, setGlobalDispatcher } from 'undici'
 import { bootstrap } from 'global-agent'
 
 import { createLogger } from '../logging/logger.js'
-import { config } from '../../../../config/config.js'
+import { getConfig } from '../../../../config/config.js'
 
 const logger = createLogger()
 
@@ -12,6 +12,7 @@ const logger = createLogger()
  * Node Fetch will still need to pass a ProxyAgent in on each call.
  */
 export function setupProxy() {
+  const config = getConfig()
   const proxyUrl = config.get('httpProxy')
 
   if (proxyUrl) {

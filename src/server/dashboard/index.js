@@ -1,4 +1,7 @@
 import { dashboardController } from './controller.js'
+import { roleTypes } from '../../auth/constants/roles.js'
+import { requireRole } from '../../auth/require-role.js'
+import { authRequired } from '../../auth/auth-required.js'
 
 /**
  * Sets up the routes used in the /about page.
@@ -12,8 +15,12 @@ export const dashboard = {
         {
           method: 'GET',
           path: '/dashboard',
-          config: {
-            auth: false
+          options: {
+            auth: {
+              strategy: 'session',
+              mode: 'try'
+            },
+            pre: [authRequired, requireRole(roleTypes.mipViewer)]
           },
           ...dashboardController
         }
