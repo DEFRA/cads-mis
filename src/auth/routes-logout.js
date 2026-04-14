@@ -1,5 +1,5 @@
-import { getAuthConfig } from '#auth/config/auth-config.js'
-import { dropSession } from '#auth/session-store.js'
+import { getAuthConfig } from './config/auth-config.js'
+import { dropSession } from './session-store.js'
 import crypto from 'node:crypto'
 
 /**

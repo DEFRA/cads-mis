@@ -11,6 +11,7 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     clearMocks: true,
+    mockReset: true,
     setupFiles: ['tests/setup/vitest.setup.js'],
     include: ['tests/**/*.{test,spec}.{js,ts}', 'src/**/*.{test,spec}.{js,ts}'],
     coverage: {

@@ -1,9 +1,9 @@
-import { getAuthConfig } from '#auth/config/auth-config.js'
+import { getAuthConfig } from './config/auth-config.js'
 import { generators } from 'openid-client'
-import { getOidcClient } from '#auth/oidc-client.js'
-import { dropSession, getSession, setSession } from '#auth/session-store.js'
-import { roleTypes } from '#auth/constants/roles.js'
-import { rolePermissions } from '#auth/constants/role-permissions.js'
+import { getOidcClient } from './oidc-client.js'
+import { dropSession, getSession, setSession } from './session-store.js'
+import { roleTypes } from './constants/roles.js'
+import { rolePermissions } from './constants/role-permissions.js'
 import crypto from 'node:crypto'
 
 /**

@@ -20,7 +20,7 @@ const mockGetSession = vi.fn()
 const mockSetSession = vi.fn()
 const mockDropSession = vi.fn()
 
-vi.mock('#auth/session-store.js', () => ({
+vi.mock('../../../src/auth/session-store.js', () => ({
   getSession: mockGetSession,
   setSession: mockSetSession,
   dropSession: mockDropSession
@@ -30,16 +30,16 @@ vi.mock('#auth/session-store.js', () => ({
 const mockRefresh = vi.fn()
 const mockOidcClient = { refresh: mockRefresh }
 
-vi.mock('#auth/oidc-client.js', () => ({
+vi.mock('../../../src/auth/oidc-client.js', () => ({
   getOidcClient: vi.fn(() => mockOidcClient)
 }))
 
 // Mock roles + permissions
-vi.mock('#auth/constants/roles.js', () => ({
+vi.mock('../../../src/auth/constants/roles.js', () => ({
   roleTypes: { mipViewer: 'mipViewer' }
 }))
 
-vi.mock('#auth/constants/role-permissions.js', () => ({
+vi.mock('../../../src/auth/constants/role-permissions.js', () => ({
   rolePermissions: {
     mipViewer: ['report.view', 'report.export']
   }
@@ -49,7 +49,9 @@ vi.mock('#auth/constants/role-permissions.js', () => ({
 let sessionMiddleware
 beforeEach(async () => {
   vi.resetModules()
-  ;({ sessionMiddleware } = await import('#auth/session-middleware.js'))
+  ;({ sessionMiddleware } = await import(
+    '../../../src/auth/session-middleware.js'
+  ))
 
   mockGetSession.mockReset()
   mockSetSession.mockReset()

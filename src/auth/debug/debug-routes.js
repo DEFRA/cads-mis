@@ -1,4 +1,4 @@
-import { getSession } from '#auth/session-store.js'
+import { getSession } from '../session-store.js'
 
 /**
  * @satisfies {import('@hapi/hapi').ServerRoute[]}

@@ -1,9 +1,9 @@
-import { getOidcClient } from '#auth/oidc-client.js'
+import { getOidcClient } from './oidc-client.js'
 import { TokenSet } from 'openid-client'
-import { getSession, setSession, dropSession } from '#auth/session-store.js'
+import { getSession, setSession, dropSession } from './session-store.js'
 
-import { roleTypes } from '#auth/constants/roles.js'
-import { rolePermissions } from '#auth/constants/role-permissions.js'
+import { roleTypes } from './constants/roles.js'
+import { rolePermissions } from './constants/role-permissions.js'
 
 export async function sessionMiddleware(request, h) {
   if (shouldSkipRequest(request)) {
