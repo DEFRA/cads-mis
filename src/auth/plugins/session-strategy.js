@@ -1,5 +1,5 @@
 import { getConfig } from '../../config/config.js'
-import { getSession } from '../session-store.js'
+import { getSession } from '#auth/session-store.js'
 
 export function getSessionAuthStrategy() {
   const config = getConfig()

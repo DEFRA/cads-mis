@@ -7,8 +7,9 @@
   "sideEffects": false,
   "type": "module",
   "imports": {
-    "#config/*": "./src/config/*",
-    "#helpers/*": "./src/server/common/helpers/*"
+    "#auth/": "./src/auth/",
+    "#config/": "./src/config/",
+    "#helpers/": "./src/server/common/helpers/"
   },
   "main": "src/index.js",
   "scripts": {

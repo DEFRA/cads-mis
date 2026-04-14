@@ -1,7 +1,7 @@
 const uiPermissions = {
   reports: {
-    view: 'ui.report.view',
-    export: 'ui.report.export'
+    view: 'report.view',
+    export: 'report.export'
   }
 }
 

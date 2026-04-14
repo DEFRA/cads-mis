@@ -1,5 +1,5 @@
 import { Issuer } from 'openid-client'
-import { getAuthConfig } from './config/auth-config.js'
+import { getAuthConfig } from '#auth/config/auth-config.js'
 
 let clientPromise = null
 

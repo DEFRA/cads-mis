@@ -1,9 +1,9 @@
-import { getOidcClient } from './oidc-client.js'
+import { getOidcClient } from '#auth/oidc-client.js'
 import { TokenSet } from 'openid-client'
-import { getSession, setSession, dropSession } from './session-store.js'
+import { getSession, setSession, dropSession } from '#auth/session-store.js'
 
-import { roleTypes } from './constants/roles.js'
-import { rolePermissions } from './constants/role-permissions.js'
+import { roleTypes } from '#auth/constants/roles.js'
+import { rolePermissions } from '#auth/constants/role-permissions.js'
 
 export async function sessionMiddleware(request, h) {
   if (shouldSkipRequest(request)) {
@@ -22,11 +22,10 @@ export async function sessionMiddleware(request, h) {
     return h.continue
   }
 
-  const { tokenSet, user } = refreshed
+  const { tokenSet, user, permissions } = refreshed
 
   // Extract roles + permissions from session
   const roles = user?.roles || []
-  const permissions = user?.permissions || []
 
   // Attach credentials to request
   request.auth.credentials = {
@@ -76,7 +75,7 @@ async function loadSession(request) {
 
 async function refreshTokenIfNeeded(session, sessionId, request) {
   let { tokenSet, user } = session
-  let permissions = []
+  let permissions = user?.permissions || []
 
   tokenSet = new TokenSet(tokenSet)
 
