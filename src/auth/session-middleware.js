@@ -72,11 +72,11 @@ export async function sessionMiddleware(request, h) {
       tokenSet = refreshedToken
       user = refreshedToken.claims()
 
-      // TODO: We can fetch roles and permissions from the CDS API and add to the session e.g.
+      // MG: We can fetch roles and permissions from the CDS API and add to the session e.g.
       // const roles = await apiClient.get(`/users/${user.sub}/roles`)
       const roles = [user.roles?.[0] || roleTypes.mipViewer]
 
-      // TODO: Hard-coded role & permissions to come from CDS API
+      // MG: Hard-coded role & permissions to come from CDS API
       // permissions = await apiClient.get(`/users/${user.sub}/permissions`)
       permissions = roles.flatMap((r) => rolePermissions[r] || [])
 

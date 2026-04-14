@@ -8,6 +8,9 @@ export const reports = {
         {
           method: 'GET',
           path: '/report/{filename}',
+          config: {
+            auth: false
+          },
           ...reportController
         }
       ])

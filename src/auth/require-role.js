@@ -1,3 +1,5 @@
+import Boom from '@hapi/boom'
+
 /**
  * Enforces that the authenticated user has a specific role.
  *
@@ -8,7 +10,7 @@ export function requireRole(requiredRole) {
     const roles = request.auth?.credentials?.user?.roles || []
 
     if (!roles.includes(requiredRole)) {
-      return h.response('Forbidden').code(403).takeover()
+      throw Boom.forbidden()
     }
 
     return h.continue
