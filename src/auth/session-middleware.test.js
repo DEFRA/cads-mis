@@ -6,44 +6,104 @@ vi.mock(import('./session-store.js'), () => ({
   dropSession: vi.fn()
 }))
 
-/*const { getSession, setSession, dropSession } = await import(
-  './session-store.js'
-)*/
+vi.mock(import('./oidc-client.js'), () => ({
+  getOidcClient: vi.fn()
+}))
+
+vi.mock(import('openid-client'), () => ({
+  TokenSet: vi.fn(
+    class {
+      static getType = vi.fn(() => 'mocked tokenSet')
+      constructor(tokenSet) {
+        this.expired = tokenSet.expired
+      }
+    }
+  )
+}))
+
+const { getSession } = await import('./session-store.js')
 
 describe('session-middleWare', () => {
   beforeAll(async () => {})
+
+  const continueFunction = 'continue'
+  let request = null
+  const clearCookieAuth = vi.fn()
+  const refreshUser = { roles: [] }
+  const refreshToken = 'refresh_token'
+  const tokenSet = {
+    expired: () => false,
+    refresh_token: refreshToken,
+    claims: vi.fn().mockResolvedValue(refreshUser)
+  }
+  const user = {}
+  const currentSession = { tokenSet, user }
 
   afterAll(async () => {})
 
   beforeEach(() => {
     vi.clearAllMocks()
+
+    getSession.mockResolvedValue(currentSession)
+
+    request = {
+      path: '/some-path/',
+      route: {
+        settings: {
+          auth: true
+        }
+      },
+      cookieAuth: { clear: clearCookieAuth },
+      auth: {
+        artifacts: {
+          sessionId: 'some-session-id'
+        }
+      }
+    }
+  })
+
+  let result = null
+  const h = { continue: continueFunction }
+
+  test('when already authorised', async () => {
+    result = await sessionMiddleware(request, h)
+    expect(clearCookieAuth).toHaveBeenCalledTimes(0)
+    expect(result).toEqual(continueFunction)
+    expect(request.auth?.credentials).toBeDefined()
+    expect(request.auth?.credentials.user).toBeDefined()
+    expect(request.auth?.credentials.user.roles).toBeDefined()
+    expect(request.auth?.credentials.user.permissions).toBeDefined()
+    expect(request.auth?.credentials.tokenSet).toBeDefined()
+  })
+
+  test('when user roles and permissions are undefined', async () => {
+    user.roles = null
+    user.permissions = null
+
+    result = await sessionMiddleware(request, h)
+
+    expect(request.auth?.credentials.user.roles).toStrictEqual([])
+    expect(request.auth?.credentials.user.permissions).toStrictEqual([])
+  })
+
+  test('when user roles and permissions are defined', async () => {
+    user.roles = ['a', 'b']
+    user.permissions = ['x', 'y', 'z']
+
+    result = await sessionMiddleware(request, h)
+
+    expect(request.auth?.credentials.user.roles).toStrictEqual(['a', 'b'])
+    expect(request.auth?.credentials.user.permissions).toStrictEqual([
+      'x',
+      'y',
+      'z'
+    ])
   })
 
   describe('when authentication not required', async () => {
     beforeAll(async () => {})
 
-    const continueFunction = 'continue'
-    let request = null
-
-    beforeEach(async () => {
-      request = {
-        path: '/some-path/',
-        route: {
-          settings: {
-            auth: true
-          }
-        },
-        cookieAuth: {},
-        auth: {
-          artifacts: {
-            sessionId: 'some-session-id'
-          }
-        }
-      }
-    })
-
-    const h = { continue: continueFunction }
-    let result = null
+    beforeEach(async () => {})
 
     test.each([
       { reason: 'because content is static', path: '/public/any-file.html' },
@@ -102,6 +162,16 @@ describe('session-middleWare', () => {
     ])('$reason', async ({ reason, customiseRequest }) => {
       customiseRequest(request)
       result = await sessionMiddleware(request, h)
+      expect(clearCookieAuth).toHaveBeenCalledTimes(0)
+      expect(result).toEqual(continueFunction)
+      expect(request.auth?.credentials).toBeUndefined()
+    })
+
+    test('because session is missing', async () => {
+      getSession.mockResolvedValue(null)
+
+      result = await sessionMiddleware(request, h)
+      expect(clearCookieAuth).toHaveBeenCalledTimes(1)
       expect(result).toEqual(continueFunction)
       expect(request.auth?.credentials).toBeUndefined()
     })
