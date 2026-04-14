@@ -5,7 +5,7 @@ import { about } from './about/index.js'
 import { health } from './health/index.js'
 
 import { getStaticFilesToServe } from './common/helpers/serve-static-files.js'
-import { mocks } from './mocks/index.js'
+import { reports } from './report/index.js'
 import { dashboard } from './dashboard/index.js'
 import { holdingSummary } from './holding-summary/index.js'
 
@@ -19,7 +19,7 @@ export const router = {
       await server.register([health])
 
       // Application specific routes, add your own routes here
-      await server.register([home, about, mocks, dashboard, holdingSummary])
+      await server.register([home, about, reports, dashboard, holdingSummary])
 
       // Static assets
       await server.register([getStaticFilesToServe()])

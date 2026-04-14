@@ -1,8 +1,8 @@
 {% extends 'layouts/page.njk' %}
 
 {% macro reportItem(report) %}
-<div class="govuk-grid-column-one-half">
-  <a href="../mocks/{{report.reportKey}}" class="portal-card-link">
+<div class="govuk-grid-column-one-half portal-card">
+  <a href="../report/{{report.reportKey}}" class="portal-card-link">
     <div class="govuk-summary-card">
       <div class="govuk-summary-card__title-wrapper">
         <h2 class="govuk-summary-card__title">{{report.title}}</h2>
