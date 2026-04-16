@@ -1,7 +1,14 @@
 export const reportController = {
   handler: async (request, h) => {
     const filename = request.params.filename
-    return h.view(`report/mocks/${filename}`, {
+    const viewPath = filename.startsWith('gb_')
+      ? `report/views/${filename}`
+      : `report/mocks/${filename}`
+    const breadcrumbText = filename.startsWith('gb_')
+      ? 'Download report'
+      : 'View report'
+
+    return h.view(viewPath, {
       pageTitle: 'Report',
       heading: 'Report',
       breadcrumbs: [
@@ -10,7 +17,7 @@ export const reportController = {
           href: '/dashboard'
         },
         {
-          text: 'View report'
+          text: breadcrumbText
         }
       ]
     })

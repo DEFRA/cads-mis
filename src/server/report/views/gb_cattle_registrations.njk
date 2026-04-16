@@ -1,0 +1,116 @@
+{% extends 'layouts/page.njk' %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block content %}
+  {{ appHeading({
+    text: 'Monthly GB cattle registrations'
+  }) }}
+
+<form action="/download/gb-cattle-registrations" method="get">
+  {{ govukSelect({
+    id: "yearMonth",
+    name: "yearMonth",
+    label: {
+      text: "Report month and year"
+    },
+    items: [
+      {
+        value: "2026-03",
+        text: "March, 2026",
+        selected: true
+      },
+      {
+        value: "2026-02",
+        text: "February, 2026"
+      },
+      {
+        value: "2026-01",
+        text: "January, 2026"
+      },
+      {
+        value: "2025-12",
+        text: "December, 2025"
+      },
+      {
+        value: "2025-11",
+        text: "November, 2025"
+      },
+      {
+        value: "2025-10",
+        text: "October, 2025"
+      },
+      {
+        value: "2025-09",
+        text: "September, 2025"
+      },
+      {
+        value: "2025-08",
+        text: "August, 2025"
+      },
+      {
+        value: "2025-07",
+        text: "July, 2025"
+      },
+      {
+        value: "2025-06",
+        text: "June, 2025"
+      },
+      {
+        value: "2025-05",
+        text: "May, 2025"
+      },
+      {
+        value: "2025-04",
+        text: "April, 2025"
+      },
+      {
+        value: "2025-03",
+        text: "March, 2025"
+      },
+      {
+        value: "2025-02",
+        text: "February,2025"
+      },
+      {
+        value: "2025-01",
+        text: "January, 2025"
+      },
+      {
+        value: "2024-12",
+        text: "December, 2024"
+      },
+      {
+        value: "2024-11",
+        text: "November, 2024"
+      }
+    ]
+  }) }}
+
+  {{ govukRadios({
+    name: "reportType",
+    fieldset: {
+      legend: {
+        text: "Report type"
+      }
+    },
+    items: [
+      {
+        value: "xlsx",
+        text: "Excel",
+        checked: true
+      },
+      {
+        value: "csv",
+        text: "CSV"
+      }
+    ]
+  }) }}
+
+  {{ govukButton({
+    text: "Download"
+  }) }}
+
+</form>
+{% endblock %}
