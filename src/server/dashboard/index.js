@@ -1,6 +1,4 @@
 import { dashboardController } from './controller.js'
-import { roleTypes } from '../../auth/constants/roles.js'
-import { requireRole } from '../../auth/require-role.js'
 import { authRequired } from '../../auth/auth-required.js'
 
 /**
@@ -20,7 +18,7 @@ export const dashboard = {
               strategy: 'session',
               mode: 'try'
             },
-            pre: [authRequired, requireRole(roleTypes.mipViewer)]
+            pre: [authRequired]
           },
           ...dashboardController
         }

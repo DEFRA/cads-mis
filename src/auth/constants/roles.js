@@ -1,5 +1,5 @@
 const roleTypes = {
-  mipViewer: 'mip-viewer'
+  miAdmin: 'MI_ADMIN'
 }
 
 export { roleTypes }
