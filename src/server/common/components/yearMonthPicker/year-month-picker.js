@@ -20,8 +20,9 @@ function yearMonthPicker(module) {
 
   const startYear = parseInt(module.dataset.startYear)
   const now = new Date()
-  const endYear =
-    now.getMonth() === 0 ? now.getFullYear() - 1 : now.getFullYear()
+  const endMonth = now.getMonth() + 1
+  // If it's January, use the previous year
+  const endYear = endMonth === 1 ? now.getFullYear() - 1 : now.getFullYear()
 
   const yearSelect = module.querySelector('select[id$="year"]')
   const monthSelect = module.querySelector('select[id$="month"]')
@@ -51,14 +52,12 @@ function yearMonthPicker(module) {
   updateMonths(endYear)
 
   function updateMonths(selectedYear, previousYear) {
-    const now = new Date()
-    const currentMonth = now.getMonth() + 1
-    if (currentMonth === 1) {
-      // In January so will not be showing any data for this year
-      return
-    }
     const currentYear = now.getFullYear()
-    if (selectedYear !== currentYear && previousYear !== currentYear) {
+    if (
+      selectedYear !== currentYear &&
+      previousYear != null &&
+      previousYear !== currentYear
+    ) {
       // change between previous years so no need to update months
       return
     }
@@ -66,7 +65,7 @@ function yearMonthPicker(module) {
     // Determine the max month for the selected year
     let maxMonth = 12
     if (selectedYear === currentYear) {
-      maxMonth = currentMonth
+      maxMonth = endMonth - 1
     }
 
     // Clear and repopulate
