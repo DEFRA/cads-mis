@@ -6,7 +6,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { downloadController } from './controller.js'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const _dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export const download = {
   plugin: {
@@ -19,7 +19,7 @@ export const download = {
           options: {
             auth: false,
             files: {
-              relativeTo: __dirname
+              relativeTo: _dirname
             }
           },
           ...downloadController

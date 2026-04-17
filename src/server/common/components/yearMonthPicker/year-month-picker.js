@@ -70,7 +70,7 @@ function yearMonthPicker(module) {
 
     // Clear and repopulate
     let selectedMonth = Number.parseInt(monthSelect.value)
-    if (isNaN(selectedMonth) || selectedMonth > maxMonth) {
+    if (Number.isNaN(selectedMonth) || selectedMonth > maxMonth) {
       selectedMonth = maxMonth
     }
     monthSelect.innerHTML = ''

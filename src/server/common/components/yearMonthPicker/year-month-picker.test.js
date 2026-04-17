@@ -121,7 +121,67 @@ describe('#yearMonthPicker', () => {
     })
   })
 
-  describe('month retention on year change', () => {
+  describe('month selection retention', () => {
+    test('Should default to maxMonth when monthSelect has no value (initial load)', () => {
+      mockDate(2026, 4, 17) // endMonth = 4, maxMonth = 3
+      const module = createPickerModule(2023)
+
+      yearMonthPicker(module)
+
+      const monthSelect = module.querySelector('select#month')
+      // On initial call, monthSelect was empty so parseInt("") = NaN
+      // Should default to maxMonth (3 = March)
+      expect(monthSelect.value).toBe('3')
+    })
+
+    test('Should cap selectedMonth to maxMonth when switching to current year', () => {
+      mockDate(2026, 4, 17) // maxMonth for 2026 = 3
+      const module = createPickerModule(2023)
+
+      yearMonthPicker(module)
+
+      const yearSelect = module.querySelector('select#year')
+      const monthSelect = module.querySelector('select#month')
+
+      // Switch to previous year — gives 12 months
+      yearSelect.value = '2025'
+      yearSelect.dispatchEvent(new global.window.Event('change'))
+
+      // Select October (10), which is > maxMonth (3) for current year
+      monthSelect.value = '10'
+
+      // Switch back to current year
+      yearSelect.value = '2026'
+      yearSelect.dispatchEvent(new global.window.Event('change'))
+
+      // selectedMonth (10) > maxMonth (3), so should be capped to 3
+      expect(monthSelect.value).toBe('3')
+    })
+
+    test('Should retain selectedMonth when it is within maxMonth range', () => {
+      mockDate(2026, 4, 17) // maxMonth for 2026 = 3
+      const module = createPickerModule(2023)
+
+      yearMonthPicker(module)
+
+      const yearSelect = module.querySelector('select#year')
+      const monthSelect = module.querySelector('select#month')
+
+      // Switch to previous year
+      yearSelect.value = '2025'
+      yearSelect.dispatchEvent(new global.window.Event('change'))
+
+      // Select February (2), which is <= maxMonth (3)
+      monthSelect.value = '2'
+
+      // Switch back to current year
+      yearSelect.value = '2026'
+      yearSelect.dispatchEvent(new global.window.Event('change'))
+
+      // selectedMonth (2) <= maxMonth (3), so should be retained
+      expect(monthSelect.value).toBe('2')
+    })
+
     test('Should retain selected month when switching between previous years', () => {
       mockDate(2026, 4, 17)
       const module = createPickerModule(2023)
@@ -139,25 +199,6 @@ describe('#yearMonthPicker', () => {
       yearSelect.dispatchEvent(new global.window.Event('change'))
 
       expect(monthSelect.value).toBe('6')
-    })
-
-    test('Should adjust month down when switching to current year with fewer months', () => {
-      mockDate(2026, 3, 17)
-      const module = createPickerModule(2023)
-
-      yearMonthPicker(module)
-
-      const yearSelect = module.querySelector('select#year')
-      const monthSelect = module.querySelector('select#month')
-
-      yearSelect.value = '2025'
-      yearSelect.dispatchEvent(new global.window.Event('change'))
-      monthSelect.value = '10'
-
-      yearSelect.value = '2026'
-      yearSelect.dispatchEvent(new global.window.Event('change'))
-
-      expect(parseInt(monthSelect.value)).toBeLessThanOrEqual(3)
     })
   })
 })
