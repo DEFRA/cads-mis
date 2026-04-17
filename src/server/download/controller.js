@@ -3,12 +3,13 @@ import Boom from '@hapi/boom'
 export const downloadController = {
   handler: async (request, h) => {
     const reportName = request.params.reportName
-    const yearMonth = request.query.yearMonth
+    const year = request.query.year
+    const month = request.query.month
     const reportType = request.query.reportType
 
-    if (!reportName || !yearMonth || !reportType) {
+    if (!reportName || !year || !month || !reportType) {
       return Boom.badRequest(
-        'Missing required parameters: reportName, yearMonth, and reportType are all required'
+        'Missing required parameters: reportName, year, month, and reportType are all required'
       )
     }
 
@@ -22,7 +23,7 @@ export const downloadController = {
     const reportTypeExtension = reportType === 'xlsx' ? 'xlsx' : 'csv'
 
     return h.file('test.csv', {
-      filename: `${reportName}_${yearMonth}.${reportTypeExtension}`,
+      filename: `${reportName}_${year}-${month}.${reportTypeExtension}`,
       mode: 'attachment'
     })
   }

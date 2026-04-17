@@ -14,7 +14,7 @@ describe('#downloadController', () => {
     test('Should download csv file with correct filename', async () => {
       const request = {
         params: { reportName: 'gb-cattle-registrations' },
-        query: { yearMonth: '2026-03', reportType: 'csv' }
+        query: { year: '2026', month: '03', reportType: 'csv' }
       }
 
       const result = await downloadController.handler(request, mockH)
@@ -29,7 +29,7 @@ describe('#downloadController', () => {
     test('Should download xlsx file with correct extension', async () => {
       const request = {
         params: { reportName: 'gb-cattle-registrations' },
-        query: { yearMonth: '2025-12', reportType: 'xlsx' }
+        query: { year: '2025', month: '12', reportType: 'xlsx' }
       }
 
       const result = await downloadController.handler(request, mockH)
@@ -59,7 +59,7 @@ describe('#downloadController', () => {
     test('Should return bad request when reportType is missing', async () => {
       const request = {
         params: { reportName: 'gb-cattle-registrations' },
-        query: { yearMonth: '2026-03' }
+        query: { year: '2026', month: '03' }
       }
 
       const result = await downloadController.handler(request, mockH)
@@ -87,7 +87,7 @@ describe('#downloadController', () => {
     test('Should return bad request for invalid reportType', async () => {
       const request = {
         params: { reportName: 'gb-cattle-registrations' },
-        query: { yearMonth: '2026-03', reportType: 'pdf' }
+        query: { year: '2026', month: '03', reportType: 'pdf' }
       }
 
       const result = await downloadController.handler(request, mockH)
