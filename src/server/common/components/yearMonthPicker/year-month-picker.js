@@ -18,7 +18,7 @@ function yearMonthPicker(module) {
     return
   }
 
-  const startYear = parseInt(module.dataset.startYear)
+  const startYear = Number.parseInt(module.dataset.startYear)
   const now = new Date()
   const endMonth = now.getMonth() + 1
   // If it's January, use the previous year
@@ -40,11 +40,11 @@ function yearMonthPicker(module) {
   }
 
   // Update months when year changes
-  let previousYear = parseInt(yearSelect.value)
+  let cachedYear = Number.parseInt(yearSelect.value)
   yearSelect.addEventListener('change', function () {
-    const oldYear = previousYear
-    const newYear = parseInt(this.value)
-    previousYear = newYear
+    const oldYear = cachedYear
+    const newYear = Number.parseInt(this.value)
+    cachedYear = newYear
     updateMonths(newYear, oldYear)
   })
 
@@ -69,7 +69,7 @@ function yearMonthPicker(module) {
     }
 
     // Clear and repopulate
-    let selectedMonth = parseInt(monthSelect.value)
+    let selectedMonth = Number.parseInt(monthSelect.value)
     if (isNaN(selectedMonth) || selectedMonth > maxMonth) {
       selectedMonth = maxMonth
     }
