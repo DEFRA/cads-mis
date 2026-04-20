@@ -13,13 +13,25 @@ describe('#reportController', () => {
     await server.stop({ timeout: 0 })
   })
 
-  test('Should provide expected response', async () => {
+  test('Should provide expected response from holding summary request', async () => {
     const { result, statusCode } = await server.inject({
       method: 'GET',
       url: '/report/holding_summary'
     })
 
-    expect(result).toEqual(expect.stringContaining('Report |'))
+    expect(result).toEqual(expect.stringContaining('Holding Summary'))
+    expect(statusCode).toBe(statusCodes.ok)
+  })
+
+  test('Should provide expected response from GB cattle registrations request', async () => {
+    const { result, statusCode } = await server.inject({
+      method: 'GET',
+      url: '/report/gb_cattle_registrations'
+    })
+
+    expect(result).toEqual(
+      expect.stringContaining('Monthly GB cattle registrations')
+    )
     expect(statusCode).toBe(statusCodes.ok)
   })
 })

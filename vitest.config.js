@@ -28,7 +28,8 @@ export default defineConfig({
         'postcss.config.js',
         'stylelint.config.js',
         '**/*.md',
-        '**/*.njk'
+        '**/*.njk',
+        '**/test.csv'
       ]
     }
   }
