@@ -90,12 +90,7 @@ async function refreshTokenIfNeeded(session, sessionId, request) {
     tokenSet = refreshedToken
     user = refreshedToken.claims()
 
-    // MG: We can fetch roles and permissions from the CDS API and add to the session e.g.
-    // const refreshedRoles = await apiClient.get(`/users/${user.sub}/roles`)
     const refreshedRoles = user.roles
-
-    // MG: Hard-coded role & permissions to come from CDS API
-    // permissions = await apiClient.get(`/users/${user.sub}/permissions`)
     permissions = []
 
     // Save updated session

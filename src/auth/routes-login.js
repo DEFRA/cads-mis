@@ -106,12 +106,7 @@ export const loginRoutes = [
       // Use the subject (sub) as the session ID
       const sessionId = crypto.randomUUID()
 
-      // MG: We can fetch roles and permissions from the CDS API and add to the session e.g.
-      // const roles = await apiClient.get(`/users/${claims.sub}/roles`)
       const roles = []
-
-      // MG: Hard-coded role & permissions to come from CDS API
-      // const permissions = await apiClient.get(`/users/${claims.sub}/permissions`)
       const permissions = []
 
       // Store session in Redis
