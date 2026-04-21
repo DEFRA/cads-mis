@@ -1,0 +1,40 @@
+{% extends 'layouts/page.njk' %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block content %}
+  {{ appHeading({
+    text: 'Monthly GB cattle registrations'
+  }) }}
+
+  <form action="/download/gb-cattle-registrations" method="get">
+    {{ appYearMonthPicker({
+        startYear: 2016
+    }) }}
+
+    {{ govukRadios({
+      name: "reportType",
+      fieldset: {
+        legend: {
+          text: "Report type"
+        }
+      },
+      items: [
+        {
+          value: "xlsx",
+          text: "Excel",
+          checked: true
+        },
+        {
+          value: "csv",
+          text: "CSV"
+        }
+      ]
+    }) }}
+
+    {{ govukButton({
+      text: "Download"
+    }) }}
+  </form>
+{% endblock %}

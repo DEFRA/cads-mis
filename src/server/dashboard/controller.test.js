@@ -10,7 +10,7 @@ const { getUserReports } = await import(
   '../common/clients/requests/mibff/get-user-reports.js'
 )
 
-describe.skip('#dashboardController', () => {
+describe('#dashboardController', () => {
   let server
 
   beforeAll(async () => {
@@ -42,7 +42,15 @@ describe.skip('#dashboardController', () => {
       getUserReports.mockResolvedValue(mockResponse)
       response = await server.inject({
         method: 'GET',
-        url: '/dashboard'
+        url: '/dashboard',
+        auth: {
+          strategy: 'session',
+          credentials: {
+            user: {
+              roles: ['mip-viewer']
+            }
+          }
+        }
       })
     })
 
@@ -59,7 +67,7 @@ describe.skip('#dashboardController', () => {
 
       expect(link).not.toBeNull()
       expect(link?.getAttribute('href')).toEqual(
-        expect.stringContaining('mocks/important-report-key')
+        expect.stringContaining('report/important-report-key')
       )
       expect(
         link?.querySelector('.govuk-summary-card__title').innerHTML
@@ -78,7 +86,15 @@ describe.skip('#dashboardController', () => {
       getUserReports.mockResolvedValue(emptyMockResponse)
       response = await server.inject({
         method: 'GET',
-        url: '/dashboard'
+        url: '/dashboard',
+        auth: {
+          strategy: 'session',
+          credentials: {
+            user: {
+              roles: ['mip-viewer']
+            }
+          }
+        }
       })
     })
 
