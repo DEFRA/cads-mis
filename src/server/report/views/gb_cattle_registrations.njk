@@ -2,13 +2,25 @@
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
 {% block content %}
   {{ appHeading({
     text: 'Monthly GB cattle registrations'
   }) }}
 
-  <form action="/download/gb-cattle-registrations" method="get">
+  <div class="govuk-error-summary js-download-error" data-module="govuk-error-summary" hidden>
+    <div role="alert">
+      <h2 class="govuk-error-summary__title">There is a problem</h2>
+      <div class="govuk-error-summary__body">
+        <ul class="govuk-list govuk-error-summary__list">
+          <li class="js-download-error-message"></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <form class="js-download-form" data-download-url="/download/gb-cattle-registrations">
     {{ appYearMonthPicker({
         startYear: 2016
     }) }}
@@ -34,7 +46,8 @@
     }) }}
 
     {{ govukButton({
-      text: "Download"
+      text: "Download",
+      classes: "js-download-button"
     }) }}
   </form>
 {% endblock %}
