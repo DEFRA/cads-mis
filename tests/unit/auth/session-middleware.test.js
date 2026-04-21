@@ -36,13 +36,7 @@ vi.mock('../../../src/auth/oidc-client.js', () => ({
 
 // Mock roles + permissions
 vi.mock('../../../src/auth/constants/roles.js', () => ({
-  roleTypes: { mipViewer: 'mipViewer' }
-}))
-
-vi.mock('../../../src/auth/constants/role-permissions.js', () => ({
-  rolePermissions: {
-    mipViewer: ['report.view', 'report.export']
-  }
+  roleTypes: { miAdmin: 'MI_ADMIN' }
 }))
 
 // Import module under test AFTER mocks
@@ -121,8 +115,8 @@ describe('sessionMiddleware', () => {
       tokenSet: { access_token: 'atoken' },
       user: {
         name: 'John Doe',
-        roles: ['mipViewer'],
-        permissions: ['report.view']
+        roles: ['MI_ADMIN'],
+        permissions: []
       }
     })
 
@@ -132,8 +126,8 @@ describe('sessionMiddleware', () => {
     const result = await sessionMiddleware(request, h)
 
     expect(result).toBe('continue')
-    expect(request.auth.credentials.user.roles).toEqual(['mipViewer'])
-    expect(request.auth.credentials.user.permissions).toEqual(['report.view'])
+    expect(request.auth.credentials.user.roles).toEqual(['MI_ADMIN'])
+    expect(request.auth.credentials.user.permissions).toEqual([])
   })
 
   it('refreshes token when expired', async () => {
@@ -141,13 +135,13 @@ describe('sessionMiddleware', () => {
 
     mockGetSession.mockResolvedValue({
       tokenSet: { refresh_token: 'rtoken1' },
-      user: { name: 'John Doe', roles: ['mipViewer'] },
+      user: { name: 'John Doe', roles: ['MI_ADMIN'] },
       userSub: '12345'
     })
 
     mockRefresh.mockResolvedValue({
       refresh_token: 'rtoken2',
-      claims: () => ({ name: 'John Doe', roles: ['mipViewer'] })
+      claims: () => ({ name: 'John Doe', roles: ['MI_ADMIN'] })
     })
 
     const request = createRequest()
@@ -157,10 +151,7 @@ describe('sessionMiddleware', () => {
 
     expect(mockRefresh).toHaveBeenCalledWith('rtoken1')
     expect(mockSetSession).toHaveBeenCalled()
-    expect(request.auth.credentials.user.permissions).toEqual([
-      'report.view',
-      'report.export'
-    ])
+    expect(request.auth.credentials.user.permissions).toEqual([])
     expect(result).toBe('continue')
   })
 

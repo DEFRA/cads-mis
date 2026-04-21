@@ -1,9 +1,10 @@
 import { getConfig } from '../../config/config.js'
+import { resourceScopes } from '../constants/resource-scopes.js'
 
 function buildCadsCdsScopes(cadsCdsClientId, useSimpleScopes) {
   return useSimpleScopes
-    ? ['reports.read']
-    : [`api://${cadsCdsClientId}/reports.read`]
+    ? [resourceScopes.cadsCds.reportsRead]
+    : [`api://${cadsCdsClientId}/${resourceScopes.cadsCds.reportsRead}`]
 }
 
 export function getAuthConfig() {

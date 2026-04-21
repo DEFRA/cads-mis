@@ -1,8 +1,6 @@
-const uiPermissions = {
-  reports: {
-    view: 'report.view',
-    export: 'report.export'
-  }
+const reportPermissionTypes = {
+  view: 'REPORT_VIEW',
+  export: 'REPORT_EXPORT'
 }
 
-export { uiPermissions }
+export { reportPermissionTypes }

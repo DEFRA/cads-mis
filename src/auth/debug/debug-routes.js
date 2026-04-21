@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { getSession } from '../session-store.js'
 
 /**

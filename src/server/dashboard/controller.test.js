@@ -2,6 +2,10 @@ import { createServer } from '../server.js'
 import { statusCodes } from '../common/constants/status-codes.js'
 import { JSDOM } from 'jsdom'
 
+vi.mock('../../auth/auth-required.js', () => ({
+  authRequired: vi.fn((_req, h) => h.continue)
+}))
+
 vi.mock(import('../common/clients/requests/mibff/get-user-reports.js'), () => ({
   getUserReports: vi.fn()
 }))
@@ -42,15 +46,7 @@ describe('#dashboardController', () => {
       getUserReports.mockResolvedValue(mockResponse)
       response = await server.inject({
         method: 'GET',
-        url: '/dashboard',
-        auth: {
-          strategy: 'session',
-          credentials: {
-            user: {
-              roles: ['mip-viewer']
-            }
-          }
-        }
+        url: '/dashboard'
       })
     })
 
@@ -86,15 +82,7 @@ describe('#dashboardController', () => {
       getUserReports.mockResolvedValue(emptyMockResponse)
       response = await server.inject({
         method: 'GET',
-        url: '/dashboard',
-        auth: {
-          strategy: 'session',
-          credentials: {
-            user: {
-              roles: ['mip-viewer']
-            }
-          }
-        }
+        url: '/dashboard'
       })
     })
 
