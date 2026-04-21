@@ -2,9 +2,6 @@ import { getOidcClient } from './oidc-client.js'
 import { TokenSet } from 'openid-client'
 import { getSession, setSession, dropSession } from './session-store.js'
 
-import { roleTypes } from './constants/roles.js'
-import { rolePermissions } from './constants/role-permissions.js'
-
 export async function sessionMiddleware(request, h) {
   if (shouldSkipRequest(request)) {
     return h.continue
@@ -93,13 +90,8 @@ async function refreshTokenIfNeeded(session, sessionId, request) {
     tokenSet = refreshedToken
     user = refreshedToken.claims()
 
-    // MG: We can fetch roles and permissions from the CDS API and add to the session e.g.
-    // const refreshedRoles = await apiClient.get(`/users/${user.sub}/roles`)
-    const refreshedRoles = [user.roles?.[0] || roleTypes.mipViewer]
-
-    // MG: Hard-coded role & permissions to come from CDS API
-    // permissions = await apiClient.get(`/users/${user.sub}/permissions`)
-    permissions = refreshedRoles.flatMap((r) => rolePermissions[r] || [])
+    const refreshedRoles = user.roles
+    permissions = []
 
     // Save updated session
     await setSession(sessionId, {

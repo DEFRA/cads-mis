@@ -249,13 +249,6 @@ npm run dev
 
 - `mip-viewer`
 
-### UI permissions
-
-**CADS MIS: Permissions**
-
-- `ui.report.view`
-- `ui.report.export`
-
 ## Azure AD Configuration
 
 ### DEV

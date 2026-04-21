@@ -1,16 +1,49 @@
+import Boom from '@hapi/boom'
+import { reportPermissionTypes } from '../../auth/constants/permissions.js'
+import { hasPermission } from '../../auth/permission-helper.js'
+import { getUserReportPermissions } from '../common/clients/requests/mibff/get-user-report-permissions.js'
+
 export const reportController = {
   handler: async (request, h) => {
-    const filename = request.params.filename
-    const viewPath = filename.startsWith('gb_')
-      ? `report/views/${filename}`
-      : `report/mocks/${filename}`
-    const breadcrumbText = filename.startsWith('gb_')
+    const reportKey = request.params.reportKey
+
+    if (!reportKey) {
+      throw Boom.badRequest('Missing report key')
+    }
+
+    let reportPermissions
+    try {
+      /** @type {import('../common/clients/types/mibff/report-permission.js').ReportPermissionItem} */
+      reportPermissions = await getUserReportPermissions(request, reportKey)
+    } catch (err) {
+      request.log(['error', 'report-permissions'], err)
+      throw Boom.badGateway('Unable to fetch report permissions')
+    }
+
+    if (
+      !hasPermission(reportPermissions.permissions, reportPermissionTypes.view)
+    ) {
+      throw Boom.forbidden()
+    }
+
+    const canExport = hasPermission(
+      reportPermissions.permissions,
+      reportPermissionTypes.export
+    )
+
+    const viewPath = reportKey.startsWith('gb_')
+      ? `report/views/${reportKey}`
+      : `report/mocks/${reportKey}`
+
+    const breadcrumbText = reportKey.startsWith('gb_')
       ? 'Download report'
       : 'View report'
 
     return h.view(viewPath, {
       pageTitle: 'Report',
       heading: 'Report',
+      permissions: reportPermissions.permissions,
+      canExport,
       breadcrumbs: [
         {
           text: 'Dashboard',

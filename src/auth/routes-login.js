@@ -2,8 +2,6 @@ import { getAuthConfig } from './config/auth-config.js'
 import { generators } from 'openid-client'
 import { getOidcClient } from './oidc-client.js'
 import { dropSession, getSession, setSession } from './session-store.js'
-import { roleTypes } from './constants/roles.js'
-import { rolePermissions } from './constants/role-permissions.js'
 import crypto from 'node:crypto'
 
 /**
@@ -108,13 +106,8 @@ export const loginRoutes = [
       // Use the subject (sub) as the session ID
       const sessionId = crypto.randomUUID()
 
-      // MG: We can fetch roles and permissions from the CDS API and add to the session e.g.
-      // const roles = await apiClient.get(`/users/${claims.sub}/roles`)
-      const roles = [roleTypes.mipViewer]
-
-      // MG: Hard-coded role & permissions to come from CDS API
-      // const permissions = await apiClient.get(`/users/${claims.sub}/permissions`)
-      const permissions = roles.flatMap((r) => rolePermissions[r] || [])
+      const roles = []
+      const permissions = []
 
       // Store session in Redis
       await setSession(sessionId, {
