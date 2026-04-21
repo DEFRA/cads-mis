@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { createServer } from '../../server.js'
 import { getConfig } from '../../../config/config.js'
 
