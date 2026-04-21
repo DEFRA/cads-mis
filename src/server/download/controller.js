@@ -11,7 +11,8 @@ const contentTypes = {
 export const downloadController = {
   handler: async (request, h) => {
     const reportName = request.params.reportName
-    const { year, month, reportType } = request.payload ?? {}
+    const { year, month: rawMonth, reportType } = request.payload ?? {}
+    const month = rawMonth ? String(rawMonth).padStart(2, '0') : rawMonth
 
     if (!reportName || !year || !month || !reportType) {
       return Boom.badRequest(

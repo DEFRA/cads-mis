@@ -48,6 +48,32 @@ describe('#downloadController', () => {
       )
     })
 
+    test('Should zero-pad single-digit month from form picker (e.g. "3" → "03")', async () => {
+      const csvBytes = new TextEncoder().encode('a,b\n1,2')
+      downloadCattleRegistrations.mockResolvedValue({
+        arrayBuffer: () => Promise.resolve(csvBytes.buffer)
+      })
+
+      const { downloadController } = await import('./controller.js')
+
+      const request = {
+        params: { reportName: 'gb-cattle-registrations' },
+        payload: { year: '2026', month: '3', reportType: 'csv' }
+      }
+
+      await downloadController.handler(request, mockH)
+
+      expect(downloadCattleRegistrations).toHaveBeenCalledWith(request, {
+        month: '03',
+        year: '2026',
+        reportType: 'csv'
+      })
+      expect(mockH.header).toHaveBeenCalledWith(
+        'Content-Disposition',
+        'attachment; filename="gb-cattle-registrations_2026-03.csv"'
+      )
+    })
+
     test('Should download xlsx file with correct content type', async () => {
       const xlsxBytes = new Uint8Array([0, 1, 2, 3])
       downloadCattleRegistrations.mockResolvedValue({
