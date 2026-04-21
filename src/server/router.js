@@ -4,10 +4,10 @@ import { home } from './home/index.js'
 import { about } from './about/index.js'
 import { health } from './health/index.js'
 
-import { serveStaticFiles } from './common/helpers/serve-static-files.js'
-import { mocks } from './mocks/index.js'
+import { getStaticFilesToServe } from './common/helpers/serve-static-files.js'
+import { reports } from './report/index.js'
 import { dashboard } from './dashboard/index.js'
-import { holdingSummary } from './holding-summary/index.js'
+import { download } from './download/index.js'
 
 export const router = {
   plugin: {
@@ -19,10 +19,10 @@ export const router = {
       await server.register([health])
 
       // Application specific routes, add your own routes here
-      await server.register([home, about, mocks, dashboard, holdingSummary])
+      await server.register([home, about, reports, dashboard, download])
 
       // Static assets
-      await server.register([serveStaticFiles])
+      await server.register([getStaticFilesToServe()])
     }
   }
 }

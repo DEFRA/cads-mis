@@ -4,7 +4,7 @@ import { Engine as CatboxRedis } from '@hapi/catbox-redis'
 import { Engine as CatboxMemory } from '@hapi/catbox-memory'
 
 import { getCacheEngine } from './cache-engine.js'
-import { config } from '../../../../config/config.js'
+import { getConfig } from '../../../../config/config.js'
 
 const mockLoggerInfo = vi.fn()
 const mockLoggerError = vi.fn()
@@ -47,7 +47,7 @@ vi.mock('@hapi/catbox-memory', () => ({
 describe('#getCacheEngine', () => {
   describe('When Redis cache engine has been requested', () => {
     afterEach(() => {
-      config.set('isProduction', false)
+      getConfig().set('isProduction', false)
       vi.clearAllMocks()
     })
 
@@ -66,7 +66,7 @@ describe('#getCacheEngine', () => {
 
   describe('When In memory cache engine has been requested', () => {
     afterEach(() => {
-      config.set('isProduction', false)
+      getConfig().set('isProduction', false)
       vi.clearAllMocks()
     })
 
@@ -87,12 +87,12 @@ describe('#getCacheEngine', () => {
 
   describe('When In memory cache engine has been requested in Production', () => {
     afterEach(() => {
-      config.set('isProduction', false)
+      getConfig().set('isProduction', false)
       vi.clearAllMocks()
     })
 
     beforeEach(() => {
-      config.set('isProduction', true)
+      getConfig().set('isProduction', true)
       getCacheEngine()
     })
 

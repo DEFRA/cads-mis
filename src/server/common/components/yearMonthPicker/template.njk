@@ -1,0 +1,23 @@
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+
+<div class="year-month-picker" data-module="year-month-picker" data-start-year="{{ params.startYear }}">
+  {{ govukSelect({
+      id: "year",
+      name: "year",
+      label: {
+        text: "Year"
+      },
+      items: []
+    })
+  }}
+
+  {{ govukSelect({
+      id: "month",
+      name: "month",
+      label: {
+        text: "Month"
+      },
+      items: []
+    })
+  }}
+</div>

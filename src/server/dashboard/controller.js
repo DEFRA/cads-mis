@@ -1,9 +1,9 @@
-/**
- * A GDS styled example about page controller.
- * Provided as an example, remove or modify as required.
- */
+import { getUserReports } from '../common/clients/requests/mibff/get-user-reports.js'
+
 export const dashboardController = {
-  handler(_request, h) {
+  async handler(request, h) {
+    const reports = await getUserReports(request)
+
     return h.view('dashboard/index', {
       pageTitle: 'Dashboard',
       heading: 'Dashboard',
@@ -15,7 +15,10 @@ export const dashboardController = {
         {
           text: 'Dashboard'
         }
-      ]
+      ],
+      viewModel: {
+        reports
+      }
     })
   }
 }

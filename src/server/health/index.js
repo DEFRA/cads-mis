@@ -7,6 +7,9 @@ export const health = {
       server.route({
         method: 'GET',
         path: '/health',
+        config: {
+          auth: false
+        },
         ...healthController
       })
     }
