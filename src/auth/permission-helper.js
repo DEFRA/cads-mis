@@ -1,5 +1,6 @@
 export function hasPermission(perms, key) {
-  if (!perms) return false
-  if (!key) return false
+  if (!perms || !key) {
+    return false
+  }
   return perms.includes(key)
 }

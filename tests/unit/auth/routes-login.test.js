@@ -1,11 +1,15 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createTestServer } from '../../../tests/fixtures/server/create-server.js'
-
 import { loginRoutes } from '../../../src/auth/routes-login.js'
+import { getOidcClient } from '../../../src/auth/oidc-client.js'
 import { setSession, getSession } from '../../../src/auth/session-store.js'
-import { getAuthConfig } from '../../../src/auth/config/auth-config.js'
 
-// Inline mocks
+vi.mock('../../../src/auth/oidc-client.js', () => ({
+  getOidcClient: vi.fn(),
+  callbackParams: vi.fn(),
+  callback: vi.fn()
+}))
+
 vi.mock('../../../src/auth/session-store.js', () => ({
   setSession: vi.fn(),
   getSession: vi.fn(),
@@ -13,25 +17,19 @@ vi.mock('../../../src/auth/session-store.js', () => ({
 }))
 
 vi.mock('../../../src/auth/config/auth-config.js', () => ({
-  getAuthConfig: vi.fn()
-}))
-
-vi.mock('../../../src/auth/oidc-client.js', () => ({
-  getOidcClient: vi.fn()
+  getAuthConfig: vi.fn(() => ({
+    clientId: 'client12345',
+    redirectUri: 'http://localhost/auth/callback',
+    scope: 'openid profile email',
+    externalAuthorizeEndpoint: 'https://cads-oidc-mock/auth',
+    defaultRedirect: '/dashboard'
+  }))
 }))
 
 describe('GET /auth/login', () => {
   let server
 
   beforeEach(async () => {
-    getAuthConfig.mockReturnValue({
-      clientId: 'client12345',
-      redirectUri: 'http://localhost/auth/callback',
-      scope: 'openid profile email',
-      externalAuthorizeEndpoint: 'https://cads-oidc-mock/auth',
-      defaultRedirect: '/dashboard'
-    })
-
     server = await createTestServer(loginRoutes)
   })
 
@@ -139,6 +137,22 @@ describe('GET /auth/login', () => {
     expect(res.result.message).toBe('An internal server error occurred')
   })
 
+  it('returns 500 when session cookie value for sessionId is missing', async () => {
+    server = await createTestServer(loginRoutes)
+
+    const res = await server.inject({
+      method: 'GET',
+      url: '/auth/callback?code=123',
+      auth: {
+        strategy: 'session',
+        credentials: { sessionId: null }
+      }
+    })
+
+    expect(res.statusCode).toBe(500)
+    expect(res.result.message).toBe('An internal server error occurred')
+  })
+
   it('returns 500 when handshake missing', async () => {
     getSession.mockResolvedValue(null)
 
@@ -155,5 +169,87 @@ describe('GET /auth/login', () => {
 
     expect(res.statusCode).toBe(500)
     expect(res.result.message).toBe('An internal server error occurred')
+  })
+
+  it('returns 500 when handshake value for oidcState is missing', async () => {
+    getSession.mockResolvedValue({ oidcState: 'ABC', oidcNonce: 'XYZ' })
+
+    server = await createTestServer(loginRoutes)
+
+    const res = await server.inject({
+      method: 'GET',
+      url: '/auth/callback?code=123',
+      auth: {
+        strategy: 'session',
+        credentials: { sessionId: 'oidc:STATE' }
+      }
+    })
+
+    expect(res.statusCode).toBe(500)
+    expect(res.result.message).toBe('An internal server error occurred')
+  })
+
+  it('redirects to session redirect url when found', async () => {
+    getOidcClient.mockResolvedValue({
+      callbackParams: vi.fn().mockReturnValue({
+        state: 'ABC',
+        session_state: 'XYZ'
+      }),
+      callback: vi.fn().mockResolvedValue({
+        claims: () => ({ sub: '12345' })
+      })
+    })
+
+    getSession.mockResolvedValue({
+      oidcState: 'ABC',
+      oidcNonce: 'XYZ',
+      redirectTo: '/report/holding_summary'
+    })
+
+    server = await createTestServer(loginRoutes)
+
+    const res = await server.inject({
+      method: 'GET',
+      url: '/auth/callback?code=123',
+      auth: {
+        strategy: 'session',
+        credentials: { sessionId: 'oidc:STATE' }
+      }
+    })
+
+    expect(res.statusCode).toBe(302)
+    expect(res.headers.location).toBe('/report/holding_summary')
+  })
+
+  it('redirects to auth config default url when session value missing', async () => {
+    getOidcClient.mockResolvedValue({
+      callbackParams: vi.fn().mockReturnValue({
+        state: 'ABC',
+        session_state: 'XYZ'
+      }),
+      callback: vi.fn().mockResolvedValue({
+        claims: () => ({ sub: '12345' })
+      })
+    })
+
+    getSession.mockResolvedValue({
+      oidcState: 'ABC',
+      oidcNonce: 'XYZ',
+      redirectTo: null
+    })
+
+    server = await createTestServer(loginRoutes)
+
+    const res = await server.inject({
+      method: 'GET',
+      url: '/auth/callback?code=123',
+      auth: {
+        strategy: 'session',
+        credentials: { sessionId: 'oidc:STATE' }
+      }
+    })
+
+    expect(res.statusCode).toBe(302)
+    expect(res.headers.location).toBe('/dashboard')
   })
 })
