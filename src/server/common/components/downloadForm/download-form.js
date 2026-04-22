@@ -1,3 +1,4 @@
+import { statusCodes } from '../../constants/status-codes.js'
 /**
  * Returns all interactive form controls within the form (selects, radios,
  * checkboxes) excluding the submit button itself.
@@ -14,7 +15,7 @@ function getFormControls(form) {
  * @returns {string}
  */
 function getErrorMessage(status) {
-  if (status >= 500) {
+  if (status >= statusCodes.internalServerError) {
     return 'The report could not be downloaded. Try again later.'
   }
   return 'There was a problem with your request. Check your selections and try again.'
