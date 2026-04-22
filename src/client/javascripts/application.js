@@ -12,6 +12,7 @@ import {
 
 import { yearMonthPicker } from '../../server/common/components/yearMonthPicker/year-month-picker.js'
 import { downloadForm } from '../../server/common/components/downloadForm/download-form.js'
+import { initModule } from '../../server/common/helpers/init.js'
 
 createAll(Button)
 createAll(Checkboxes)
@@ -20,8 +21,5 @@ createAll(Header)
 createAll(Radios)
 createAll(SkipLink)
 
-const pickers = document.querySelectorAll('[data-module="year-month-picker"]')
-pickers.forEach(yearMonthPicker)
-
-const downloadForms = document.querySelectorAll('.js-download-form')
-downloadForms.forEach(downloadForm)
+initModule('year-month-picker', yearMonthPicker)
+initModule('download-form', downloadForm)
