@@ -7,10 +7,6 @@ export const reportController = {
   handler: async (request, h) => {
     const reportKey = request.params.reportKey
 
-    if (!reportKey) {
-      throw Boom.badRequest('Missing report key')
-    }
-
     let reportPermissions
     try {
       /** @type {import('../common/clients/types/mibff/report-permission.js').ReportPermissionItem} */
