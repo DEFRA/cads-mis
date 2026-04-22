@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 function initModule(attributeName, module) {
   if (!attributeName) {
     return
