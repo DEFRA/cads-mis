@@ -26,7 +26,7 @@ vi.mock('../../../src/auth/config/auth-config.js', () => ({
   }))
 }))
 
-describe('GET /auth/login', () => {
+describe('GET /login', () => {
   let server
 
   beforeEach(async () => {
@@ -36,7 +36,7 @@ describe('GET /auth/login', () => {
   it('redirects to IdP with state + nonce and stores handshake', async () => {
     const res = await server.inject({
       method: 'GET',
-      url: '/auth/login'
+      url: '/login'
     })
 
     expect(res.statusCode).toBe(302)
@@ -83,7 +83,7 @@ describe('GET /auth/login', () => {
 
     const res = await server.inject({
       method: 'GET',
-      url: '/auth/login',
+      url: '/login',
       auth: {
         strategy: 'session',
         credentials: {},
@@ -100,7 +100,7 @@ describe('GET /auth/login', () => {
 
     const res = await server.inject({
       method: 'GET',
-      url: '/auth/login',
+      url: '/login',
       app: { redirectTo: '/custom' }
     })
 

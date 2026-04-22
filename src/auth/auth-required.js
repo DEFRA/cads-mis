@@ -1,6 +1,6 @@
 /**
  * Middleware to enforce authentication.
- * Redirects unauthenticated users to /auth/login.
+ * Redirects unauthenticated users to /login.
  *
  * @param {import('@hapi/hapi').Request} request
  * @param {import('@hapi/hapi').ResponseToolkit} h
@@ -10,7 +10,7 @@ export function authRequired(request, h) {
 
   if (!isAuthenticated) {
     request.app.redirectTo = request.path
-    return h.redirect('/auth/login').takeover()
+    return h.redirect('/login').takeover()
   }
 
   return h.continue

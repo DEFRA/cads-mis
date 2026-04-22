@@ -47,7 +47,7 @@ function shouldSkipRequest(request) {
     request.path.startsWith('/javascripts/')
 
   const isAuthRoute =
-    path.startsWith('/auth/login') || path.startsWith('/auth/callback')
+    path.startsWith('/login') || path.startsWith('/auth/callback')
 
   const authDisabled = !request.route.settings.auth
   const noCookieAuth = !request.cookieAuth

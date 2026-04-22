@@ -13,7 +13,7 @@ function createH() {
 }
 
 describe('authRequired', () => {
-  it('redirects unauthenticated users to /auth/login', () => {
+  it('redirects unauthenticated users to /login', () => {
     const request = {
       auth: { credentials: null },
       path: '/protected/route',
@@ -25,7 +25,7 @@ describe('authRequired', () => {
     const result = authRequired(request, h)
 
     expect(request.app.redirectTo).toBe('/protected/route')
-    expect(h.redirect).toHaveBeenCalledWith('/auth/login')
+    expect(h.redirect).toHaveBeenCalledWith('/login')
     expect(result).toBe('takeover')
   })
 

@@ -14,7 +14,7 @@ vi.mock('../../../src/auth/config/auth-config.js', () => ({
   getAuthConfig: vi.fn()
 }))
 
-describe('GET /auth/logout', () => {
+describe('GET /logout', () => {
   let server
 
   beforeEach(async () => {
@@ -29,7 +29,7 @@ describe('GET /auth/logout', () => {
   it('drops session, clears cookie, and redirects to IdP logout', async () => {
     const res = await server.inject({
       method: 'GET',
-      url: '/auth/logout',
+      url: '/logout',
       auth: {
         strategy: 'session',
         artifacts: { sessionId: 'abc123' },
@@ -65,7 +65,7 @@ describe('GET /auth/logout', () => {
   it('handles missing session gracefully', async () => {
     const res = await server.inject({
       method: 'GET',
-      url: '/auth/logout',
+      url: '/logout',
       auth: {
         strategy: 'session',
         artifacts: {}, // no sessionId

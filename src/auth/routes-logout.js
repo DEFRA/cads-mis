@@ -8,7 +8,7 @@ import crypto from 'node:crypto'
 export const logoutRoutes = [
   {
     method: ['GET'],
-    path: '/auth/logout',
+    path: '/logout',
     options: {
       auth: {
         mode: 'try',

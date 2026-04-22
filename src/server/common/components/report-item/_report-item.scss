@@ -1,0 +1,12 @@
+@use "govuk-frontend" as *;
+
+.portal-card {
+  .govuk-summary-card {
+    min-height: 175px;
+    position: relative;
+  }
+
+  .govuk-summary-card__content {
+    padding-bottom: govuk-spacing(20);
+  }
+}

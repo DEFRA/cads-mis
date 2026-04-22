@@ -7,10 +7,6 @@ export const reportController = {
   handler: async (request, h) => {
     const reportKey = request.params.reportKey
 
-    if (!reportKey) {
-      throw Boom.badRequest('Missing report key')
-    }
-
     let reportPermissions
     try {
       /** @type {import('../common/clients/types/mibff/report-permission.js').ReportPermissionItem} */
@@ -35,10 +31,6 @@ export const reportController = {
       ? `report/views/${reportKey}`
       : `report/mocks/${reportKey}`
 
-    const breadcrumbText = reportKey.startsWith('gb_')
-      ? 'Download report'
-      : 'View report'
-
     return h.view(viewPath, {
       pageTitle: 'Report',
       heading: 'Report',
@@ -50,7 +42,7 @@ export const reportController = {
           href: '/dashboard'
         },
         {
-          text: breadcrumbText
+          text: 'Report'
         }
       ]
     })
