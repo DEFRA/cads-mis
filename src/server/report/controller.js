@@ -35,10 +35,6 @@ export const reportController = {
       ? `report/views/${reportKey}`
       : `report/mocks/${reportKey}`
 
-    const breadcrumbText = reportKey.startsWith('gb_')
-      ? 'Download report'
-      : 'View report'
-
     return h.view(viewPath, {
       pageTitle: 'Report',
       heading: 'Report',
@@ -50,7 +46,7 @@ export const reportController = {
           href: '/dashboard'
         },
         {
-          text: breadcrumbText
+          text: 'Report'
         }
       ]
     })

@@ -1,7 +1,7 @@
 {
   "name": "cads-mis",
   "version": "0.0.0",
-  "description": "CDP Frontend Template",
+  "description": "CADS Management Information Portal",
   "license": "OGL-UK-3.0",
   "author": "Defra DDTS",
   "sideEffects": false,

@@ -16,7 +16,7 @@ export const debugAuthRoutes = [
       }
     },
     handler: (_request, h) => {
-      return h.redirect('/auth/login')
+      return h.redirect('/login')
     }
   },
   {
@@ -30,7 +30,7 @@ export const debugAuthRoutes = [
     },
     handler: (request, h) => {
       request.cookieAuth.clear()
-      return h.redirect('/auth/logout')
+      return h.redirect('/logout')
     }
   },
   {
