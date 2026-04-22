@@ -1,100 +1,183 @@
-import { downloadController } from './controller.js'
 import { statusCodes } from '../common/constants/status-codes.js'
+
+vi.mock(import('../common/clients/requests/mibff/download-reports.js'), () => ({
+  downloadCattleRegistrations: vi.fn()
+}))
+
+const { downloadCattleRegistrations } = await import(
+  '../common/clients/requests/mibff/download-reports.js'
+)
 
 describe('#downloadController', () => {
   let mockH
 
   beforeEach(() => {
     mockH = {
-      file: vi.fn().mockReturnValue('file-response')
+      response: vi.fn().mockReturnThis(),
+      type: vi.fn().mockReturnThis(),
+      header: vi.fn().mockReturnThis()
     }
   })
 
   describe('successful downloads', () => {
     test('Should download csv file with correct filename', async () => {
+      const csvBytes = new TextEncoder().encode('a,b\n1,2')
+      downloadCattleRegistrations.mockResolvedValue({
+        arrayBuffer: () => Promise.resolve(csvBytes.buffer)
+      })
+
+      const { downloadController } = await import('./controller.js')
+
       const request = {
         params: { reportName: 'gb-cattle-registrations' },
-        query: { year: '2026', month: '03', reportType: 'csv' }
+        payload: { year: '2026', month: '03', reportType: 'csv' }
       }
 
-      const result = await downloadController.handler(request, mockH)
+      await downloadController.handler(request, mockH)
 
-      expect(mockH.file).toHaveBeenCalledWith('test.csv', {
-        filename: 'gb-cattle-registrations_2026-03.csv',
-        mode: 'attachment'
+      expect(downloadCattleRegistrations).toHaveBeenCalledWith(request, {
+        month: '03',
+        year: '2026',
+        reportType: 'csv'
       })
-      expect(result).toBe('file-response')
+      expect(mockH.response).toHaveBeenCalledWith(Buffer.from(csvBytes.buffer))
+      expect(mockH.type).toHaveBeenCalledWith('text/csv')
+      expect(mockH.header).toHaveBeenCalledWith(
+        'Content-Disposition',
+        'attachment; filename="gb-cattle-registrations_2026-03.csv"'
+      )
     })
 
-    test('Should download xlsx file with correct extension', async () => {
+    test('Should zero-pad single-digit month from form picker (e.g. "3" → "03")', async () => {
+      const csvBytes = new TextEncoder().encode('a,b\n1,2')
+      downloadCattleRegistrations.mockResolvedValue({
+        arrayBuffer: () => Promise.resolve(csvBytes.buffer)
+      })
+
+      const { downloadController } = await import('./controller.js')
+
       const request = {
         params: { reportName: 'gb-cattle-registrations' },
-        query: { year: '2025', month: '12', reportType: 'xlsx' }
+        payload: { year: '2026', month: '3', reportType: 'csv' }
       }
 
-      const result = await downloadController.handler(request, mockH)
+      await downloadController.handler(request, mockH)
 
-      expect(mockH.file).toHaveBeenCalledWith('test.csv', {
-        filename: 'gb-cattle-registrations_2025-12.xlsx',
-        mode: 'attachment'
+      expect(downloadCattleRegistrations).toHaveBeenCalledWith(request, {
+        month: '03',
+        year: '2026',
+        reportType: 'csv'
       })
-      expect(result).toBe('file-response')
+      expect(mockH.header).toHaveBeenCalledWith(
+        'Content-Disposition',
+        'attachment; filename="gb-cattle-registrations_2026-03.csv"'
+      )
+    })
+
+    test('Should download xlsx file with correct content type', async () => {
+      const xlsxBytes = new Uint8Array([0, 1, 2, 3])
+      downloadCattleRegistrations.mockResolvedValue({
+        arrayBuffer: () => Promise.resolve(xlsxBytes.buffer)
+      })
+
+      const { downloadController } = await import('./controller.js')
+
+      const request = {
+        params: { reportName: 'gb-cattle-registrations' },
+        payload: { year: '2025', month: '12', reportType: 'xlsx' }
+      }
+
+      await downloadController.handler(request, mockH)
+
+      expect(mockH.type).toHaveBeenCalledWith(
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      )
+      expect(mockH.header).toHaveBeenCalledWith(
+        'Content-Disposition',
+        'attachment; filename="gb-cattle-registrations_2025-12.xlsx"'
+      )
     })
   })
 
   describe('missing parameters', () => {
-    test('Should return bad request when yearMonth is missing', async () => {
+    test('Should return bad request when year and month are missing', async () => {
+      const { downloadController } = await import('./controller.js')
+
       const request = {
         params: { reportName: 'gb-cattle-registrations' },
-        query: { reportType: 'csv' }
+        payload: { reportType: 'csv' }
       }
 
       const result = await downloadController.handler(request, mockH)
 
       expect(result.isBoom).toBe(true)
       expect(result.output.statusCode).toBe(statusCodes.badRequest)
-      expect(mockH.file).not.toHaveBeenCalled()
+      expect(downloadCattleRegistrations).not.toHaveBeenCalled()
     })
 
     test('Should return bad request when reportType is missing', async () => {
+      const { downloadController } = await import('./controller.js')
+
       const request = {
         params: { reportName: 'gb-cattle-registrations' },
-        query: { year: '2026', month: '03' }
+        payload: { year: '2026', month: '03' }
       }
 
       const result = await downloadController.handler(request, mockH)
 
       expect(result.isBoom).toBe(true)
       expect(result.output.statusCode).toBe(statusCodes.badRequest)
-      expect(mockH.file).not.toHaveBeenCalled()
+      expect(downloadCattleRegistrations).not.toHaveBeenCalled()
     })
 
-    test('Should return bad request when all query params are missing', async () => {
+    test('Should return bad request when payload is missing', async () => {
+      const { downloadController } = await import('./controller.js')
+
       const request = {
         params: { reportName: 'gb-cattle-registrations' },
-        query: {}
+        payload: null
       }
 
       const result = await downloadController.handler(request, mockH)
 
       expect(result.isBoom).toBe(true)
       expect(result.output.statusCode).toBe(statusCodes.badRequest)
-      expect(mockH.file).not.toHaveBeenCalled()
+      expect(downloadCattleRegistrations).not.toHaveBeenCalled()
     })
   })
 
   describe('invalid reportType', () => {
     test('Should return bad request for invalid reportType', async () => {
+      const { downloadController } = await import('./controller.js')
+
       const request = {
         params: { reportName: 'gb-cattle-registrations' },
-        query: { year: '2026', month: '03', reportType: 'pdf' }
+        payload: { year: '2026', month: '03', reportType: 'pdf' }
       }
 
       const result = await downloadController.handler(request, mockH)
 
       expect(result.isBoom).toBe(true)
       expect(result.output.statusCode).toBe(statusCodes.badRequest)
-      expect(mockH.file).not.toHaveBeenCalled()
+      expect(downloadCattleRegistrations).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('backend errors', () => {
+    test('Should propagate backend errors', async () => {
+      const { default: Boom } = await import('@hapi/boom')
+      downloadCattleRegistrations.mockRejectedValue(
+        Boom.internal('Backend error: 500 Internal Server Error')
+      )
+
+      const { downloadController } = await import('./controller.js')
+
+      const request = {
+        params: { reportName: 'gb-cattle-registrations' },
+        payload: { year: '2026', month: '03', reportType: 'csv' }
+      }
+
+      await expect(downloadController.handler(request, mockH)).rejects.toThrow()
     })
   })
 })
