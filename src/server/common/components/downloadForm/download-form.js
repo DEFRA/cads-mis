@@ -9,6 +9,50 @@ function getFormControls(form) {
 }
 
 /**
+ * Returns a user-facing error message based on the HTTP status code.
+ * @param {number} status
+ * @returns {string}
+ */
+function getErrorMessage(status) {
+  if (status >= 500) {
+    return 'The report could not be downloaded. Try again later.'
+  }
+  return 'There was a problem with your request. Check your selections and try again.'
+}
+
+/**
+ * Extracts the filename from a Content-Disposition header value, falling back
+ * to a generated name from the report type.
+ * @param {string} disposition
+ * @param {string} reportType
+ * @returns {string}
+ */
+function extractFilename(disposition, reportType) {
+  const match = disposition.match(/filename="?([^"]+)"?/)
+  return match ? match[1] : `report.${reportType || 'xlsx'}`
+}
+
+/**
+ * Re-enables form controls and the submit button, then surfaces the error
+ * message in the error summary.
+ */
+function handleError(controls, button, errorSummary, errorMessage, error) {
+  controls.forEach((control) => {
+    control.disabled = false
+  })
+
+  button.disabled = false
+  button.removeAttribute('aria-disabled')
+
+  if (errorSummary && errorMessage) {
+    errorMessage.textContent =
+      error.message || 'Something went wrong. Try again later.'
+    errorSummary.hidden = false
+    errorSummary.focus()
+  }
+}
+
+/**
  * Initialises async file download behaviour on forms with the
  * `js-download-form` class. Disables the submit button and form controls
  * during the request, displays a GOV.UK error summary on failure, and shows
@@ -61,19 +105,11 @@ function downloadForm(form) {
       })
 
       if (!response.ok) {
-        const message =
-          response.status >= 500
-            ? 'The report could not be downloaded. Try again later.'
-            : 'There was a problem with your request. Check your selections and try again.'
-        throw new Error(message)
+        throw new Error(getErrorMessage(response.status))
       }
 
-      // Extract filename from Content-Disposition header or build a fallback
       const disposition = response.headers.get('Content-Disposition') || ''
-      const filenameMatch = disposition.match(/filename="?([^"]+)"?/)
-      const filename = filenameMatch
-        ? filenameMatch[1]
-        : `report.${payload.reportType || 'xlsx'}`
+      const filename = extractFilename(disposition, payload.reportType)
 
       // Trigger browser download
       const blob = await response.blob()
@@ -93,23 +129,15 @@ function downloadForm(form) {
       }
       button.hidden = true
     } catch (error) {
-      // Re-enable form controls so the user can correct and resubmit
-      controls.forEach((control) => {
-        control.disabled = false
-      })
-
-      // Re-enable button
-      button.disabled = false
-      button.removeAttribute('aria-disabled')
-
-      if (errorSummary && errorMessage) {
-        errorMessage.textContent =
-          error.message || 'Something went wrong. Try again later.'
-        errorSummary.hidden = false
-        errorSummary.focus()
-      }
+      handleError(controls, button, errorSummary, errorMessage, error)
     }
   })
 }
 
-export { downloadForm, getFormControls }
+export {
+  downloadForm,
+  getFormControls,
+  getErrorMessage,
+  extractFilename,
+  handleError
+}
