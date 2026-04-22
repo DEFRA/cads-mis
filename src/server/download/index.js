@@ -1,7 +1,5 @@
 import { downloadController } from './controller.js'
 import { authRequired } from '../../auth/auth-required.js'
-import { requireRole } from '../../auth/require-role.js'
-import { roleTypes } from '../../auth/constants/roles.js'
 
 export const download = {
   plugin: {
@@ -16,7 +14,7 @@ export const download = {
               strategy: 'session',
               mode: 'try'
             },
-            pre: [authRequired, requireRole(roleTypes.mipViewer)]
+            pre: [authRequired]
           },
           ...downloadController
         }
