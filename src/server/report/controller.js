@@ -2,6 +2,7 @@ import Boom from '@hapi/boom'
 import { reportPermissionTypes } from '../../auth/constants/permissions.js'
 import { hasPermission } from '../../auth/permission-helper.js'
 import { getUserReportPermissions } from '../common/clients/requests/mibff/get-user-report-permissions.js'
+import { reportNames } from '../common/constants/report-names.js'
 
 export const reportController = {
   handler: async (request, h) => {
@@ -44,7 +45,8 @@ export const reportController = {
         {
           text: 'Report'
         }
-      ]
+      ],
+      reportNames
     })
   }
 }

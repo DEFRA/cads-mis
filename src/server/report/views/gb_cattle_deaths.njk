@@ -6,7 +6,7 @@
 
 {% block content %}
   {{ appHeading({
-    text: 'Monthly GB cattle registrations'
+    text: 'Monthly GB cattle deaths'
   }) }}
 
   <div class="govuk-notification-banner govuk-notification-banner--success js-download-success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner" hidden>
@@ -30,7 +30,7 @@
     </div>
   </div>
 
-  <form class="js-download-form" data-module="download-form" data-download-url="/download/{{reportNames.gbCattleRegistrations}}">
+  <form class="js-download-form" data-module="download-form" data-download-url="/download/{{reportNames.gbCattleDeaths}}">
     {{ appYearMonthPicker({
         startYear: 2016
     }) }}
