@@ -1,5 +1,9 @@
 import Boom from '@hapi/boom'
-import { downloadCattleRegistrations } from '../common/clients/requests/mibff/download-reports.js'
+import {
+  downloadCattleRegistrations,
+  downloadCattleDeaths
+} from '../common/clients/requests/mibff/download-reports.js'
+import { reportNames } from '../common/constants/report-names.js'
 
 const validReportTypes = ['csv', 'xlsx']
 
@@ -26,7 +30,12 @@ export const downloadController = {
       )
     }
 
-    const backendResponse = await downloadCattleRegistrations(request, {
+    const reportFunction =
+      reportName === reportNames.gbCattleDeaths
+        ? downloadCattleDeaths
+        : downloadCattleRegistrations
+
+    const backendResponse = await reportFunction(request, {
       month,
       year,
       reportType
