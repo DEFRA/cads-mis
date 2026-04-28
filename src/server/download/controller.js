@@ -1,9 +1,5 @@
 import Boom from '@hapi/boom'
-import {
-  downloadCattleRegistrations,
-  downloadCattleDeaths
-} from '../common/clients/requests/mibff/download-reports.js'
-import { reportNames } from '../common/constants/report-names.js'
+import { downloadReport } from '../common/clients/requests/mibff/download-reports.js'
 
 const validReportTypes = ['csv', 'xlsx']
 
@@ -14,13 +10,13 @@ const contentTypes = {
 
 export const downloadController = {
   handler: async (request, h) => {
-    const reportName = request.params.reportName
+    const reportKey = request.params.reportKey
     const { year, month: rawMonth, reportType } = request.payload ?? {}
     const month = rawMonth ? String(rawMonth).padStart(2, '0') : rawMonth
 
-    if (!reportName || !year || !month || !reportType) {
+    if (!reportKey || !year || !month || !reportType) {
       return Boom.badRequest(
-        'Missing required parameters: reportName, year, month, and reportType are all required'
+        'Missing required parameters: reportKey, year, month, and reportType are all required'
       )
     }
 
@@ -30,19 +26,14 @@ export const downloadController = {
       )
     }
 
-    const reportFunction =
-      reportName === reportNames.gbCattleDeaths
-        ? downloadCattleDeaths
-        : downloadCattleRegistrations
-
-    const backendResponse = await reportFunction(request, {
+    const backendResponse = await downloadReport(request, reportKey, {
       month,
       year,
       reportType
     })
 
     const extension = reportType === 'xlsx' ? 'xlsx' : 'csv'
-    const filename = `${reportName}_${year}-${month}.${extension}`
+    const filename = `${reportKey}_${year}-${month}.${extension}`
     const buffer = Buffer.from(await backendResponse.arrayBuffer())
 
     return h

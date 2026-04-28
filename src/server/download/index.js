@@ -8,7 +8,7 @@ export const download = {
       server.route([
         {
           method: 'POST',
-          path: '/download/{reportName}',
+          path: '/download/{reportKey}',
           options: {
             auth: {
               strategy: 'session',

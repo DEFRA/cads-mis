@@ -1,16 +1,13 @@
 import { describe, it, expect, vi } from 'vitest'
-import {
-  downloadCattleRegistrations,
-  downloadCattleDeaths
-} from '../../../../../src/server/common/clients/requests/mibff/download-reports.js'
+import { downloadReport } from '../../../../../src/server/common/clients/requests/mibff/download-reports.js'
 import { createApiClient } from '../../../../../src/server/common/clients/api-client.js'
 
 vi.mock('../../../../../src/server/common/clients/api-client.js', () => ({
   createApiClient: vi.fn()
 }))
 
-describe('downloadCattleRegistrations', () => {
-  it('calls api.post with the correct path, params, and stream flag, and returns the result', async () => {
+describe('downloadReport', () => {
+  it('calls api.post with the correct path, params, and stream flag for cattle_registrations, and returns the result', async () => {
     const request = { info: { id: 'trace-123' } }
     const params = { month: '03', year: '2026', reportType: 'csv' }
     const mockResponse = { arrayBuffer: vi.fn() }
@@ -18,7 +15,7 @@ describe('downloadCattleRegistrations', () => {
     const mockPost = vi.fn().mockResolvedValue(mockResponse)
     createApiClient.mockReturnValue({ post: mockPost })
 
-    const result = await downloadCattleRegistrations(request, params)
+    const result = await downloadReport(request, 'cattle_registrations', params)
 
     expect(createApiClient).toHaveBeenCalledWith(request)
     expect(mockPost).toHaveBeenCalledWith(
@@ -28,10 +25,8 @@ describe('downloadCattleRegistrations', () => {
     )
     expect(result).toBe(mockResponse)
   })
-})
 
-describe('downloadCattleDeaths', () => {
-  it('calls api.post with the correct path, params, and stream flag, and returns the result', async () => {
+  it('calls api.post with the correct path, params, and stream flag for cattle_deaths, and returns the result', async () => {
     const request = { info: { id: 'trace-123' } }
     const params = { month: '03', year: '2026', reportType: 'csv' }
     const mockResponse = { arrayBuffer: vi.fn() }
@@ -39,13 +34,13 @@ describe('downloadCattleDeaths', () => {
     const mockPost = vi.fn().mockResolvedValue(mockResponse)
     createApiClient.mockReturnValue({ post: mockPost })
 
-    const result = await downloadCattleDeaths(request, params)
+    const result = await downloadReport(request, 'cattle_deaths', params)
 
     expect(createApiClient).toHaveBeenCalledWith(request)
     expect(mockPost).toHaveBeenCalledWith(
       '/api/v1/bff/mi/reports/cattle_deaths',
       params,
-      true // stream = true — returns raw Response, not parsed JSON
+      true
     )
     expect(result).toBe(mockResponse)
   })
