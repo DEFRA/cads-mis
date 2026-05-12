@@ -11,8 +11,9 @@ const contentTypes = {
 export const downloadController = {
   handler: async (request, h) => {
     const reportKey = request.params.reportKey
-    const { year, month: rawMonth, reportType } = request.payload ?? {}
+    const { year, month: rawMonth /*, reportType*/ } = request.payload ?? {}
     const month = rawMonth ? String(rawMonth).padStart(2, '0') : rawMonth
+    const reportType = 'xlsx'
 
     if (!reportKey || !year || !month || !reportType) {
       return Boom.badRequest(

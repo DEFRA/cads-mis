@@ -35,26 +35,6 @@
         startYear: 2016
     }) }}
 
-    {{ govukRadios({
-      name: "reportType",
-      fieldset: {
-        legend: {
-          text: "Report type"
-        }
-      },
-      items: [
-        {
-          value: "xlsx",
-          text: "Excel",
-          checked: true
-        },
-        {
-          value: "csv",
-          text: "CSV"
-        }
-      ]
-    }) }}
-
     {{ govukButton({
       text: "Download",
       classes: "js-download-button"
