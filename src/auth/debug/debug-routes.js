@@ -8,33 +8,6 @@ import { getSession } from '../session-store.js'
 export const debugAuthRoutes = [
   {
     method: 'GET',
-    path: '/auth/debug/login',
-    options: {
-      auth: {
-        mode: 'try',
-        strategy: 'session'
-      }
-    },
-    handler: (_request, h) => {
-      return h.redirect('/auth/login')
-    }
-  },
-  {
-    method: 'GET',
-    path: '/auth/debug/logout',
-    options: {
-      auth: {
-        mode: 'try',
-        strategy: 'session'
-      }
-    },
-    handler: (request, h) => {
-      request.cookieAuth.clear()
-      return h.redirect('/auth/logout')
-    }
-  },
-  {
-    method: 'GET',
     path: '/auth/debug/session',
     options: {
       auth: {

@@ -10,11 +10,16 @@ export function createApiClient(request) {
     get: (path) => callApi(request, path, { method: 'GET' }),
 
     /** @template T */
-    post: (path, body) =>
-      callApi(request, path, {
-        method: 'POST',
-        body: JSON.stringify(body)
-      }),
+    post: (path, body, stream = false) =>
+      callApi(
+        request,
+        path,
+        {
+          method: 'POST',
+          body: JSON.stringify(body)
+        },
+        stream
+      ),
 
     /** @template T */
     put: (path, body) =>
@@ -33,9 +38,10 @@ export function createApiClient(request) {
  * @param {import('@hapi/hapi').Request} request
  * @param {string} path
  * @param {RequestInit} options
+ * @param {boolean} [stream=false]
  * @returns {Promise<T>}
  */
-async function callApi(request, path, options) {
+async function callApi(request, path, options, stream = false) {
   const config = getConfig()
   const url = new URL(path, config.get('cadsBackendUrl')).href
 
@@ -70,5 +76,5 @@ async function callApi(request, path, options) {
     throw error
   }
 
-  return response.json()
+  return stream ? response : response.json()
 }

@@ -10,7 +10,7 @@ import crypto from 'node:crypto'
 export const loginRoutes = [
   {
     method: ['GET'],
-    path: '/auth/login',
+    path: '/login',
     options: {
       auth: {
         mode: 'try',

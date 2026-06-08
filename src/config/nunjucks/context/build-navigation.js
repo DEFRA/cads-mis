@@ -1,14 +1,33 @@
 export function buildNavigation(request) {
-  return [
+  const isAuthenticated = Boolean(request?.auth?.credentials)
+
+  const items = [
     {
       text: 'Home',
       href: '/',
       current: request?.path === '/'
-    },
-    {
-      text: 'About',
-      href: '/about',
-      current: request?.path === '/about'
     }
   ]
+
+  if (isAuthenticated) {
+    items.push({
+      text: 'Dashboard',
+      href: '/dashboard',
+      current: request?.path === '/dashboard'
+    })
+
+    items.push({
+      text: 'Sign out',
+      href: '/logout',
+      current: false
+    })
+  } else {
+    items.push({
+      text: 'Sign in',
+      href: '/login',
+      current: false
+    })
+  }
+
+  return items
 }

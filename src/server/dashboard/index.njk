@@ -1,21 +1,5 @@
 {% extends 'layouts/page.njk' %}
-
-{% macro reportItem(report) %}
-<div class="govuk-grid-column-one-half portal-card">
-  <a href="../report/{{report.reportKey}}" class="portal-card-link">
-    <div class="govuk-summary-card">
-      <div class="govuk-summary-card__title-wrapper">
-        <h2 class="govuk-summary-card__title">{{report.title}}</h2>
-      </div>
-      <div class="govuk-summary-card__content">
-        <p class="govuk-body-s">
-          {{report.description}}
-        </p>
-      </div>
-    </div>
-  </a>
-</div>
-{% endmacro %}
+{% from "report-item/macro.njk" import appReportItem %}
 
 {% block content %}
   {{ appHeading({
@@ -29,7 +13,7 @@
         <main class="govuk-main-wrapper ">
             <div class="govuk-grid-row">
               {% for item in viewModel.reports %}
-                {{reportItem(item)}}
+                {{ appReportItem(item) }}
               {% else %}
                 <div class="govuk-summary-card__content">
                   <p class="govuk-body-s">No reports found.</p>
