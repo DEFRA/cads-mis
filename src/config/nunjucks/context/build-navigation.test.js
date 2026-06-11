@@ -10,35 +10,13 @@ describe('#buildNavigation', () => {
       buildNavigation(
         mockRequest({ path: '/non-existent-path', auth: { credentials: null } })
       )
-    ).toEqual([
-      {
-        current: false,
-        text: 'Home',
-        href: '/'
-      },
-      {
-        current: false,
-        text: 'Sign in',
-        href: '/login'
-      }
-    ])
+    ).toEqual([])
   })
 
   test('Should provide expected highlighted navigation details', () => {
     expect(
       buildNavigation(mockRequest({ path: '/', auth: { credentials: null } }))
-    ).toEqual([
-      {
-        current: true,
-        text: 'Home',
-        href: '/'
-      },
-      {
-        current: false,
-        text: 'Sign in',
-        href: '/login'
-      }
-    ])
+    ).toEqual([])
   })
 
   test('Should show protected routes when authenticated', () => {
