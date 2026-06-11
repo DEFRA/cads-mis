@@ -16,8 +16,12 @@ export function getAuthConfig() {
   return {
     clientId: config.get('oidc.clientId'),
     clientSecret: config.get('oidc.clientSecret'),
-    redirectUri: config.get('oidc.redirectUri'),
-    postLogoutRedirectUri: config.get('oidc.postLogoutRedirectUri'),
+    redirectPath: config.get('oidc.redirectPath'),
+    postLogoutRedirectPath: config.get('oidc.postLogoutRedirectPath'),
+    allowedRedirectOrigins: (config.get('oidc.allowedRedirectOrigins') || '')
+      .split(',')
+      .map((origin) => origin.trim())
+      .filter(Boolean),
     defaultRedirect: config.get('oidc.postLoginDefaultRedirectUri'),
     oidcWellKnownUrl: config.get('oidc.wellKnownUrl'),
     externalAuthorizeEndpoint: config.get('oidc.externalAuthorizeEndpoint'),

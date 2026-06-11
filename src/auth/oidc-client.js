@@ -12,10 +12,14 @@ export async function getOidcClient() {
       const authConfig = getAuthConfig()
       const issuer = await Issuer.discover(authConfig.oidcWellKnownUrl)
 
+      const redirectUris = authConfig.allowedRedirectOrigins.map(
+        (origin) => `${origin}${authConfig.redirectPath}`
+      )
+
       return new issuer.Client({
         client_id: authConfig.clientId,
         client_secret: authConfig.clientSecret,
-        redirect_uris: [authConfig.redirectUri],
+        redirect_uris: redirectUris,
         response_types: ['code']
       })
     })()
