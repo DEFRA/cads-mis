@@ -13,17 +13,23 @@ export function buildOidcSchema() {
       env: 'OIDC_CLIENT_SECRET',
       sensitive: true
     },
-    redirectUri: {
-      doc: 'OIDC redirect URI',
+    redirectPath: {
+      doc: 'OIDC redirect path',
       format: String,
       default: '',
-      env: 'OIDC_REDIRECT_URI'
+      env: 'OIDC_REDIRECT_PATH'
     },
-    postLogoutRedirectUri: {
-      doc: 'OIDC post logout redirect URI',
+    postLogoutRedirectPath: {
+      doc: 'OIDC post logout redirect path',
       format: String,
       default: '',
-      env: 'OIDC_POST_LOGOUT_REDIRECT_URI'
+      env: 'OIDC_POST_LOGOUT_REDIRECT_PATH'
+    },
+    allowedRedirectOrigins: {
+      doc: 'Comma-separated origins permitted for OIDC redirect URIs (internal + external domains)',
+      format: String,
+      default: '',
+      env: 'OIDC_ALLOWED_REDIRECT_ORIGINS'
     },
     postLoginDefaultRedirectUri: {
       doc: 'OIDC post login default redirect URI',

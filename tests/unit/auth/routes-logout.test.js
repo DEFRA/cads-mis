@@ -20,7 +20,7 @@ describe('GET /logout', () => {
   beforeEach(async () => {
     getAuthConfig.mockReturnValue({
       externalEndSessionEndpoint: 'https://cads-oidc-mock/logout',
-      postLogoutRedirectUri: 'http://localhost/signed-out'
+      postLogoutRedirectPath: '/auth/signed-out'
     })
 
     server = await createTestServer(logoutRoutes)
@@ -30,6 +30,7 @@ describe('GET /logout', () => {
     const res = await server.inject({
       method: 'GET',
       url: '/logout',
+      headers: { host: 'external.example' },
       auth: {
         strategy: 'session',
         artifacts: { sessionId: 'abc123' },
@@ -55,7 +56,7 @@ describe('GET /logout', () => {
     expect(redirectUrl.origin).toBe('https://cads-oidc-mock')
     expect(redirectUrl.searchParams.get('id_token_hint')).toBe('IDTOKEN')
     expect(redirectUrl.searchParams.get('post_logout_redirect_uri')).toBe(
-      'http://localhost/signed-out'
+      'http://external.example/auth/signed-out'
     )
 
     // State generated

@@ -19,7 +19,7 @@ vi.mock('../../../src/auth/session-store.js', () => ({
 vi.mock('../../../src/auth/config/auth-config.js', () => ({
   getAuthConfig: vi.fn(() => ({
     clientId: 'client12345',
-    redirectUri: 'http://localhost/auth/callback',
+    redirectPath: '/auth/callback',
     scope: 'openid profile email',
     externalAuthorizeEndpoint: 'https://cads-oidc-mock/auth',
     defaultRedirect: '/dashboard'
@@ -36,7 +36,8 @@ describe('GET /login', () => {
   it('redirects to IdP with state + nonce and stores handshake', async () => {
     const res = await server.inject({
       method: 'GET',
-      url: '/login'
+      url: '/login',
+      headers: { host: 'external.example' }
     })
 
     expect(res.statusCode).toBe(302)
@@ -49,7 +50,7 @@ describe('GET /login', () => {
     // Correct OIDC params
     expect(redirectUrl.searchParams.get('client_id')).toBe('client12345')
     expect(redirectUrl.searchParams.get('redirect_uri')).toBe(
-      'http://localhost/auth/callback'
+      'http://external.example/auth/callback'
     )
     expect(redirectUrl.searchParams.get('scope')).toBe('openid profile email')
 

@@ -1,5 +1,6 @@
 import { getAuthConfig } from './config/auth-config.js'
 import { dropSession } from './session-store.js'
+import { getRequestOrigin } from './helpers/request-origin.js'
 import crypto from 'node:crypto'
 
 /**
@@ -38,7 +39,7 @@ export const logoutRoutes = [
 
       url.searchParams.set(
         'post_logout_redirect_uri',
-        authConfig.postLogoutRedirectUri
+        `${getRequestOrigin(request)}${authConfig.postLogoutRedirectPath}`
       )
       url.searchParams.set('state', crypto.randomUUID())
 

@@ -21,9 +21,9 @@ process.env.OIDC_WELL_KNOWN_URL =
   'http://localhost:5557/.well-known/openid-configuration'
 process.env.OIDC_CLIENT_ID = 'test-client'
 process.env.OIDC_CLIENT_SECRET = 'test-secret'
-process.env.OIDC_REDIRECT_URI = 'http://localhost:3000/auth/callback'
-process.env.OIDC_POST_LOGOUT_REDIRECT_URI =
-  'http://localhost:3000/auth/signed-out'
+process.env.OIDC_REDIRECT_PATH = '/auth/callback'
+process.env.OIDC_POST_LOGOUT_REDIRECT_PATH = '/auth/signed-out'
+process.env.OIDC_ALLOWED_REDIRECT_ORIGINS = 'http://localhost:3000'
 process.env.OIDC_POST_LOGIN_REDIRECT_URI = '/dashboard'
 
 // Resource: CADS CDS
