@@ -18,8 +18,8 @@ services:
       REDIS_HOST: cads-redis
       USE_SINGLE_INSTANCE_CACHE: true
     networks:
-      - cads-tools
+      - cads-network
 
 networks:
-  cads-tools:
+  cads-network:
     external: true
