@@ -29,14 +29,14 @@ describe('#buildNavigation', () => {
       )
     ).toEqual([
       {
-        current: false,
-        text: 'Home',
-        href: '/'
-      },
-      {
         current: true,
         text: 'Dashboard',
         href: '/dashboard'
+      },
+      {
+        current: false,
+        text: 'Administration',
+        href: '/administration'
       },
       {
         current: false,
