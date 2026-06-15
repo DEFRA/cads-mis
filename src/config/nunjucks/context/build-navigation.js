@@ -7,14 +7,14 @@ export function buildNavigation(request) {
 
   return [
     {
-      text: 'Home',
-      href: '/',
-      current: request?.path === '/'
-    },
-    {
       text: 'Dashboard',
       href: '/dashboard',
       current: request?.path === '/dashboard'
+    },
+    {
+      text: 'Administration',
+      href: '/administration',
+      current: request?.path === '/administration'
     },
     {
       text: 'Sign out',
