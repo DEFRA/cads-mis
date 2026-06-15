@@ -57,7 +57,7 @@ function buildSchema() {
     serviceName: {
       doc: 'Applications Service Name',
       format: String,
-      default: 'CADS Management Information Portal'
+      default: 'CADS PORTAL'
     },
     root: {
       doc: 'Project root',
