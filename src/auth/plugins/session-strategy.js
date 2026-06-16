@@ -29,6 +29,11 @@ export function getSessionAuthStrategy() {
           return { isValid: false }
         }
 
+        // Reject temp OIDC handshake sessions — they have no tokenSet
+        if (!data.tokenSet) {
+          return { isValid: false }
+        }
+
         return {
           isValid: true,
           credentials: {
