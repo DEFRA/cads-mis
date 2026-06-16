@@ -24,13 +24,8 @@ export function getSessionAuthStrategy() {
         }
 
         const data = await getSession(session.sessionId)
-        if (!data) {
-          request.cookieAuth.clear()
-          return { isValid: false }
-        }
-
-        // Reject temp OIDC handshake sessions — they have no tokenSet
-        if (!data.tokenSet) {
+        if (!data || !data.tokenSet) {
+          request.cookieAuth?.clear()
           return { isValid: false }
         }
 
