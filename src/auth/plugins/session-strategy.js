@@ -24,7 +24,7 @@ export function getSessionAuthStrategy() {
         }
 
         const data = await getSession(session.sessionId)
-        if (!data || !data.tokenSet) {
+        if (!data?.tokenSet) {
           request.cookieAuth?.clear()
           return { isValid: false }
         }
