@@ -81,7 +81,7 @@ export const loginRoutes = [
 
       // Extract params from the callback URL
       const callbackParams = oidcClient.callbackParams(request.raw.req)
-      const cookie = request.auth.credentials
+      const cookie = request.state?.sid ?? request.auth?.credentials
       if (!cookie?.sessionId) {
         throw new Error('Missing session cookie')
       }
