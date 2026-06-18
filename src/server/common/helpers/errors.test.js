@@ -33,15 +33,19 @@ describe('#catchAll', () => {
   })
 
   describe('When response is a 401 Unauthorized Boom error', () => {
-    test('Should return the original response to preserve auth challenge headers', () => {
-      const { h } = mockToolkit()
-      const boom = Boom.unauthorized('Missing credentials')
-      const request = mockRequest(boom)
+    test('Should render the error view with "Unauthorized"', () => {
+      const { h, viewResponse } = mockToolkit()
+      const request = mockRequest(Boom.unauthorized())
 
-      const result = catchAll(request, h)
+      catchAll(request, h)
 
-      expect(result).toBe(boom)
-      expect(h.view).not.toHaveBeenCalled()
+      expect(h.view).toHaveBeenCalledWith('error/index', {
+        pageTitle: 'Unauthorized',
+        heading: 'Sorry, you do not have permission to view this page',
+        message:
+          'If you think you should have access, contact your administrator.'
+      })
+      expect(viewResponse.code).toHaveBeenCalledWith(statusCodes.unauthorized)
     })
   })
 
@@ -54,8 +58,9 @@ describe('#catchAll', () => {
 
       expect(h.view).toHaveBeenCalledWith('error/index', {
         pageTitle: 'Page not found',
-        heading: statusCodes.notFound,
-        message: 'Page not found'
+        heading: 'The page you are looking for has not been found',
+        message:
+          'If you think there should be a page here, contact your administrator.'
       })
       expect(viewResponse.code).toHaveBeenCalledWith(statusCodes.notFound)
     })
@@ -70,24 +75,25 @@ describe('#catchAll', () => {
 
       expect(h.view).toHaveBeenCalledWith('error/index', {
         pageTitle: 'Forbidden',
-        heading: statusCodes.forbidden,
-        message: 'Forbidden'
+        heading: 'Sorry, you do not have permission to view this page',
+        message:
+          'If you think you should have access, contact your administrator.'
       })
       expect(viewResponse.code).toHaveBeenCalledWith(statusCodes.forbidden)
     })
   })
 
   describe('When response is a 400 Bad Request Boom error', () => {
-    test('Should render the error view with "Bad Request"', () => {
+    test('Should render the error view with "Bad request"', () => {
       const { h, viewResponse } = mockToolkit()
       const request = mockRequest(Boom.badRequest())
 
       catchAll(request, h)
 
       expect(h.view).toHaveBeenCalledWith('error/index', {
-        pageTitle: 'Bad Request',
-        heading: statusCodes.badRequest,
-        message: 'Bad Request'
+        pageTitle: 'Bad request',
+        heading: 'The request you made is invalid',
+        message: 'If you think this is an error, contact your administrator.'
       })
       expect(viewResponse.code).toHaveBeenCalledWith(statusCodes.badRequest)
     })
@@ -104,8 +110,8 @@ describe('#catchAll', () => {
 
       expect(h.view).toHaveBeenCalledWith('error/index', {
         pageTitle: 'Something went wrong',
-        heading: statusCodes.internalServerError,
-        message: 'Something went wrong'
+        heading: 'Sorry, there has been an unexpected error',
+        message: 'Please try again later or contact your administrator.'
       })
       expect(viewResponse.code).toHaveBeenCalledWith(
         statusCodes.internalServerError
@@ -133,8 +139,8 @@ describe('#catchAll', () => {
 
       expect(h.view).toHaveBeenCalledWith('error/index', {
         pageTitle: 'Something went wrong',
-        heading: statusCodes.imATeapot,
-        message: 'Something went wrong'
+        heading: 'Sorry, there has been an unexpected error',
+        message: 'Please try again later or contact your administrator.'
       })
       expect(viewResponse.code).toHaveBeenCalledWith(statusCodes.imATeapot)
     })

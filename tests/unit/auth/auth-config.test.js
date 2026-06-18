@@ -16,8 +16,9 @@ describe('auth-config', () => {
           'azure.useSimpleScopes': false,
           'oidc.clientId': 'client1',
           'oidc.clientSecret': 'secret1',
-          'oidc.redirectUri': 'http://localhost/callback',
-          'oidc.postLogoutRedirectUri': 'http://localhost/signed-out',
+          'oidc.redirectPath': '/auth/callback',
+          'oidc.postLogoutRedirectPath': '/auth/signed-out',
+          'oidc.allowedRedirectOrigins': 'http://localhost:3000',
           'oidc.postLoginDefaultRedirectUri': '/dashboard',
           'oidc.wellKnownUrl': 'http://idp/.well-known',
           'oidc.externalAuthorizeEndpoint': 'http://idp/auth',
@@ -55,8 +56,9 @@ describe('auth-config', () => {
 
     expect(cfg.clientId).toBe('client1')
     expect(cfg.clientSecret).toBe('secret1')
-    expect(cfg.redirectUri).toBe('http://localhost/callback')
-    expect(cfg.postLogoutRedirectUri).toBe('http://localhost/signed-out')
+    expect(cfg.redirectPath).toBe('/auth/callback')
+    expect(cfg.postLogoutRedirectPath).toBe('/auth/signed-out')
+    expect(cfg.allowedRedirectOrigins).toEqual(['http://localhost:3000'])
     expect(cfg.defaultRedirect).toBe('/dashboard')
     expect(cfg.oidcWellKnownUrl).toBe('http://idp/.well-known')
     expect(cfg.externalAuthorizeEndpoint).toBe('http://idp/auth')

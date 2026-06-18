@@ -12,7 +12,8 @@ vi.mock('../../../src/auth/config/auth-config.js', () => ({
     oidcWellKnownUrl: 'https://issuer.example/.well-known/openid-configuration',
     clientId: 'client12345',
     clientSecret: 'secret12345',
-    redirectUri: 'http://localhost/auth/callback'
+    redirectPath: '/auth/callback',
+    allowedRedirectOrigins: ['http://localhost']
   }))
 }))
 

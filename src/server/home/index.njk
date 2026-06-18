@@ -7,11 +7,16 @@
   }) }}
 
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column">
+    <div class="govuk-grid-column-two-thirds">
       <div class="govuk-body" data-testid="app-page-body">
         <p>
-          <a href="/dashboard" class="govuk-button govuk-button--start govuk-!-margin-top-2 govuk-!-margin-bottom-8">Start now</a>
+          Use CADS MIS to view management information dashboards and reports for animal health and livestock movement data.
         </p>
+        {% if not isAuthenticated %}
+        <a href="/login" class="govuk-button govuk-button--start govuk-!-margin-top-2 govuk-!-margin-bottom-8">
+          Sign in
+        </a>
+        {% endif %}
       </div>
     </div>
   </div>

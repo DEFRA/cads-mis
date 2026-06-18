@@ -109,8 +109,10 @@ OIDC_CLIENT_ID=local-cads-mis
 OIDC_CLIENT_SECRET=local-mock-secret
 OIDC_ENABLE_DEBUG_ENDPOINTS=true
 
-OIDC_REDIRECT_URI=http://localhost:3000/auth/callback
-OIDC_POST_LOGOUT_REDIRECT_URI=http://localhost:3000/auth/signed-out
+OIDC_REDIRECT_PATH=/auth/callback
+OIDC_POST_LOGOUT_REDIRECT_PATH=/auth/signed-out
+# Comma-separated internal + external origins used to register redirect URIs with the IdP
+OIDC_ALLOWED_REDIRECT_ORIGINS=http://localhost:3000
 OIDC_POST_LOGIN_REDIRECT_URI=/dashboard
 
 ## Internal endpoints (server OIDC mock)

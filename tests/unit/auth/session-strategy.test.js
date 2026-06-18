@@ -62,7 +62,10 @@ describe('getSessionAuthStrategy', () => {
   })
 
   it('validate returns credentials when session exists', async () => {
-    getSession.mockResolvedValue({ user: 'mark' })
+    getSession.mockResolvedValue({
+      user: 'mark',
+      tokenSet: { access_token: 'token' }
+    })
 
     const strategy = getSessionAuthStrategy()
     const result = await strategy.options.validate({}, { sessionId: 'abc' })
@@ -71,8 +74,21 @@ describe('getSessionAuthStrategy', () => {
       isValid: true,
       credentials: {
         sessionId: 'abc',
-        user: 'mark'
+        user: 'mark',
+        tokenSet: { access_token: 'token' }
       }
     })
+  })
+
+  it('validate returns invalid when session has no tokenSet (temp handshake session)', async () => {
+    getSession.mockResolvedValue({ oidcState: 'abc', oidcNonce: 'xyz' })
+
+    const strategy = getSessionAuthStrategy()
+    const result = await strategy.options.validate(
+      {},
+      { sessionId: 'oidc:abc' }
+    )
+
+    expect(result).toEqual({ isValid: false })
   })
 })
