@@ -59,6 +59,8 @@ jobs:
       - uses: actions/checkout@v7
       - run: docker build -t defradigital/cads-mis:${{github.sha}} .
       - uses: DEFRA/cads-journey-tests/run-journey-tests@main
+        env:
+          ENVIRONMENT: docker
         with:
           test: UI
           tag: Smoke
