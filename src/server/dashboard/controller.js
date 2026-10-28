@@ -9,10 +9,6 @@ export const dashboardController = {
       heading: 'Dashboard',
       breadcrumbs: [
         {
-          text: 'Home',
-          href: '/'
-        },
-        {
           text: 'Dashboard'
         }
       ],

@@ -5,10 +5,6 @@ export const administrationController = {
       heading: 'Administration',
       breadcrumbs: [
         {
-          text: 'Home',
-          href: '/'
-        },
-        {
           text: 'Administration'
         }
       ]
