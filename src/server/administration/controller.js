@@ -3,15 +3,7 @@ export const administrationController = {
     return h.view('administration/index', {
       pageTitle: 'Administration',
       heading: 'Administration',
-      breadcrumbs: [
-        {
-          text: 'Home',
-          href: '/'
-        },
-        {
-          text: 'Administration'
-        }
-      ]
+      breadcrumbs: []
     })
   }
 }
