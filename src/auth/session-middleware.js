@@ -16,6 +16,12 @@ export async function sessionMiddleware(request, h) {
 
   const refreshed = await refreshTokenIfNeeded(session, sessionId, request)
   if (!refreshed) {
+    // The session has expired and could not be refreshed. Clear any stale
+    // credentials that the cookie strategy populated so the request is treated
+    // as unauthenticated. This lets `authRequired` redirect the user to the
+    // login page instead of surfacing a misleading "forbidden" error.
+    request.auth.credentials = null
+    request.auth.isAuthenticated = false
     return h.continue
   }
 
