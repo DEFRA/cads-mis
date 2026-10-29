@@ -3,6 +3,7 @@ import { generators } from 'openid-client'
 import { getOidcClient } from './oidc-client.js'
 import { dropSession, getSession, setSession } from './session-store.js'
 import { getRequestOrigin } from './helpers/request-origin.js'
+import { getSafeRedirectPath } from './helpers/safe-redirect.js'
 import crypto from 'node:crypto'
 
 /**
@@ -34,10 +35,20 @@ export const loginRoutes = [
       // Store handshake data in Redis
       const tempSessionId = `oidc:${state}`
 
+      // Preserve the page the user originally requested (if it is safe) so we
+      // can return them there after a successful login.
+      const requestedRedirect = getSafeRedirectPath(
+        request.query?.redirect,
+        null
+      )
+
       await setSession(tempSessionId, {
         oidcState: state,
         oidcNonce: nonce,
-        redirectTo: request.app.redirectTo || authConfig.defaultRedirect
+        redirectTo:
+          requestedRedirect ||
+          request.app.redirectTo ||
+          authConfig.defaultRedirect
       })
 
       // Set cookie containing only the temp sessionId
